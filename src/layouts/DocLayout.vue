@@ -5,10 +5,14 @@ import TOC from '@/components/TOC.vue'
 import Navbar from '@/components/Navbar.vue'
 import { useSidebar } from '@/composables/useSidebar'
 import { useTOC } from '@/composables/useTOC'
+import { useLinkCards } from '@/composables/useLinkCards'
 
 // 使用 Composables
 const { isOpen: sidebarOpen, toggleSidebar } = useSidebar()
 const { headings } = useTOC()
+
+// 处理链接卡片
+useLinkCards()
 
 // 提供 headings 给子组件 (保持兼容性，虽然 TOC 组件可以直接传参，但 Sidebar 可能也需要?)
 // 实际上 TOC 组件是直接传参的 :headings="headings"

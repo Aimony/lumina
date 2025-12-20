@@ -4,12 +4,13 @@ import Markdown from 'unplugin-vue-markdown/vite'
 import Pages from 'vite-plugin-pages'
 import { resolve } from 'path'
 import Shiki from '@shikijs/markdown-it'
+import { linkCardPlugin } from './src/plugins/markdown-it-link-card'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue({
-      include: [/\.vue$/, /\.md$/], // 允许 .md 文件作为 Vue 组件
+      include: [/\.vue$/, /\.md$/] // 允许 .md 文件作为 Vue 组件
     }),
 
     Markdown({
@@ -17,22 +18,26 @@ export default defineConfig({
       markdownItOptions: {
         html: true,
         linkify: true,
-        typographer: true,
+        typographer: true
       },
       // Shiki 代码高亮在 markdown 处理中配置
       async markdownItSetup(md) {
-        md.use(await Shiki({
-          themes: {
-            light: 'vitesse-light',
-            dark: 'vitesse-dark',
-          }
-        }))
-      },
+        md.use(
+          await Shiki({
+            themes: {
+              light: 'vitesse-light',
+              dark: 'vitesse-dark'
+            }
+          })
+        )
+        // 注册链接卡片插件
+        md.use(linkCardPlugin)
+      }
     }),
     Pages({
       dirs: [
         { dir: 'src/pages', baseRoute: '' },
-        { dir: 'src/docs', baseRoute: '' },
+        { dir: 'src/docs', baseRoute: '' }
       ],
       extensions: ['vue', 'md'],
       extendRoute(route) {
@@ -40,16 +45,16 @@ export default defineConfig({
         if (route.component.endsWith('.md')) {
           return {
             ...route,
-            meta: { layout: 'doc' },
+            meta: { layout: 'doc' }
           }
         }
         return route
-      },
-    }),
+      }
+    })
   ],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
-    },
-  },
+      '@': resolve(__dirname, 'src')
+    }
+  }
 })
