@@ -15,19 +15,22 @@ const toggleDark = inject<() => void>('toggleDark')
           <span class="text-2xl">📚</span>
           <span>KB-Vue</span>
         </router-link>
-        
+
         <nav class="flex items-center gap-6">
-          <router-link 
-            to="/guide" 
-            class="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors"
-          >
+          <router-link to="/guide"
+            class="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors">
             指南
+          </router-link>
+          <router-link to="/games/snake"
+            class="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors flex items-center gap-1">
+            <span>🎮</span>
+            <span>贪吃蛇</span>
           </router-link>
           <ThemeToggle />
         </nav>
       </div>
     </header>
-    
+
     <!-- Main Content -->
     <main>
       <slot />

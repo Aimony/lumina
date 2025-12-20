@@ -23,7 +23,10 @@ export default defineConfig({
       },
     }),
     Pages({
-      dirs: 'src/pages',
+      dirs: [
+        { dir: 'src/pages', baseRoute: '' },
+        { dir: 'src/docs', baseRoute: '' },
+      ],
       extensions: ['vue', 'md'],
       extendRoute(route) {
         // 为 Markdown 页面添加元数据

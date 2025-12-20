@@ -12,16 +12,16 @@ const route = useRoute()
 const navItems = ref<NavItem[]>([])
 
 onMounted(async () => {
-  // 使用 import.meta.glob 自动扫描 pages 目录
-  const pages = import.meta.glob('/src/pages/**/*.{md,vue}')
+  // 使用 import.meta.glob 自动扫描 docs 目录
+  const pages = import.meta.glob('/src/docs/**/*.{md,vue}')
   
   const items: NavItem[] = []
   const pathMap = new Map<string, NavItem>()
   
   for (const path of Object.keys(pages)) {
-    // 转换路径：/src/pages/guide/intro.md -> /guide/intro
+    // 转换路径：/src/docs/guide/intro.md -> /guide/intro
     const routePath = path
-      .replace('/src/pages', '')
+      .replace('/src/docs', '')
       .replace(/\.(md|vue)$/, '')
       .replace(/\/index$/, '') || '/'
     
