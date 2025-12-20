@@ -47,7 +47,7 @@ const features: Feature[] = [
       <div class="container">
         <div class="main">
           <h1 class="name">
-            <span class="clip">KB-Vue</span>
+            <span class="clip">Lumina</span>
           </h1>
           <p class="text">Personal Knowledge Base System</p>
           <p class="tagline">好记性不如烂笔头，构建个人的技术护城河</p>
@@ -68,7 +68,7 @@ const features: Feature[] = [
         <div class="image-bg">
           <div class="image-container">
             <div class="avatar-circle">
-              <span class="avatar-text">KB</span>
+              <span class="avatar-text">L</span>
             </div>
           </div>
         </div>

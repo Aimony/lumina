@@ -1,5 +1,14 @@
-# Vue 3 + TypeScript + Vite
+# Lumina
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+✨ 一个现代化的、极致美观的 Vue 3 个人知识库系统。
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## 特性
+- **优雅设计**：复刻 VitePress 体验，内置深色模式。
+- **高性能**：Vite 7 + Vue 3 驱动，极致加载速度。
+- **Markdown 驱动**：支持在 Markdown 中嵌套 Vue 组件。
+
+## 快速开始
+```bash
+npm install
+npm run dev
+```

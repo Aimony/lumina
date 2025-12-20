@@ -15,7 +15,7 @@ const toggleDark = inject<() => void>('toggleDark')
           <div class="navbar-title">
             <router-link to="/" class="title-link">
               <span class="logo">📚</span>
-              <span class="text">KB-Vue</span>
+              <span class="text">Lumina</span>
             </router-link>
           </div>
 
