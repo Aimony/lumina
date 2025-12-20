@@ -1,30 +1,33 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView, useRoute } from 'vue-router'
+import { computed, provide, ref, watch } from 'vue'
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import DocLayout from '@/layouts/DocLayout.vue'
+
+const route = useRoute()
+const isDark = ref(false)
+
+// 根据路由 meta 选择布局
+const layout = computed(() => {
+  return route.meta.layout === 'doc' ? DocLayout : DefaultLayout
+})
+
+// 提供主题状态给子组件
+provide('isDark', isDark)
+provide('toggleDark', () => {
+  isDark.value = !isDark.value
+  document.documentElement.classList.toggle('dark', isDark.value)
+})
+
+// 初始化主题
+if (typeof window !== 'undefined') {
+  isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
+  document.documentElement.classList.toggle('dark', isDark.value)
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <component :is="layout">
+    <RouterView />
+  </component>
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
