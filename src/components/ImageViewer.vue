@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{
+import { ref, watch } from 'vue'
+
+const props = defineProps<{
   image: string | null
 }>()
 
@@ -7,20 +9,59 @@ const emit = defineEmits<{
   close: []
 }>()
 
+// 缩放相关状态
+const scale = ref(1)
+const MIN_SCALE = 0.5
+const MAX_SCALE = 5
+const SCALE_STEP = 0.1
+
+// 重置缩放
+const resetScale = () => {
+  scale.value = 1
+}
+
+// 监听图片变化时重置缩放
+watch(
+  () => props.image,
+  () => {
+    resetScale()
+  }
+)
+
 // 点击遮罩层关闭
 const handleBackdropClick = (e: MouseEvent) => {
   if (e.target === e.currentTarget) {
     emit('close')
   }
 }
+
+// 处理滚轮缩放
+const handleWheel = (e: WheelEvent) => {
+  e.preventDefault()
+
+  // deltaY > 0 表示向下滚动（缩小），< 0 表示向上滚动（放大）
+  const delta = e.deltaY > 0 ? -SCALE_STEP : SCALE_STEP
+  const newScale = scale.value + delta
+
+  // 限制缩放范围
+  scale.value = Math.max(MIN_SCALE, Math.min(MAX_SCALE, newScale))
+}
 </script>
 
 <template>
   <Teleport to="body">
     <Transition name="image-viewer">
-      <div v-if="image" class="image-viewer" @click="handleBackdropClick">
+      <div v-if="image" class="image-viewer" @click="handleBackdropClick" @wheel="handleWheel">
         <div class="image-container">
-          <img :src="image" alt="Preview" class="preview-image" />
+          <img
+            :src="image"
+            alt="Preview"
+            class="preview-image"
+            :style="{ transform: `scale(${scale})` }"
+          />
+        </div>
+        <div class="toolbar">
+          <span class="zoom-indicator">{{ Math.round(scale * 100) }}%</span>
         </div>
         <button class="close-button" @click="emit('close')" aria-label="关闭">
           <svg
@@ -78,6 +119,30 @@ const handleBackdropClick = (e: MouseEvent) => {
   cursor: default;
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease-out;
+  transform-origin: center center;
+}
+
+.toolbar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 8px 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.zoom-indicator {
+  min-width: 50px;
+  text-align: center;
 }
 
 .close-button {
@@ -138,6 +203,12 @@ const handleBackdropClick = (e: MouseEvent) => {
     right: 16px;
     width: 40px;
     height: 40px;
+  }
+
+  .toolbar {
+    bottom: 16px;
+    padding: 6px 16px;
+    font-size: 13px;
   }
 
   .image-container {
