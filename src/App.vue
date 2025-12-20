@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
-import { computed, provide, ref, watch } from 'vue'
+import { computed, provide, ref } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import DocLayout from '@/layouts/DocLayout.vue'
 
@@ -9,7 +9,9 @@ const isDark = ref(false)
 
 // 根据路由 meta 选择布局
 const layout = computed(() => {
-  return route.meta.layout === 'doc' ? DocLayout : DefaultLayout
+  if (route.meta.layout === 'doc') return DocLayout
+  if (route.meta.layout === 'default') return DefaultLayout
+  return null
 })
 
 // 提供主题状态给子组件
@@ -27,7 +29,8 @@ if (typeof window !== 'undefined') {
 </script>
 
 <template>
-  <component :is="layout">
+  <component :is="layout" v-if="layout">
     <RouterView />
   </component>
+  <RouterView v-else />
 </template>

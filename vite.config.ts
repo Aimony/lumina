@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import Markdown from 'unplugin-vue-markdown/vite'
 import Pages from 'vite-plugin-pages'
 import { resolve } from 'path'
+import Shiki from '@shikijs/markdown-it'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,6 +11,7 @@ export default defineConfig({
     vue({
       include: [/\.vue$/, /\.md$/], // 允许 .md 文件作为 Vue 组件
     }),
+
     Markdown({
       headEnabled: false, // 禁用 @unhead/vue 集成（暂时）
       markdownItOptions: {
@@ -18,8 +20,13 @@ export default defineConfig({
         typographer: true,
       },
       // Shiki 代码高亮在 markdown 处理中配置
-      markdownItSetup(md) {
-        // 后续可以在这里添加自定义 markdown-it 插件
+      async markdownItSetup(md) {
+        md.use(await Shiki({
+          themes: {
+            light: 'vitesse-light',
+            dark: 'vitesse-dark',
+          }
+        }))
       },
     }),
     Pages({

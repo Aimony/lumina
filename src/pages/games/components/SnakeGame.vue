@@ -42,7 +42,10 @@ const spawnFood = () => {
 
 const move = () => {
   direction.value = nextDirection.value
-  const head = { ...snake.value[0] }
+  const headPoint = snake.value[0]
+  if (!headPoint) return
+
+  const head = { ...headPoint }
 
   switch (direction.value) {
     case 'UP': head.y -= 1; break
@@ -155,31 +158,23 @@ onUnmounted(() => {
       <div class="grid-bg"></div>
 
       <!-- Snake -->
-      <div 
-        v-for="(segment, index) in snake" 
-        :key="index"
-        class="snake-segment"
-        :class="{ 'snake-head': index === 0 }"
-        :style="{ 
-          left: `${segment.x * cellSize}px`, 
+      <div v-for="(segment, index) in snake" :key="index" class="snake-segment" :class="{ 'snake-head': index === 0 }"
+        :style="{
+          left: `${segment.x * cellSize}px`,
           top: `${segment.y * cellSize}px`,
           width: `${cellSize}px`,
           height: `${cellSize}px`
-        }"
-      >
+        }">
         <div class="segment-inner"></div>
       </div>
 
       <!-- Food -->
-      <div 
-        class="food"
-        :style="{ 
-          left: `${food.x * cellSize}px`, 
-          top: `${food.y * cellSize}px`,
-          width: `${cellSize}px`,
-          height: `${cellSize}px`
-        }"
-      >
+      <div class="food" :style="{
+        left: `${food.x * cellSize}px`,
+        top: `${food.y * cellSize}px`,
+        width: `${cellSize}px`,
+        height: `${cellSize}px`
+      }">
         <div class="food-inner"></div>
       </div>
 
@@ -251,7 +246,7 @@ onUnmounted(() => {
   border-radius: 1rem;
   overflow: hidden;
   border: 4px solid #1e293b;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .grid-bg {
@@ -299,8 +294,17 @@ onUnmounted(() => {
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(0.8); opacity: 0.8; }
-  50% { transform: scale(1.1); opacity: 1; }
+
+  0%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
 }
 
 .overlay {
@@ -335,7 +339,7 @@ onUnmounted(() => {
 
 .play-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 30px rgba(255,255,255,0.4);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
 }
 
 .hint {
@@ -359,8 +363,8 @@ onUnmounted(() => {
 .ctrl-btn {
   width: 60px;
   height: 60px;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
   font-size: 1.5rem;
   color: white;
@@ -368,7 +372,7 @@ onUnmounted(() => {
 }
 
 .ctrl-btn:active {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   transform: translateY(2px);
 }
 

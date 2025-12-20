@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { inject } from 'vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 
-const isDark = inject<{ value: boolean }>('isDark')
-const toggleDark = inject<() => void>('toggleDark')
+// const isDark = inject<{ value: boolean }>('isDark')
+// const toggleDark = inject<() => void>('toggleDark')
 </script>
 
 <template>

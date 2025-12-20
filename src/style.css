@@ -147,32 +147,38 @@ a:hover {
   color: var(--vp-c-brand-2);
 }
 
-.markdown-body code {
+/* Inline Code */
+.markdown-body :not(pre)>code {
   font-family: var(--vp-font-family-mono);
   font-size: 0.875em;
-  color: var(--vp-c-text-2) !important;
+  color: var(--vp-c-text-2);
   background-color: var(--vp-c-bg-alt);
   padding: 0.2em 0.4em;
   border-radius: 4px;
 }
 
-.markdown-body pre {
-  background-color: var(--vp-c-bg-alt);
-  padding: 1.25rem;
+/* Code Blocks (Shiki) */
+.markdown-body pre.shiki {
+  padding: 20px 24px;
   border-radius: 8px;
+  margin: 16px 0;
   overflow-x: auto;
-  margin: 1rem 0;
   font-size: 0.875em;
   line-height: 1.5;
-  border: 1px solid var(--vp-c-divider);
-  /* Subtle border for definition */
+  border: 1px solid var(--vp-c-brand-soft);
+  background-color: #ffffff !important;
+  /* Force light bg for light mode */
 }
 
-.markdown-body pre code {
-  background: none;
-  padding: 0;
-  color: inherit !important;
+html.dark .markdown-body pre.shiki {
+  background-color: #121212 !important;
+  /* Force dark bg for dark mode */
+  border: 1px solid var(--vp-c-divider);
 }
+
+/* Let Shiki handle text colors, but ensure background consistency */
+/* The Shiki dual-theme setup usually handles text colors via CSS variables or specific classes. 
+   If using Vitesse themes, they are generally good. */
 
 .markdown-body ul {
   padding-left: 1.25rem;
@@ -187,11 +193,10 @@ a:hover {
 .markdown-body blockquote {
   margin: 1rem 0;
   border-left: 3px solid var(--vp-c-brand-1);
-  padding-left: 1rem;
+  background-color: var(--vp-c-brand-soft);
+  padding: 1rem;
   color: var(--vp-c-text-2);
-  background: var(--vp-c-bg-soft);
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
-  border-radius: 0 4px 4px 0;
+  border-radius: 4px;
 }
 
 .markdown-body table {
@@ -219,14 +224,4 @@ a:hover {
 .markdown-body th {
   font-weight: 600;
   background-color: var(--vp-c-bg-alt);
-}
-
-/* Shiki Overrides */
-html.dark .shiki,
-html.dark .shiki span {
-  background-color: var(--vp-c-bg-alt) !important;
-}
-
-.shiki {
-  background-color: var(--vp-c-bg-alt) !important;
 }

@@ -24,13 +24,13 @@ const updateActiveHeading = () => {
   for (let i = headingElements.length - 1; i >= 0; i--) {
     const el = headingElements[i]
     if (el && el.offsetTop <= scrollY) {
-      activeId.value = props.headings[i].id
+      activeId.value = props.headings[i]?.id || ''
       return
     }
   }
 
   if (headingElements.length > 0) {
-    activeId.value = props.headings[0].id
+    activeId.value = props.headings[0]?.id || ''
   }
 }
 
@@ -54,6 +54,7 @@ const scrollTo = (id: string) => {
 }
 </script>
 
+<!-- 文章目录大纲 -->
 <template>
   <div v-if="headings.length > 0" class="toc-container">
     <div class="toc-title">

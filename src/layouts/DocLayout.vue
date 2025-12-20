@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, provide } from 'vue'
+import { ref, onMounted, provide, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import TOC from '@/components/TOC.vue'
@@ -11,8 +12,8 @@ provide('headings', headings)
 // 侧边栏展开状态
 const sidebarOpen = ref(true)
 
-onMounted(() => {
-  // 延迟提取标题，等待 Markdown 渲染完成
+// Extract headings function
+const extractHeadings = () => {
   setTimeout(() => {
     const h2h3 = document.querySelectorAll('.markdown-body h2, .markdown-body h3')
     headings.value = Array.from(h2h3).map((el) => ({
@@ -28,7 +29,13 @@ onMounted(() => {
       }
     })
   }, 100)
-})
+}
+
+onMounted(extractHeadings)
+
+// Watch route path to re-extract headings
+const route = useRoute()
+watch(() => route.path, extractHeadings)
 </script>
 
 <template>
