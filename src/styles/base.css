@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-family: var(--vp-font-family-base);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--vp-c-bg);
+    color: var(--vp-c-text-1);
+    line-height: 1.6;
+    transition: background-color 0.25s, color 0.25s;
+}
+
+a {
+    color: var(--vp-c-brand-1);
+    text-decoration: none;
+    transition: color 0.25s;
+}
+
+a:hover {
+    color: var(--vp-c-brand-2);
+}
