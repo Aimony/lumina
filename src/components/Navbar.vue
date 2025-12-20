@@ -25,6 +25,8 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
             <router-link to="/games/snake" class="menu-link" active-class="active">
               贪吃蛇
             </router-link>
+            <router-link to="/frontend" class="menu-link" active-class="active"> 前端 </router-link>
+            <router-link to="/backend" class="menu-link" active-class="active"> 后端 </router-link>
           </nav>
           <div class="navbar-actions">
             <ThemeToggle />

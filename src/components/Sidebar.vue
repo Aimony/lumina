@@ -5,13 +5,14 @@ import { useRoute } from 'vue-router'
 interface NavItem {
   path: string
   title: string
+  isDirectory: boolean // 标记是否为目录
   children?: NavItem[]
 }
 
 const route = useRoute()
 const navItems = ref<NavItem[]>([])
 
-// 追踪展开状态的分组
+// 追踪展开状态的分组 (使用 path 作为 key)
 const expandedGroups = ref<Set<string>>(new Set())
 
 // 切换分组的展开/折叠状态
@@ -29,7 +30,6 @@ const toggleGroup = (path: string) => {
 const isExpanded = (path: string) => expandedGroups.value.has(path)
 
 // 计算当前路由的知识库基础路径（第一级）
-// 例如：/fronted/react/react-basic -> /fronted
 const currentKnowledgeBasePath = computed(() => {
   const parts = route.path.split('/').filter(Boolean)
   if (parts.length >= 1) {
@@ -38,140 +38,225 @@ const currentKnowledgeBasePath = computed(() => {
   return null
 })
 
-// 过滤后的导航项 - 显示当前知识库下的所有分类
+// 过滤后的导航项 - 显示当前知识库下的所有内容 (跳过知识库根节点本身)
 const filteredNavItems = computed(() => {
   if (!currentKnowledgeBasePath.value) return []
 
-  // 过滤出属于当前知识库的所有分类
-  return navItems.value.filter((item) => item.path.startsWith(currentKnowledgeBasePath.value!))
+  // 找到当前知识库的根节点
+  const knowledgeBaseNode = navItems.value.find(
+    (item) => item.path === currentKnowledgeBasePath.value
+  )
+
+  // 返回其子节点，而不是根节点本身
+  return knowledgeBaseNode?.children || []
 })
 
-// 自动展开当前路由所在的分组
-const expandCurrentGroup = () => {
+// 递归展开当前路由所在的所有父级分组
+const expandToCurrentPath = () => {
   const parts = route.path.split('/').filter(Boolean)
-  if (parts.length >= 2) {
-    const categoryPath = '/' + parts.slice(0, 2).join('/')
-    expandedGroups.value.add(categoryPath)
-    expandedGroups.value = new Set(expandedGroups.value)
+  let currentPath = ''
+  for (const part of parts) {
+    currentPath += '/' + part
+    expandedGroups.value.add(currentPath)
   }
+  expandedGroups.value = new Set(expandedGroups.value)
 }
 
 // 监听路由变化，自动展开当前分组
-watch(() => route.path, expandCurrentGroup)
+watch(() => route.path, expandToCurrentPath)
+
+// 递归构建树形结构
+const buildTree = (paths: string[]): NavItem[] => {
+  const root: NavItem[] = []
+  const nodeMap = new Map<string, NavItem>()
+
+  for (const filePath of paths) {
+    const parts = filePath.split('/').filter(Boolean)
+    let currentPath = ''
+
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i]
+      const parentPath = currentPath
+      if (!part) continue
+      currentPath += '/' + part
+
+      if (!nodeMap.has(currentPath)) {
+        const isLastPart = i === parts.length - 1
+        const title = part.charAt(0).toUpperCase() + part.slice(1)
+        const newNode: NavItem = {
+          path: currentPath,
+          title,
+          isDirectory: !isLastPart, // 最后一级是文件，其他是目录
+          children: []
+        }
+        nodeMap.set(currentPath, newNode)
+
+        if (parentPath === '') {
+          root.push(newNode)
+        } else {
+          const parentNode = nodeMap.get(parentPath)
+          if (parentNode) {
+            parentNode.children = parentNode.children || []
+            parentNode.children.push(newNode)
+          }
+        }
+      } else {
+        // 如果节点已存在但当前不是最后一级，则确保它是目录
+        const existingNode = nodeMap.get(currentPath)!
+        if (i < parts.length - 1) {
+          existingNode.isDirectory = true
+        }
+      }
+    }
+  }
+
+  // 递归排序
+  const sortNodes = (nodes: NavItem[]) => {
+    nodes.sort((a, b) => a.title.localeCompare(b.title))
+    for (const node of nodes) {
+      if (node.children && node.children.length > 0) {
+        sortNodes(node.children)
+      }
+    }
+  }
+  sortNodes(root)
+
+  return root
+}
 
 onMounted(async () => {
-  // 使用 import.meta.glob 自动扫描 docs 目录
   const pages = import.meta.glob('/src/docs/**/*.{md,vue}')
 
-  const items: NavItem[] = []
-  const pathMap = new Map<string, NavItem>()
+  const filePaths: string[] = []
 
   for (const path of Object.keys(pages)) {
-    // 转换路径：/src/docs/guide/intro.md -> /guide/intro
-    const routePath =
+    let routePath =
       path
         .replace('/src/docs', '')
         .replace(/\.(md|vue)$/, '')
         .replace(/\/index$/, '') || '/'
 
-    // 提取标题（简化处理，使用文件名）
-    const parts = routePath.split('/').filter(Boolean)
-    const fileName = parts[parts.length - 1] || 'index'
-    const title = fileName.charAt(0).toUpperCase() + fileName.slice(1)
-
-    // 跳过首页
     if (routePath === '/') continue
 
-    // 跳过分类的 index 文件（如 /fronted/react/index）
-    if (fileName === 'index') continue
-
-    // 处理目录结构
-    if (parts.length === 1) {
-      // 顶级页面
-      const item: NavItem = { path: routePath, title }
-      items.push(item)
-      pathMap.set(routePath, item)
-    } else {
-      // 嵌套页面 - 使用前两级作为分类键
-      const categoryPath = '/' + parts.slice(0, 2).join('/')
-      let category = pathMap.get(categoryPath)
-
-      if (!category) {
-        // 分类标题使用第二级目录名（如 react）
-        const categoryName = parts[1] || parts[0]
-        const categoryTitle = categoryName
-          ? categoryName.charAt(0).toUpperCase() + categoryName.slice(1)
-          : ''
-        category = {
-          path: categoryPath,
-          title: categoryTitle,
-          children: []
-        }
-        items.push(category)
-        pathMap.set(categoryPath, category)
-      }
-
-      if (!category.children) category.children = []
-      category.children.push({ path: routePath, title })
-    }
+    filePaths.push(routePath)
   }
 
-  navItems.value = items.sort((a, b) => a.path.localeCompare(b.path))
+  navItems.value = buildTree(filePaths)
 
-  // 自动展开当前路由所在的分组
-  expandCurrentGroup()
+  // 自动展开当前路由所在的所有父级分组
+  expandToCurrentPath()
 })
 
 const isActive = (path: string) => {
-  return route.path === path || route.path.startsWith(path + '/')
+  return route.path === path
 }
 </script>
 
 <template>
   <nav class="sidebar-nav">
-    <!-- 遍历所有分类 -->
-    <div v-for="category in filteredNavItems" :key="category.path" class="nav-group">
-      <!-- 分类标题 - 可点击折叠 -->
-      <div
-        class="nav-group-title"
-        :class="{ expanded: isExpanded(category.path), collapsible: category.children?.length }"
-        @click="category.children?.length && toggleGroup(category.path)"
-      >
-        <span class="nav-group-title-text">{{ category.title }}</span>
-        <svg
-          v-if="category.children?.length"
-          class="collapse-icon"
-          :class="{ rotated: isExpanded(category.path) }"
-          width="12"
-          height="12"
-          viewBox="0 0 12 12"
-          fill="none"
+    <!-- 使用递归组件渲染树 -->
+    <template v-for="item in filteredNavItems" :key="item.path">
+      <!-- 如果是目录，显示分组标题 -->
+      <div v-if="item.isDirectory" class="nav-group">
+        <div
+          class="nav-group-title collapsible"
+          :class="{ expanded: isExpanded(item.path) }"
+          @click="toggleGroup(item.path)"
         >
-          <path
-            d="M4.5 2.5L8 6L4.5 9.5"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+          <span class="nav-group-title-text">{{ item.title }}</span>
+          <svg
+            class="collapse-icon"
+            :class="{ rotated: isExpanded(item.path) }"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+          >
+            <path
+              d="M4.5 2.5L8 6L4.5 9.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <Transition name="collapse">
+          <div
+            v-show="isExpanded(item.path)"
+            v-if="item.children?.length"
+            class="nav-group-children"
+          >
+            <!-- 递归渲染子节点 -->
+            <template v-for="child in item.children" :key="child.path">
+              <div v-if="child.isDirectory" class="nav-subgroup">
+                <div
+                  class="nav-subgroup-title collapsible"
+                  :class="{ expanded: isExpanded(child.path) }"
+                  @click="toggleGroup(child.path)"
+                >
+                  <span class="nav-subgroup-title-text">{{ child.title }}</span>
+                  <svg
+                    class="collapse-icon"
+                    :class="{ rotated: isExpanded(child.path) }"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                  >
+                    <path
+                      d="M4.5 2.5L8 6L4.5 9.5"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+                <Transition name="collapse">
+                  <ul
+                    v-show="isExpanded(child.path)"
+                    v-if="child.children?.length"
+                    class="nav-group-items"
+                  >
+                    <li v-for="subItem in child.children" :key="subItem.path">
+                      <router-link
+                        :to="subItem.path"
+                        class="nav-link"
+                        :class="{ active: isActive(subItem.path) }"
+                      >
+                        {{ subItem.title }}
+                      </router-link>
+                    </li>
+                  </ul>
+                </Transition>
+              </div>
+
+              <!-- 如果是文件，直接显示链接 -->
+              <router-link
+                v-else
+                :to="child.path"
+                class="nav-link direct-link"
+                :class="{ active: isActive(child.path) }"
+              >
+                {{ child.title }}
+              </router-link>
+            </template>
+          </div>
+        </Transition>
       </div>
 
-      <!-- 该分类下的文章列表 -->
-      <Transition name="collapse">
-        <ul
-          class="nav-group-items"
-          v-show="isExpanded(category.path)"
-          v-if="category.children?.length"
-        >
-          <li v-for="item in category.children" :key="item.path">
-            <router-link :to="item.path" class="nav-link" :class="{ active: isActive(item.path) }">
-              {{ item.title }}
-            </router-link>
-          </li>
-        </ul>
-      </Transition>
-    </div>
+      <!-- 如果是文件（顶级），直接显示链接 -->
+      <router-link
+        v-else
+        :to="item.path"
+        class="nav-link top-level"
+        :class="{ active: isActive(item.path) }"
+      >
+        {{ item.title }}
+      </router-link>
+    </template>
   </nav>
 </template>
 
@@ -234,10 +319,59 @@ const isActive = (path: string) => {
   color: var(--vp-c-brand-1);
 }
 
+.nav-group-children {
+  padding-left: 12px;
+  border-left: 1px solid var(--vp-c-border);
+  margin-left: 12px;
+  margin-top: 4px;
+}
+
+.nav-subgroup {
+  margin-bottom: 8px;
+}
+
+.nav-subgroup-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+  margin-bottom: 4px;
+  padding: 2px 8px;
+  line-height: 22px;
+  border-radius: 4px;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.nav-subgroup-title.collapsible {
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav-subgroup-title.collapsible:hover {
+  background-color: var(--vp-c-bg-soft);
+  color: var(--vp-c-brand-1);
+}
+
+.nav-subgroup-title-text {
+  flex: 1;
+}
+
+.nav-subgroup-title.collapsible:hover .collapse-icon {
+  color: var(--vp-c-brand-1);
+}
+
+.direct-link {
+  margin-bottom: 2px;
+}
+
 .nav-group-items {
   border-left: 1px solid var(--vp-c-border);
   padding-left: 14px;
-  margin-left: 12px;
+  margin-left: 8px;
 }
 
 .nav-link {
