@@ -1,27 +1,70 @@
 @import "tailwindcss";
 
-
-
 :root {
-  --color-bg: #ffffff;
-  --color-text: #1a1a2e;
-  --color-text-secondary: #6b7280;
-  --color-border: #e5e7eb;
-  --color-sidebar-bg: #f9fafb;
-  --color-code-bg: #f3f4f6;
-  --color-link: #0ea5e9;
-  --color-link-hover: #0284c7;
+  /* Brand Colors - Vue Green */
+  --vp-c-brand-1: #42b883;
+  --vp-c-brand-2: #33a06f;
+  --vp-c-brand-3: #155f3e;
+  --vp-c-brand-soft: rgba(66, 184, 131, 0.14);
+
+  /* Background Colors */
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f6f6f7;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-bg-soft: #f6f6f7;
+
+  /* Text Colors */
+  --vp-c-text-1: #213547;
+  --vp-c-text-2: #3c3c43c7;
+  /* rgba(60, 60, 67, 0.78) */
+  --vp-c-text-3: #3c3c438a;
+  /* rgba(60, 60, 67, 0.54) */
+
+  /* Borders */
+  --vp-c-border: #e2e2e3;
+  --vp-c-divider: #e2e2e3;
+  --vp-c-gutter: #e2e2e3;
+
+  /* Font Families */
+  --vp-font-family-base: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --vp-font-family-mono: "Fira Code", monospace;
+
+  /* Shadows */
+  --vp-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --vp-shadow-2: 0 3px 12px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.07);
+  --vp-shadow-3: 0 12px 32px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.08);
+
+  /* Layout */
+  --vp-nav-height: 64px;
 }
 
 .dark {
-  --color-bg: #0f172a;
-  --color-text: #f1f5f9;
-  --color-text-secondary: #94a3b8;
-  --color-border: #334155;
-  --color-sidebar-bg: #1e293b;
-  --color-code-bg: #1e293b;
-  --color-link: #38bdf8;
-  --color-link-hover: #7dd3fc;
+  /* Brand Colors */
+  --vp-c-brand-1: #42b883;
+  --vp-c-brand-2: #3aa675;
+  --vp-c-brand-3: #33a06f;
+  --vp-c-brand-soft: rgba(66, 184, 131, 0.14);
+
+  /* Background Colors */
+  --vp-c-bg: #1b1b1f;
+  --vp-c-bg-alt: #161618;
+  --vp-c-bg-elv: #202127;
+  --vp-c-bg-soft: #202127;
+
+  /* Text Colors */
+  --vp-c-text-1: rgba(255, 255, 255, 0.87);
+  --vp-c-text-2: rgba(235, 235, 245, 0.6);
+  --vp-c-text-3: rgba(235, 235, 245, 0.38);
+
+  /* Borders */
+  --vp-c-border: #2e2e32;
+  --vp-c-divider: #2e2e32;
+  --vp-c-gutter: #2e2e32;
+
+  /* Shadows */
+  --vp-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.5);
+  --vp-shadow-2: 0 3px 12px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.4);
+  --vp-shadow-3: 0 12px 32px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -32,121 +75,158 @@
 
 html {
   scroll-behavior: smooth;
+  font-family: var(--vp-font-family-base);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
   line-height: 1.6;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.25s, color 0.25s;
 }
 
-/* Markdown 样式 */
+a {
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+a:hover {
+  color: var(--vp-c-brand-2);
+}
+
+/* Markdown Styles Refined for VitePress Look */
 .markdown-body {
   max-width: 100%;
+  color: var(--vp-c-text-1);
 }
 
 .markdown-body h1 {
   font-size: 2.25rem;
   font-weight: 700;
+  margin-top: 1.5em;
   margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--color-border);
+  line-height: 1.2;
 }
 
 .markdown-body h2 {
-  font-size: 1.5rem;
+  font-size: 1.65rem;
   font-weight: 600;
   margin-top: 2rem;
   margin-bottom: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--vp-c-divider);
+  line-height: 1.3;
 }
 
 .markdown-body h3 {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 600;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
+  line-height: 1.4;
 }
 
-.markdown-body p {
-  margin-bottom: 1rem;
+.markdown-body p,
+.markdown-body ul,
+.markdown-body ol {
+  margin-bottom: 1.2em;
+  line-height: 1.6;
 }
 
 .markdown-body a {
-  color: var(--color-link);
-  text-decoration: none;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  color: var(--vp-c-brand-1);
 }
 
 .markdown-body a:hover {
-  color: var(--color-link-hover);
-  text-decoration: underline;
+  color: var(--vp-c-brand-2);
 }
 
 .markdown-body code {
-  background-color: var(--color-code-bg);
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
+  font-family: var(--vp-font-family-mono);
   font-size: 0.875em;
-  font-family: 'Fira Code', 'Consolas', monospace;
+  color: var(--vp-c-text-2) !important;
+  background-color: var(--vp-c-bg-alt);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
 }
 
 .markdown-body pre {
-  background-color: var(--color-code-bg);
-  padding: 1rem;
-  border-radius: 0.5rem;
+  background-color: var(--vp-c-bg-alt);
+  padding: 1.25rem;
+  border-radius: 8px;
   overflow-x: auto;
   margin: 1rem 0;
+  font-size: 0.875em;
+  line-height: 1.5;
+  border: 1px solid var(--vp-c-divider);
+  /* Subtle border for definition */
 }
 
 .markdown-body pre code {
   background: none;
   padding: 0;
+  color: inherit !important;
 }
 
-.markdown-body ul,
+.markdown-body ul {
+  padding-left: 1.25rem;
+  list-style-type: disc;
+}
+
 .markdown-body ol {
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.markdown-body li {
-  margin-bottom: 0.25rem;
+  padding-left: 1.25rem;
+  list-style-type: decimal;
 }
 
 .markdown-body blockquote {
-  border-left: 4px solid var(--color-link);
-  padding-left: 1rem;
   margin: 1rem 0;
-  color: var(--color-text-secondary);
-  font-style: italic;
+  border-left: 3px solid var(--vp-c-brand-1);
+  padding-left: 1rem;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-bg-soft);
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  border-radius: 0 4px 4px 0;
 }
 
 .markdown-body table {
-  width: 100%;
+  display: block;
   border-collapse: collapse;
   margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.markdown-body tr {
+  background-color: var(--vp-c-bg);
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.markdown-body tr:nth-child(2n) {
+  background-color: var(--vp-c-bg-alt);
 }
 
 .markdown-body th,
 .markdown-body td {
-  border: 1px solid var(--color-border);
-  padding: 0.75rem;
-  text-align: left;
+  border: 1px solid var(--vp-c-divider);
+  padding: 0.6em 1em;
 }
 
 .markdown-body th {
-  background-color: var(--color-sidebar-bg);
   font-weight: 600;
+  background-color: var(--vp-c-bg-alt);
 }
 
-/* Shiki 代码高亮主题适配 */
+/* Shiki Overrides */
+html.dark .shiki,
+html.dark .shiki span {
+  background-color: var(--vp-c-bg-alt) !important;
+}
+
 .shiki {
-  background-color: var(--color-code-bg) !important;
-}
-
-.dark .shiki,
-.dark .shiki span {
-  color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
+  background-color: var(--vp-c-bg-alt) !important;
 }

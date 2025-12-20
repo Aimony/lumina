@@ -1,372 +1,398 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-interface TechCard {
+interface Feature {
   icon: string
-  name: string
-  desc: string
-  tags: string[]
+  title: string
+  details: string
 }
 
-const techStacks: TechCard[] = [
+const features: Feature[] = [
   {
     icon: '☕',
-    name: 'Java',
-    desc: 'JavaSE、JavaEE、JUC',
-    tags: ['JavaSE', 'JavaEE', 'JUC']
+    title: 'Java',
+    details: 'JavaSE、JavaEE、JUC 并发编程核心知识体系'
   },
   {
     icon: '🍃',
-    name: 'Spring全家桶',
-    desc: 'Spring、SpringBoot、MyBatis',
-    tags: ['Spring', 'SpringBoot', 'MyBatis']
+    title: 'Spring Ecosystem',
+    details: 'Spring、SpringBoot、MyBatis 及云原生微服务架构'
   },
   {
     icon: '🗄️',
-    name: '数据库',
-    desc: 'MySQL、声明式开发、分库分表',
-    tags: ['MySQL', '声明式开发', '分库分表']
+    title: 'Database',
+    details: 'MySQL 深度调优、分库分表及 NoSQL Redis 缓存策略'
   },
   {
     icon: '☁️',
-    name: 'Spring Cloud Alibaba',
-    desc: '注册中心、网关、配置中心、熔断、限流、降级',
-    tags: ['注册中心', '网关', '配置中心']
-  },
-  {
-    icon: '📦',
-    name: 'Redis',
-    desc: '数据类型、缓存失效、缓存淘汰、缓存击穿',
-    tags: ['数据类型', '缓存', '高并发']
+    title: 'Cloud Native',
+    details: 'Spring Cloud Alibaba 网关、注册中心、熔断降级实战'
   },
   {
     icon: '🐧',
-    name: 'Linux',
-    desc: 'Linux、Ubuntu、CentOS',
-    tags: ['Linux', 'Ubuntu', 'CentOS']
+    title: 'Linux & DevOps',
+    details: 'Ubuntu/CentOS 系统管理、Shell 脚本与运维自动化'
   },
   {
     icon: '🐳',
-    name: '容器',
-    desc: 'Docker、Docker-Compose',
-    tags: ['Docker', 'Docker-Compose']
-  },
-  {
-    icon: '🌐',
-    name: 'Nginx',
-    desc: 'Nginx、OpenResty',
-    tags: ['Nginx', 'OpenResty']
+    title: 'Containers',
+    details: 'Docker 容器化部署与 Docker-Compose 编排管理'
   }
 ]
 </script>
 
 <template>
-  <div class="home-page">
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-container">
-        <!-- Left: Title and CTA -->
-        <div class="hero-content">
-          <h1 class="hero-title">
-            <span class="title-line">Aimony's Knowledge</span>
+  <div class="home">
+    <div class="hero-section">
+      <div class="container">
+        <div class="main">
+          <h1 class="name">
+            <span class="clip">KB-Vue</span>
           </h1>
-          <p class="hero-subtitle">好记性不如笔头</p>
-          
-          <div class="hero-actions">
-            <RouterLink to="/guide/intro" class="btn-primary">
-              为什么会有这个知识库?
-            </RouterLink>
-            <RouterLink to="/guide" class="btn-secondary">
-              关于
-            </RouterLink>
-          </div>
-        </div>
-        
-        <!-- Right: Avatar Card -->
-        <div class="avatar-card">
-          <div class="avatar-wrapper">
-            <img src="/avatar.png" alt="Aimony Avatar" class="avatar-image" />
-          </div>
-        </div>
-      </div>
-    </section>
+          <p class="text">Personal Knowledge Base System</p>
+          <p class="tagline">好记性不如烂笔头，构建个人的技术护城河</p>
 
-    <!-- Tech Stack Grid -->
-    <section class="tech-section">
-      <div class="tech-grid">
-        <div 
-          v-for="tech in techStacks" 
-          :key="tech.name"
-          class="tech-card"
-        >
-          <div class="tech-icon">{{ tech.icon }}</div>
-          <h3 class="tech-name">{{ tech.name }}</h3>
-          <p class="tech-desc">{{ tech.desc }}</p>
-          <div class="tech-tags">
-            <span 
-              v-for="tag in tech.tags" 
-              :key="tag"
-              class="tech-tag"
-            >
-              {{ tag }}
-            </span>
+          <div class="actions">
+            <div class="action">
+              <RouterLink to="/guide/intro" class="VPButton brand">
+                快速开始
+              </RouterLink>
+            </div>
+            <div class="action">
+              <a href="https://github.com" target="_blank" rel="noreferrer" class="VPButton alt">
+                View on GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="image-bg">
+          <div class="image-container">
+            <div class="avatar-circle">
+              <span class="avatar-text">KB</span>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+
+    <div class="features-section">
+      <div class="container">
+        <div class="items">
+          <div v-for="feature in features" :key="feature.title" class="item">
+            <div class="VPFeature">
+              <div class="icon">{{ feature.icon }}</div>
+              <h2 class="title">{{ feature.title }}</h2>
+              <p class="details">{{ feature.details }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.home-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, 
-    hsl(210, 100%, 97%) 0%, 
-    hsl(330, 100%, 97%) 50%, 
-    hsl(210, 100%, 97%) 100%
-  );
-  padding: 2rem 1rem;
-}
-
-.dark .home-page {
-  background: linear-gradient(135deg, 
-    hsl(220, 40%, 8%) 0%, 
-    hsl(280, 30%, 12%) 50%, 
-    hsl(220, 40%, 8%) 100%
-  );
+.home {
+  padding-bottom: 96px;
 }
 
 /* Hero Section */
 .hero-section {
-  max-width: 1200px;
-  margin: 0 auto 4rem;
-  padding: 4rem 2rem;
+  padding: calc(var(--vp-nav-height) + 48px) 24px 48px;
 }
 
-.hero-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
+@media (min-width: 640px) {
+  .hero-section {
+    padding: calc(var(--vp-nav-height) + 80px) 48px 64px;
+  }
 }
 
-.hero-content {
+@media (min-width: 960px) {
+  .hero-section {
+    padding: calc(var(--vp-nav-height) + 80px) 64px 64px;
+  }
+}
+
+.container {
+  max-width: 1152px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
 }
 
-.hero-title {
-  font-size: 4rem;
-  font-weight: 800;
-  line-height: 1.1;
-  background: linear-gradient(120deg, #0ea5e9, #8b5cf6, #ec4899);
+@media (min-width: 960px) {
+  .container {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.main {
+  position: relative;
+  z-index: 10;
+  order: 2;
+  text-align: center;
+}
+
+@media (min-width: 960px) {
+  .main {
+    order: 1;
+    width: calc(100% - 320px);
+    text-align: left;
+  }
+}
+
+.name {
+  line-height: 1;
+  font-size: 32px;
+  font-weight: 700;
+  white-space: pre-wrap;
+}
+
+.clip {
+  background: -webkit-linear-gradient(315deg, var(--vp-c-brand-1) 25%, var(--vp-c-brand-2));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradient-shift 6s ease infinite;
-  background-size: 200% 200%;
 }
 
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+@media (min-width: 640px) {
+  .name {
+    font-size: 48px;
+  }
 }
 
-.hero-subtitle {
-  font-size: 1.5rem;
-  color: var(--color-text-secondary);
-  font-weight: 400;
+@media (min-width: 960px) {
+  .name {
+    font-size: 56px;
+  }
 }
 
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.btn-primary,
-.btn-secondary {
-  padding: 0.875rem 2rem;
-  border-radius: 2rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  display: inline-block;
-  font-size: 0.95rem;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
-  color: white;
-  border: 2px solid transparent;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--color-text);
-  border: 2px solid var(--color-border);
-}
-
-.btn-secondary:hover {
-  border-color: #8b5cf6;
-  color: #8b5cf6;
-  transform: translateY(-2px);
-}
-
-/* Avatar Card */
-.avatar-card {
-  position: relative;
-  perspective: 1000px;
-}
-
-.avatar-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  transition: all 0.4s ease;
-}
-
-.dark .avatar-wrapper {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-}
-
-.avatar-wrapper:hover {
-  transform: translateY(-8px) rotateY(5deg);
-  box-shadow: 0 30px 80px rgba(139, 92, 246, 0.2);
-}
-
-.avatar-image {
-  width: 100%;
-  height: auto;
-  border-radius: 1.5rem;
-  display: block;
-}
-
-/* Tech Section */
-.tech-section {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.tech-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.tech-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 1.5rem;
-  padding: 2rem;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.dark .tech-card {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.tech-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
-  border-color: rgba(139, 92, 246, 0.3);
-}
-
-.tech-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  display: block;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.tech-card:nth-child(2n) .tech-icon {
-  animation-delay: 0.5s;
-}
-
-.tech-card:nth-child(3n) .tech-icon {
-  animation-delay: 1s;
-}
-
-.tech-name {
-  font-size: 1.25rem;
+.text {
+  padding-top: 8px;
+  line-height: 1.5;
+  font-size: 32px;
   font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: 0.5rem;
+  color: var(--vp-c-text-1);
 }
 
-.tech-desc {
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+@media (min-width: 640px) {
+  .text {
+    font-size: 48px;
+  }
+}
+
+@media (min-width: 960px) {
+  .text {
+    font-size: 56px;
+  }
+}
+
+.tagline {
+  padding-top: 24px;
   line-height: 1.6;
+  font-size: 18px;
+  color: var(--vp-c-text-2);
 }
 
-.tech-tags {
+@media (min-width: 640px) {
+  .tagline {
+    font-size: 20px;
+    font-weight: 500;
+  }
+}
+
+@media (min-width: 960px) {
+  .tagline {
+    font-size: 24px;
+  }
+}
+
+.actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  justify-content: center;
+  margin: -6px;
+  padding-top: 32px;
 }
 
-.tech-tag {
-  padding: 0.25rem 0.75rem;
-  background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 1rem;
-  font-size: 0.75rem;
-  color: var(--color-text-secondary);
-  transition: all 0.2s ease;
+@media (min-width: 960px) {
+  .actions {
+    justify-content: flex-start;
+  }
 }
 
-.tech-tag:hover {
-  background: rgba(139, 92, 246, 0.2);
-  color: var(--color-text);
+.action {
+  padding: 6px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .hero-container {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+.VPButton {
+  display: inline-block;
+  border: 1px solid transparent;
+  text-align: center;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+  border-radius: 20px;
+  padding: 0 20px;
+  line-height: 38px;
+  font-size: 14px;
+}
+
+.VPButton.brand {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-bg);
+  background-color: var(--vp-c-brand-1);
+}
+
+.VPButton.brand:hover {
+  border-color: var(--vp-c-brand-2);
+  background-color: var(--vp-c-brand-2);
+}
+
+.VPButton.alt {
+  border-color: var(--vp-c-divider);
+  color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg-alt);
+}
+
+.VPButton.alt:hover {
+  border-color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg);
+}
+
+.image-bg {
+  order: 1;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 960px) {
+  .image-bg {
+    order: 2;
+    margin-bottom: 0;
+    width: 320px;
+    height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  
-  .hero-title {
-    font-size: 2.5rem;
+}
+
+.avatar-circle {
+  width: 192px;
+  height: 192px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--vp-c-brand-1), var(--vp-c-brand-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  font-weight: bold;
+  color: white;
+  box-shadow: var(--vp-shadow-3);
+  position: relative;
+}
+
+.avatar-circle::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background: var(--vp-c-brand-1);
+  opacity: 0.15;
+  filter: blur(40px);
+  z-index: -1;
+  border-radius: 50%;
+}
+
+/* Features Section */
+.features-section {
+  padding: 0 24px;
+}
+
+@media (min-width: 640px) {
+  .features-section {
+    padding: 0 48px;
   }
-  
-  .hero-subtitle {
-    font-size: 1.25rem;
+}
+
+@media (min-width: 960px) {
+  .features-section {
+    padding: 0 64px;
   }
-  
-  .avatar-wrapper {
-    max-width: 300px;
+}
+
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -8px;
+}
+
+.item {
+  width: 100%;
+  padding: 8px;
+}
+
+@media (min-width: 640px) {
+  .item {
+    width: 50%;
   }
-  
-  .tech-grid {
-    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .item {
+    width: 50%;
   }
+}
+
+@media (min-width: 960px) {
+  .item {
+    width: 33.33%;
+  }
+}
+
+.VPFeature {
+  display: block;
+  border: 1px solid var(--vp-c-bg-alt);
+  border-radius: 12px;
+  height: 100%;
+  background-color: var(--vp-c-bg-alt);
+  padding: 24px;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+.VPFeature:hover {
+  border-color: var(--vp-c-brand-1);
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  background-color: var(--vp-c-bg);
+  width: 48px;
+  height: 48px;
+  font-size: 24px;
+  box-shadow: var(--vp-shadow-1);
+}
+
+.title {
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.details {
+  padding-top: 8px;
+  line-height: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
 }
 </style>

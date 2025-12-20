@@ -14,25 +14,25 @@ const navItems = ref<NavItem[]>([])
 onMounted(async () => {
   // 使用 import.meta.glob 自动扫描 docs 目录
   const pages = import.meta.glob('/src/docs/**/*.{md,vue}')
-  
+
   const items: NavItem[] = []
   const pathMap = new Map<string, NavItem>()
-  
+
   for (const path of Object.keys(pages)) {
     // 转换路径：/src/docs/guide/intro.md -> /guide/intro
     const routePath = path
       .replace('/src/docs', '')
       .replace(/\.(md|vue)$/, '')
       .replace(/\/index$/, '') || '/'
-    
+
     // 提取标题（简化处理，使用文件名）
     const parts = routePath.split('/').filter(Boolean)
     const fileName = parts[parts.length - 1] || 'index'
     const title = fileName.charAt(0).toUpperCase() + fileName.slice(1)
-    
+
     // 跳过首页
     if (routePath === '/') continue
-    
+
     // 处理目录结构
     if (parts.length === 1) {
       // 顶级页面
@@ -43,22 +43,24 @@ onMounted(async () => {
       // 嵌套页面
       const parentPath = '/' + parts.slice(0, -1).join('/')
       let parent = pathMap.get(parentPath)
-      
+
       if (!parent) {
-        parent = { 
-          path: parentPath, 
-          title: parts[parts.length - 2]?.charAt(0).toUpperCase() + parts[parts.length - 2]?.slice(1) || '',
-          children: [] 
+        const parentName = parts[parts.length - 2]
+        const parentTitle = parentName ? parentName.charAt(0).toUpperCase() + parentName.slice(1) : ''
+        parent = {
+          path: parentPath,
+          title: parentTitle,
+          children: []
         }
         items.push(parent)
         pathMap.set(parentPath, parent)
       }
-      
+
       if (!parent.children) parent.children = []
       parent.children.push({ path: routePath, title })
     }
   }
-  
+
   navItems.value = items.sort((a, b) => a.path.localeCompare(b.path))
 })
 
@@ -68,49 +70,96 @@ const isActive = (path: string) => {
 </script>
 
 <template>
-  <nav class="p-4">
-    <div class="text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-3">
-      导航
+  <nav class="group">
+    <div class="group-title" v-if="false">
+      <!-- Optional top level title if needed -->
+      Navigation
     </div>
-    
-    <ul class="space-y-1">
+
+    <ul class="nav-items">
       <li v-for="item in navItems" :key="item.path">
-        <!-- 有子项的分组 -->
-        <div v-if="item.children?.length">
-          <div class="px-3 py-2 text-sm font-medium text-[var(--color-text)]">
+        <!-- Group with Children -->
+        <div v-if="item.children?.length" class="nav-group">
+          <div class="nav-group-title">
             {{ item.title }}
           </div>
-          <ul class="ml-3 space-y-1 border-l border-[var(--color-border)]">
+          <ul class="nav-group-items">
             <li v-for="child in item.children" :key="child.path">
-              <router-link
-                :to="child.path"
-                :class="[
-                  'block px-3 py-1.5 text-sm rounded-r-lg transition-colors',
-                  isActive(child.path)
-                    ? 'bg-[var(--color-link)]/10 text-[var(--color-link)] border-l-2 border-[var(--color-link)] -ml-px'
-                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg)]'
-                ]"
-              >
+              <router-link :to="child.path" class="nav-link" :class="{ active: isActive(child.path) }">
                 {{ child.title }}
               </router-link>
             </li>
           </ul>
         </div>
-        
-        <!-- 单个页面 -->
-        <router-link
-          v-else
-          :to="item.path"
-          :class="[
-            'block px-3 py-2 text-sm rounded-lg transition-colors',
-            isActive(item.path)
-              ? 'bg-[var(--color-link)]/10 text-[var(--color-link)]'
-              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg)]'
-          ]"
-        >
+
+        <!-- Individual Page -->
+        <router-link v-else :to="item.path" class="nav-link top-level" :class="{ active: isActive(item.path) }">
           {{ item.title }}
         </router-link>
       </li>
     </ul>
   </nav>
 </template>
+
+<style scoped>
+.group {
+  padding: 24px 0;
+}
+
+.nav-items {
+  /* space-y-1 equivalent */
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-group-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--vp-c-text-1);
+  margin-bottom: 8px;
+  padding: 0 12px;
+  line-height: 24px;
+}
+
+.nav-group-items {
+  border-left: 1px solid var(--vp-c-border);
+  padding-left: 14px;
+  margin-left: 12px;
+}
+
+.nav-link {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+  padding: 4px 12px;
+  line-height: 24px;
+  transition: color 0.25s;
+  border-left: 2px solid transparent;
+  margin-left: -16px;
+  /* Offset for border */
+  padding-left: 16px;
+}
+
+.nav-group-items .nav-link {
+  margin-left: -15px;
+  /* Adjust for nested border */
+  padding-left: 14px;
+  border-left: none;
+  /* Borders handled by group line mostly, but VP uses text color change */
+}
+
+/* Hover State */
+.nav-link:hover {
+  color: var(--vp-c-brand-1);
+}
+
+/* Active State */
+.nav-link.active {
+  color: var(--vp-c-brand-1);
+}
+
+.nav-link.top-level {
+  font-weight: 600;
+}
+</style>

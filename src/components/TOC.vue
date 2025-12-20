@@ -18,16 +18,17 @@ const updateActiveHeading = () => {
   const headingElements = props.headings
     .map((h) => document.getElementById(h.id))
     .filter(Boolean) as HTMLElement[]
-  
+
   const scrollY = window.scrollY + 100 // 偏移量
-  
+
   for (let i = headingElements.length - 1; i >= 0; i--) {
-    if (headingElements[i].offsetTop <= scrollY) {
+    const el = headingElements[i]
+    if (el && el.offsetTop <= scrollY) {
       activeId.value = props.headings[i].id
       return
     }
   }
-  
+
   if (headingElements.length > 0) {
     activeId.value = props.headings[0].id
   }
@@ -54,31 +55,62 @@ const scrollTo = (id: string) => {
 </script>
 
 <template>
-  <div v-if="headings.length > 0">
-    <div class="text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-3">
+  <div v-if="headings.length > 0" class="toc-container">
+    <div class="toc-title">
       本页目录
     </div>
-    
-    <ul class="space-y-1 border-l border-[var(--color-border)]">
-      <li 
-        v-for="heading in headings" 
-        :key="heading.id"
-        :class="{ 'ml-3': heading.level === 3 }"
-      >
-        <a
-          @click.prevent="scrollTo(heading.id)"
-          :href="'#' + heading.id"
-          :class="[
-            'block py-1 text-sm transition-colors cursor-pointer',
-            heading.level === 2 ? 'px-3' : 'px-3',
-            activeId === heading.id
-              ? 'text-[var(--color-link)] border-l-2 border-[var(--color-link)] -ml-px font-medium'
-              : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
-          ]"
-        >
+
+    <ul class="toc-list">
+      <li v-for="heading in headings" :key="heading.id" :class="{ 'toc-item-nested': heading.level === 3 }">
+        <a @click.prevent="scrollTo(heading.id)" :href="'#' + heading.id" class="toc-link"
+          :class="{ active: activeId === heading.id }">
           {{ heading.text }}
         </a>
       </li>
     </ul>
   </div>
 </template>
+
+<style scoped>
+.toc-container {
+  padding-left: 16px;
+  border-left: 1px solid var(--vp-c-divider);
+}
+
+.toc-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-item-nested {
+  margin-left: 12px;
+}
+
+.toc-link {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+  padding: 4px 0;
+  line-height: 1.5;
+  transition: color 0.25s;
+}
+
+.toc-link:hover {
+  color: var(--vp-c-text-1);
+}
+
+.toc-link.active {
+  color: var(--vp-c-brand-1);
+}
+</style>
