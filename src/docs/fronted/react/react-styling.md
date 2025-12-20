@@ -7,12 +7,13 @@
 通过在文件名后缀添加 `.module.css`，构建工具会自动为类名添加哈希，解决全局命名冲突问题。
 
 ```jsx
-import styles from './Button.module.css';
+import styles from './Button.module.css'
 
 function Button() {
-  return <button className={styles.error}>Delete</button>;
+  return <button className={styles.error}>Delete</button>
 }
 ```
+
 - **优点**：原生 CSS 语法，学习成本低，性能好（零运行开销）。
 
 ## 2. Styled Components：CSS-in-JS
@@ -21,11 +22,12 @@ function Button() {
 
 ```jsx
 const Button = styled.button`
-  background: ${props => props.primary ? "blue" : "gray"};
+  background: ${(props) => (props.primary ? 'blue' : 'gray')};
   color: white;
   padding: 10px;
-`;
+`
 ```
+
 - **优点**：样式与逻辑紧密耦合，支持 Props 动态修改样式。
 - **缺点**： runtime 开销大，增加了包体积。
 
@@ -39,14 +41,16 @@ function Card() {
     <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
       <div className="text-xl font-medium text-black">ChitChat</div>
     </div>
-  );
+  )
 }
 ```
+
 - **优点**：开发效率极高，包体积最小化（PurgeCSS），无需为起类名而烦恼。
 
 ## 总结：如何选型？
 
 > [!IMPORTANT]
+>
 > - **希望极致性能且语法传统**：选 CSS Modules。
 > - **追求开发灵活性与样式复用**：选 Tailwind CSS。
 > - **需要高度动态化、逻辑驱动的样式**：选 Styled Components。

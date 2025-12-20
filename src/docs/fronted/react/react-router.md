@@ -7,7 +7,7 @@ React Router 是 React 生态中构建单页应用（SPA）的事实标准。它
 在现代项目中，我们通常使用 `BrowserRouter` 来包裹整个应用。
 
 ```jsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
 ```
 
@@ -29,11 +29,11 @@ function App() {
 ```jsx
 // 路由定义：<Route path="/user/:id" element={<UserProfile />} />
 
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom'
 
 function UserProfile() {
-  let { id } = useParams();
-  return <div>当前用户 ID: {id}</div>;
+  let { id } = useParams()
+  return <div>当前用户 ID: {id}</div>
 }
 ```
 
@@ -42,15 +42,15 @@ function UserProfile() {
 除了使用 `<Link>` 组件，我们还可以通过 `useNavigate` 钩子在代码中跳转。
 
 ```jsx
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const handleSubmit = () => {
     // 登录完成后跳转到首页
-    navigate("/");
-  };
-  return <button onClick={handleSubmit}>登录</button>;
+    navigate('/')
+  }
+  return <button onClick={handleSubmit}>登录</button>
 }
 ```
 
@@ -61,8 +61,8 @@ function Login() {
 
 ```jsx
 function PrivateRoute({ children }) {
-  const auth = useAuth(); // 假设的 Auth Hook
-  return auth.isLoggedIn ? children : <Navigate to="/login" replace />;
+  const auth = useAuth() // 假设的 Auth Hook
+  return auth.isLoggedIn ? children : <Navigate to="/login" replace />
 }
 
 // 使用：
@@ -70,4 +70,5 @@ function PrivateRoute({ children }) {
 ```
 
 ## 总结
+
 React Router 不仅仅是地址栏的映射，它提供的嵌套路由（Outlet）、数据加载器（Loaders）等特性可以让你的应用结构不仅清晰，而且加载性能更佳。

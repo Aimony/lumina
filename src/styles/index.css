@@ -1,4 +1,4 @@
-@import "tailwindcss";
-@import "./vars.css";
-@import "./base.css";
-@import "./markdown.css";
+@import 'tailwindcss';
+@import './vars.css';
+@import './base.css';
+@import './markdown.css';

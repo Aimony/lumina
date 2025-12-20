@@ -20,10 +20,11 @@ onMounted(async () => {
 
   for (const path of Object.keys(pages)) {
     // 转换路径：/src/docs/guide/intro.md -> /guide/intro
-    const routePath = path
-      .replace('/src/docs', '')
-      .replace(/\.(md|vue)$/, '')
-      .replace(/\/index$/, '') || '/'
+    const routePath =
+      path
+        .replace('/src/docs', '')
+        .replace(/\.(md|vue)$/, '')
+        .replace(/\/index$/, '') || '/'
 
     // 提取标题（简化处理，使用文件名）
     const parts = routePath.split('/').filter(Boolean)
@@ -46,7 +47,9 @@ onMounted(async () => {
 
       if (!parent) {
         const parentName = parts[parts.length - 2]
-        const parentTitle = parentName ? parentName.charAt(0).toUpperCase() + parentName.slice(1) : ''
+        const parentTitle = parentName
+          ? parentName.charAt(0).toUpperCase() + parentName.slice(1)
+          : ''
         parent = {
           path: parentPath,
           title: parentTitle,
@@ -85,7 +88,11 @@ const isActive = (path: string) => {
           </div>
           <ul class="nav-group-items">
             <li v-for="child in item.children" :key="child.path">
-              <router-link :to="child.path" class="nav-link" :class="{ active: isActive(child.path) }">
+              <router-link
+                :to="child.path"
+                class="nav-link"
+                :class="{ active: isActive(child.path) }"
+              >
                 {{ child.title }}
               </router-link>
             </li>
@@ -93,7 +100,12 @@ const isActive = (path: string) => {
         </div>
 
         <!-- Individual Page -->
-        <router-link v-else :to="item.path" class="nav-link top-level" :class="{ active: isActive(item.path) }">
+        <router-link
+          v-else
+          :to="item.path"
+          class="nav-link top-level"
+          :class="{ active: isActive(item.path) }"
+        >
           {{ item.title }}
         </router-link>
       </li>

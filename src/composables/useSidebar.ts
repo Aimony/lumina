@@ -1,24 +1,24 @@
 import { ref } from 'vue'
 
 export function useSidebar() {
-    const isOpen = ref(true)
+  const isOpen = ref(true)
 
-    const toggleSidebar = () => {
-        isOpen.value = !isOpen.value
-    }
+  const toggleSidebar = () => {
+    isOpen.value = !isOpen.value
+  }
 
-    const closeSidebar = () => {
-        isOpen.value = false
-    }
+  const closeSidebar = () => {
+    isOpen.value = false
+  }
 
-    const openSidebar = () => {
-        isOpen.value = true
-    }
+  const openSidebar = () => {
+    isOpen.value = true
+  }
 
-    return {
-        isOpen,
-        toggleSidebar,
-        closeSidebar,
-        openSidebar
-    }
+  return {
+    isOpen,
+    toggleSidebar,
+    closeSidebar,
+    openSidebar
+  }
 }

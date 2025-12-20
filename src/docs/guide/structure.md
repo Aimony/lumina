@@ -26,19 +26,23 @@ src/
 ## 核心目录说明
 
 ### `pages/`
+
 这是知识库的核心。基于 `vite-plugin-pages` 和 `unplugin-vue-markdown`，该目录下的每个 `.md` 或 `.vue` 文件都会自动转换为对应的路由。
 
 - **Markdown 支持**：可以直接编写 Markdown 文件，它们会被渲染为 Vue 组件。
 - **动态路由**：目录结构即路由结构。例如 `pages/guide/intro.md` 对应的 URL 是 `/guide/intro`。
 
 ### `layouts/`
+
 项目采用多布局架构：
+
 - **DefaultLayout**：用于简洁的页面，如首页。
 - **DocLayout**：专为文档设计，集成了左侧导航、右侧目录（TOC）以及深色模式切换等功能。
 
 布局的选择在 `App.vue` 中根据路由的 `meta.layout` 属性动态决定。
 
 ### `components/`
+
 存放可复用的 Vue 组件。你可以在 Markdown 文件中直接引用这些组件，增强文档的交互性。
 
 ## 关键文件

@@ -31,7 +31,7 @@ Vue 提供了一系列指令（Directives）来快速处理常见的逻辑：
   <button :disabled="isPending" @click="doSomething">
     {{ isPending ? '提交中...' : '点击我' }}
   </button>
-  
+
   <ul v-if="items.length">
     <li v-for="item in items" :key="item.id">{{ item.name }}</li>
   </ul>
@@ -45,6 +45,7 @@ Vue 3 使用了 JavaScript 的 `Proxy` 对象来实现响应式系统。相比 V
 ## 4. 生命周期钩子
 
 每个 Vue 组件实例在创建时都会经历一系列初始化步骤：
+
 - `onMounted`：组件挂载到 DOM 后调用。
 - `onUpdated`：组件 DOM 因为响应式数据变化而更新后调用。
 - `onUnmounted`：组件卸载之前调用。
@@ -53,4 +54,5 @@ Vue 3 使用了 JavaScript 的 `Proxy` 对象来实现响应式系统。相比 V
 > **组合式 API 与生命周期**：在 `<script setup>` 中，可以直接调用以 `on` 开头的生命周期钩子，非常直观。
 
 ## 总结
+
 Vue 3 的模板语法非常符合 HTML 的习惯，结合其高效的响应式系统，极大地降低了前端开发的复杂度。

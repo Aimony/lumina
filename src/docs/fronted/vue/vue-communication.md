@@ -38,6 +38,7 @@ const handleClick = () => emit('change', '来自子的问候')
 Pinia 是 Vue 官方推荐的 Store 库。它具有类型安全、极简 API、支持热模块替换等特点。
 
 ### 创建 Store
+
 ```javascript
 // stores/counter.js
 import { defineStore } from 'pinia'
@@ -47,12 +48,13 @@ export const useCounterStore = defineStore('counter', {
   actions: {
     increment() {
       this.count++
-    },
-  },
+    }
+  }
 })
 ```
 
 ### 在组件中使用
+
 ```vue
 <script setup>
 import { useCounterStore } from './stores/counter'

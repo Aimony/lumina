@@ -15,16 +15,16 @@ import Pages from 'vite-plugin-pages'
 export default defineConfig({
   plugins: [
     vue({
-      include: [/\.vue$/, /\.md$/],
+      include: [/\.vue$/, /\.md$/]
     }),
     Markdown({
-      headEnabled: true,
+      headEnabled: true
     }),
     Pages({
       dirs: 'src/pages',
-      extensions: ['vue', 'md'],
-    }),
-  ],
+      extensions: ['vue', 'md']
+    })
+  ]
 })
 ```
 
@@ -40,12 +40,12 @@ export default {
     extend: {
       colors: {
         primary: {
-          500: '#0ea5e9',
+          500: '#0ea5e9'
           // ...
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 }
 ```
 
@@ -79,10 +79,10 @@ Pages({
     if (route.component.endsWith('.md')) {
       return {
         ...route,
-        meta: { layout: 'doc' },
+        meta: { layout: 'doc' }
       }
     }
     return route
-  },
+  }
 })
 ```

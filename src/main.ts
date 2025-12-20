@@ -5,8 +5,8 @@ import App from './App.vue'
 import './styles/index.css'
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
+  history: createWebHistory(),
+  routes
 })
 
 const app = createApp(App)

@@ -57,14 +57,20 @@ const scrollTo = (id: string) => {
 <!-- 文章目录大纲 -->
 <template>
   <div v-if="headings.length > 0" class="toc-container">
-    <div class="toc-title">
-      本页目录
-    </div>
+    <div class="toc-title">本页目录</div>
 
     <ul class="toc-list">
-      <li v-for="heading in headings" :key="heading.id" :class="{ 'toc-item-nested': heading.level === 3 }">
-        <a @click.prevent="scrollTo(heading.id)" :href="'#' + heading.id" class="toc-link"
-          :class="{ active: activeId === heading.id }">
+      <li
+        v-for="heading in headings"
+        :key="heading.id"
+        :class="{ 'toc-item-nested': heading.level === 3 }"
+      >
+        <a
+          @click.prevent="scrollTo(heading.id)"
+          :href="'#' + heading.id"
+          class="toc-link"
+          :class="{ active: activeId === heading.id }"
+        >
           {{ heading.text }}
         </a>
       </li>

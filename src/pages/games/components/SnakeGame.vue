@@ -8,7 +8,11 @@ const MIN_SPEED = 60
 type Point = { x: number; y: number }
 type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'
 
-const snake = ref<Point[]>([{ x: 10, y: 10 }, { x: 10, y: 11 }, { x: 10, y: 12 }])
+const snake = ref<Point[]>([
+  { x: 10, y: 10 },
+  { x: 10, y: 11 },
+  { x: 10, y: 12 }
+])
 const food = ref<Point>({ x: 5, y: 5 })
 const direction = ref<Direction>('UP')
 const nextDirection = ref<Direction>('UP')
@@ -24,17 +28,17 @@ const cellSize = boardWidth / GRID_SIZE
 
 const containerStyle = computed(() => ({
   width: `${boardWidth}px`,
-  height: `${boardHeight}px`,
+  height: `${boardHeight}px`
 }))
 
 const getRandomPoint = (): Point => ({
   x: Math.floor(Math.random() * GRID_SIZE),
-  y: Math.floor(Math.random() * GRID_SIZE),
+  y: Math.floor(Math.random() * GRID_SIZE)
 })
 
 const spawnFood = () => {
   let newFood = getRandomPoint()
-  while (snake.value.some(p => p.x === newFood.x && p.y === newFood.y)) {
+  while (snake.value.some((p) => p.x === newFood.x && p.y === newFood.y)) {
     newFood = getRandomPoint()
   }
   food.value = newFood
@@ -48,17 +52,27 @@ const move = () => {
   const head = { ...headPoint }
 
   switch (direction.value) {
-    case 'UP': head.y -= 1; break
-    case 'DOWN': head.y += 1; break
-    case 'LEFT': head.x -= 1; break
-    case 'RIGHT': head.x += 1; break
+    case 'UP':
+      head.y -= 1
+      break
+    case 'DOWN':
+      head.y += 1
+      break
+    case 'LEFT':
+      head.x -= 1
+      break
+    case 'RIGHT':
+      head.x += 1
+      break
   }
 
   // Collision detection
   if (
-    head.x < 0 || head.x >= GRID_SIZE ||
-    head.y < 0 || head.y >= GRID_SIZE ||
-    snake.value.some(p => p.x === head.x && p.y === head.y)
+    head.x < 0 ||
+    head.x >= GRID_SIZE ||
+    head.y < 0 ||
+    head.y >= GRID_SIZE ||
+    snake.value.some((p) => p.x === head.x && p.y === head.y)
   ) {
     gameOver()
     return
@@ -95,7 +109,11 @@ const pauseGame = () => {
 }
 
 const resetGame = () => {
-  snake.value = [{ x: 10, y: 10 }, { x: 10, y: 11 }, { x: 10, y: 12 }]
+  snake.value = [
+    { x: 10, y: 10 },
+    { x: 10, y: 11 },
+    { x: 10, y: 12 }
+  ]
   direction.value = 'UP'
   nextDirection.value = 'UP'
   score.value = 0
@@ -117,11 +135,25 @@ const runLoop = () => {
 
 const handleKeydown = (e: KeyboardEvent) => {
   switch (e.key) {
-    case 'ArrowUp': case 'w': if (direction.value !== 'DOWN') nextDirection.value = 'UP'; break
-    case 'ArrowDown': case 's': if (direction.value !== 'UP') nextDirection.value = 'DOWN'; break
-    case 'ArrowLeft': case 'a': if (direction.value !== 'RIGHT') nextDirection.value = 'LEFT'; break
-    case 'ArrowRight': case 'd': if (direction.value !== 'LEFT') nextDirection.value = 'RIGHT'; break
-    case ' ': startGame(); break
+    case 'ArrowUp':
+    case 'w':
+      if (direction.value !== 'DOWN') nextDirection.value = 'UP'
+      break
+    case 'ArrowDown':
+    case 's':
+      if (direction.value !== 'UP') nextDirection.value = 'DOWN'
+      break
+    case 'ArrowLeft':
+    case 'a':
+      if (direction.value !== 'RIGHT') nextDirection.value = 'LEFT'
+      break
+    case 'ArrowRight':
+    case 'd':
+      if (direction.value !== 'LEFT') nextDirection.value = 'RIGHT'
+      break
+    case ' ':
+      startGame()
+      break
   }
 }
 
@@ -158,23 +190,31 @@ onUnmounted(() => {
       <div class="grid-bg"></div>
 
       <!-- Snake -->
-      <div v-for="(segment, index) in snake" :key="index" class="snake-segment" :class="{ 'snake-head': index === 0 }"
+      <div
+        v-for="(segment, index) in snake"
+        :key="index"
+        class="snake-segment"
+        :class="{ 'snake-head': index === 0 }"
         :style="{
           left: `${segment.x * cellSize}px`,
           top: `${segment.y * cellSize}px`,
           width: `${cellSize}px`,
           height: `${cellSize}px`
-        }">
+        }"
+      >
         <div class="segment-inner"></div>
       </div>
 
       <!-- Food -->
-      <div class="food" :style="{
-        left: `${food.x * cellSize}px`,
-        top: `${food.y * cellSize}px`,
-        width: `${cellSize}px`,
-        height: `${cellSize}px`
-      }">
+      <div
+        class="food"
+        :style="{
+          left: `${food.x * cellSize}px`,
+          top: `${food.y * cellSize}px`,
+          width: `${cellSize}px`,
+          height: `${cellSize}px`
+        }"
+      >
         <div class="food-inner"></div>
       </div>
 
@@ -294,7 +334,6 @@ onUnmounted(() => {
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     transform: scale(0.8);

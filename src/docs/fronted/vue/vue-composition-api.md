@@ -46,18 +46,19 @@ import { ref, onMounted, onUnmounted } from 'vue'
 export function useMouse() {
   const x = ref(0)
   const y = ref(0)
-  
-  const update = e => {
+
+  const update = (e) => {
     x.value = e.pageX
     y.value = e.pageY
   }
-  
+
   onMounted(() => window.addEventListener('mousemove', update))
   onUnmounted(() => window.removeEventListener('mousemove', update))
-  
+
   return { x, y }
 }
 ```
 
 ## 总结
+
 Composition API 让 Vue 开发更加贴近 JavaScript 原生的编写方式。掌握了 `ref` 与 `reactive` 及其背后的 Composables 思想，你就能构建出更具弹性、更易测试的应用。

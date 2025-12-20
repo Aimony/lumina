@@ -35,6 +35,7 @@ src/
 ```
 
 文件路径会自动映射为路由：
+
 - `src/pages/index.md` → `/`
 - `src/pages/guide/intro.md` → `/guide/intro`
 - `src/pages/blog/post.md` → `/blog/post`

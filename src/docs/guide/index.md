@@ -26,17 +26,15 @@ npm run build
 
 ## 技术栈
 
-| 技术 | 用途 |
-|------|------|
-| Vue 3.5+ | 核心框架 |
-| Vite 7.x | 构建工具 |
-| Tailwind CSS | 样式方案 |
+| 技术                  | 用途          |
+| --------------------- | ------------- |
+| Vue 3.5+              | 核心框架      |
+| Vite 7.x              | 构建工具      |
+| Tailwind CSS          | 样式方案      |
 | unplugin-vue-markdown | Markdown 渲染 |
-| Shiki | 代码高亮 |
-| FlexSearch | 本地搜索 |
+| Shiki                 | 代码高亮      |
+| FlexSearch            | 本地搜索      |
 
 ---
 
 开始探索 → [入门指南](/guide/intro)
-
-

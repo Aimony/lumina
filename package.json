@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "lint": "eslint . --fix",
+    "format": "prettier --write src/",
+    "prepare": "husky"
   },
   "config": {
     "commitizen": {
@@ -25,18 +28,49 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@rushstack/eslint-patch": "^1.15.0",
     "@shikijs/markdown-it": "^3.20.0",
     "@types/flexsearch": "^0.7.6",
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/tsconfig": "^0.8.1",
     "autoprefixer": "^10.4.23",
     "commitizen": "^4.3.1",
     "cz-git": "^1.12.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-vue": "^10.6.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "postcss": "^8.5.6",
+    "prettier": "^3.7.4",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
     "vite-plugin-pages": "^0.33.2",
     "vue-tsc": "^3.1.4"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "prettier --write"
+    ],
+    "*.{json,md,css,html}": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "prettier": {
+    "semi": false,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "printWidth": 100,
+    "trailingComma": "none"
   }
 }
