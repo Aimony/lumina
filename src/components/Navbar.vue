@@ -9,6 +9,20 @@ const { docsTree } = useDocsTree()
 // 当前悬停的菜单项
 const activeDropdown = ref<string | null>(null)
 
+// 递归查找目录下第一个有效的非目录路径
+const getValidPath = (node: DocTreeNode): string => {
+  if (!node.isDirectory) return node.path
+  if (node.children && node.children.length > 0) {
+    // 优先找非目录的子节点
+    const file = node.children.find((c) => !c.isDirectory)
+    if (file) return file.path
+    // 否则递归查找第一个目录的子路径
+    const firstChild = node.children[0]
+    if (firstChild) return getValidPath(firstChild)
+  }
+  return node.path
+}
+
 // 获取子菜单项
 const getChildren = (basePath: string): DocTreeNode[] => {
   const node = docsTree.value.find((n) => n.path === basePath)
@@ -87,7 +101,7 @@ const hideDropdown = () => {
                     <router-link
                       v-for="child in item.children"
                       :key="child.path"
-                      :to="child.path"
+                      :to="getValidPath(child)"
                       class="dropdown-item"
                       @click="hideDropdown"
                     >
