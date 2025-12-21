@@ -6,6 +6,7 @@ import { resolve } from 'path'
 import Shiki from '@shikijs/markdown-it'
 import { linkCardPlugin } from './src/plugins/markdown-it-link-card'
 import { codeEnhancementsPlugin } from './src/plugins/markdown-it-code-enhancements'
+import { imageLazyPlugin } from './src/plugins/markdown-it-image-lazy'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -35,6 +36,8 @@ export default defineConfig({
         md.use(linkCardPlugin)
         // 注册代码块增强插件
         md.use(codeEnhancementsPlugin)
+        // 注册图片懒加载插件
+        md.use(imageLazyPlugin)
       }
     }),
     Pages({
