@@ -11,6 +11,7 @@
     "commit": "git-cz",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
+    "deploy": "node scripts/deploy.js",
     "prepare": "husky"
   },
   "config": {
