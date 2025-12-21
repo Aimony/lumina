@@ -7,7 +7,7 @@ const { isDark, toggleDark } = useTheme()
 <!-- 主题切换 -->
 <template>
   <button
-    @click="toggleDark"
+    @click="toggleDark($event)"
     class="p-2 rounded-lg hover:bg-[var(--color-sidebar-bg)] transition-colors"
     :title="isDark ? '切换到浅色模式' : '切换到深色模式'"
   >

@@ -1,0 +1,29 @@
+/* 主题切换水滴扩散动画 */
+
+/* 确保过渡容器填满整个视口 */
+::view-transition-group(root) {
+  animation-duration: 1.2s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 旧视图保持可见，不做动画 */
+::view-transition-old(root) {
+  animation: none;
+  z-index: 1;
+}
+
+/* 新视图执行圆形扩散动画，覆盖在旧视图之上 */
+::view-transition-new(root) {
+  animation: circle-expand 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+}
+
+/* 圆形扩散动画关键帧 */
+@keyframes circle-expand {
+  from {
+    clip-path: circle(0% at var(--x, 50%) var(--y, 50%));
+  }
+  to {
+    clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+  }
+}

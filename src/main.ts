@@ -4,6 +4,7 @@ import routes from '~pages'
 import App from './App.vue'
 import LinkCard from './components/LinkCard.vue'
 import './styles/index.css'
+import './styles/theme-transition.css'
 
 const router = createRouter({
   history: createWebHistory(),
