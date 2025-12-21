@@ -88,7 +88,7 @@ const techStack: TechItem[] = [
       <div class="image-bg">
         <div class="image-container">
           <div class="avatar-circle">
-            <span class="avatar-text">L</span>
+            <img src="/img/avatar.png" alt="Avatar" class="avatar-img" />
             <!-- 环绕技术栈图标 -->
             <div class="tech-icons">
               <div
@@ -312,10 +312,15 @@ const techStack: TechItem[] = [
   justify-content: center;
   font-size: 64px;
   font-weight: bold;
-  color: white;
-  box-shadow: var(--vp-shadow-3);
   position: relative;
   z-index: 10;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .avatar-circle::after {

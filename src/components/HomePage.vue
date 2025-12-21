@@ -14,5 +14,7 @@ import HomeFeatures from '@/components/HomeFeatures.vue'
 <style scoped>
 .home {
   padding-bottom: 96px;
+  background: var(--vp-bg-image) center/cover no-repeat fixed;
+  min-height: 100vh;
 }
 </style>
