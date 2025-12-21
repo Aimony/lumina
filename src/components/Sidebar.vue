@@ -82,7 +82,7 @@ const buildTree = (paths: string[]): NavItem[] => {
 
       if (!nodeMap.has(currentPath)) {
         const isLastPart = i === parts.length - 1
-        const title = part.charAt(0).toUpperCase() + part.slice(1)
+        const title = part
         const newNode: NavItem = {
           path: currentPath,
           title,
