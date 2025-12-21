@@ -110,9 +110,16 @@ const buildTree = (paths: string[]): NavItem[] => {
     }
   }
 
-  // 递归排序
+  // 递归排序：文件夹优先，同类型按字母排序
   const sortNodes = (nodes: NavItem[]) => {
-    nodes.sort((a, b) => a.title.localeCompare(b.title))
+    nodes.sort((a, b) => {
+      // 文件夹优先
+      if (a.isDirectory !== b.isDirectory) {
+        return a.isDirectory ? -1 : 1
+      }
+      // 同类型按字母排序
+      return a.title.localeCompare(b.title)
+    })
     for (const node of nodes) {
       if (node.children && node.children.length > 0) {
         sortNodes(node.children)
