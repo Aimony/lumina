@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-
-interface NavItem {
-  path: string
-  title: string
-  isDirectory: boolean // 标记是否为目录
-  children?: NavItem[]
-}
+import { useDocsTree, type DocTreeNode } from '@/composables/useDocsTree'
 
 const route = useRoute()
-const navItems = ref<NavItem[]>([])
+const { docsTree } = useDocsTree()
 
 // 追踪展开状态的分组 (使用 path 作为 key)
 const expandedGroups = ref<Set<string>>(new Set())
@@ -43,8 +37,8 @@ const filteredNavItems = computed(() => {
   if (!currentKnowledgeBasePath.value) return []
 
   // 找到当前知识库的根节点
-  const knowledgeBaseNode = navItems.value.find(
-    (item) => item.path === currentKnowledgeBasePath.value
+  const knowledgeBaseNode = docsTree.value.find(
+    (item: DocTreeNode) => item.path === currentKnowledgeBasePath.value
   )
 
   // 返回其子节点，而不是根节点本身
@@ -63,95 +57,13 @@ const expandToCurrentPath = () => {
 }
 
 // 监听路由变化，自动展开当前分组
-watch(() => route.path, expandToCurrentPath)
+watch(() => route.path, expandToCurrentPath, { immediate: true })
 
-// 递归构建树形结构
-const buildTree = (paths: string[]): NavItem[] => {
-  const root: NavItem[] = []
-  const nodeMap = new Map<string, NavItem>()
-
-  for (const filePath of paths) {
-    const parts = filePath.split('/').filter(Boolean)
-    let currentPath = ''
-
-    for (let i = 0; i < parts.length; i++) {
-      const part = parts[i]
-      const parentPath = currentPath
-      if (!part) continue
-      currentPath += '/' + part
-
-      if (!nodeMap.has(currentPath)) {
-        const isLastPart = i === parts.length - 1
-        const title = part
-        const newNode: NavItem = {
-          path: currentPath,
-          title,
-          isDirectory: !isLastPart, // 最后一级是文件，其他是目录
-          children: []
-        }
-        nodeMap.set(currentPath, newNode)
-
-        if (parentPath === '') {
-          root.push(newNode)
-        } else {
-          const parentNode = nodeMap.get(parentPath)
-          if (parentNode) {
-            parentNode.children = parentNode.children || []
-            parentNode.children.push(newNode)
-          }
-        }
-      } else {
-        // 如果节点已存在但当前不是最后一级，则确保它是目录
-        const existingNode = nodeMap.get(currentPath)!
-        if (i < parts.length - 1) {
-          existingNode.isDirectory = true
-        }
-      }
-    }
+// 当文档树加载完成后，展开当前路径
+watch(docsTree, () => {
+  if (docsTree.value.length > 0) {
+    expandToCurrentPath()
   }
-
-  // 递归排序：文件夹优先，同类型按字母排序
-  const sortNodes = (nodes: NavItem[]) => {
-    nodes.sort((a, b) => {
-      // 文件夹优先
-      if (a.isDirectory !== b.isDirectory) {
-        return a.isDirectory ? -1 : 1
-      }
-      // 同类型按字母排序
-      return a.title.localeCompare(b.title)
-    })
-    for (const node of nodes) {
-      if (node.children && node.children.length > 0) {
-        sortNodes(node.children)
-      }
-    }
-  }
-  sortNodes(root)
-
-  return root
-}
-
-onMounted(async () => {
-  const pages = import.meta.glob('/src/docs/**/*.{md,vue}')
-
-  const filePaths: string[] = []
-
-  for (const path of Object.keys(pages)) {
-    let routePath =
-      path
-        .replace('/src/docs', '')
-        .replace(/\.(md|vue)$/, '')
-        .replace(/\/index$/, '') || '/'
-
-    if (routePath === '/') continue
-
-    filePaths.push(routePath)
-  }
-
-  navItems.value = buildTree(filePaths)
-
-  // 自动展开当前路由所在的所有父级分组
-  expandToCurrentPath()
 })
 
 const isActive = (path: string) => {

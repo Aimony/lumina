@@ -1,5 +1,41 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
+import { navItems } from '@/config/nav'
+import { useDocsTree, type DocTreeNode } from '@/composables/useDocsTree'
+
+const { docsTree } = useDocsTree()
+
+// 当前悬停的菜单项
+const activeDropdown = ref<string | null>(null)
+
+// 获取子菜单项
+const getChildren = (basePath: string): DocTreeNode[] => {
+  const node = docsTree.value.find((n) => n.path === basePath)
+  // 只返回目录类型的子节点
+  return node?.children?.filter((c) => c.isDirectory) || []
+}
+
+// 处理后的导航项，包含动态生成的 children
+const processedNavItems = computed(() => {
+  return navItems.map((item) => {
+    if (item.basePath) {
+      return {
+        ...item,
+        children: getChildren(item.basePath)
+      }
+    }
+    return item
+  })
+})
+
+const showDropdown = (text: string) => {
+  activeDropdown.value = text
+}
+
+const hideDropdown = () => {
+  activeDropdown.value = null
+}
 </script>
 
 <template>
@@ -19,14 +55,58 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
         <!-- Right: Nav & Actions -->
         <div class="navbar-content">
           <nav class="navbar-menu hidden md:flex">
-            <router-link to="/guide/intro" class="menu-link" active-class="active">
-              指南
-            </router-link>
-            <router-link to="/games/snake" class="menu-link" active-class="active">
-              贪吃蛇
-            </router-link>
-            <router-link to="/frontend" class="menu-link" active-class="active"> 前端 </router-link>
-            <router-link to="/backend" class="menu-link" active-class="active"> 后端 </router-link>
+            <template v-for="item in processedNavItems" :key="item.text">
+              <!-- 有子菜单的项 -->
+              <div
+                v-if="item.children && item.children.length > 0"
+                class="menu-item-with-dropdown"
+                @mouseenter="showDropdown(item.text)"
+                @mouseleave="hideDropdown"
+              >
+                <router-link
+                  v-if="item.basePath"
+                  :to="item.basePath"
+                  class="menu-link has-dropdown"
+                  active-class="active"
+                >
+                  {{ item.text }}
+                  <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path
+                      d="M2.5 4.5L6 8L9.5 4.5"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </router-link>
+
+                <!-- 下拉菜单 -->
+                <Transition name="dropdown">
+                  <div v-show="activeDropdown === item.text" class="dropdown-menu">
+                    <router-link
+                      v-for="child in item.children"
+                      :key="child.path"
+                      :to="child.path"
+                      class="dropdown-item"
+                      @click="hideDropdown"
+                    >
+                      {{ child.title }}
+                    </router-link>
+                  </div>
+                </Transition>
+              </div>
+
+              <!-- 无子菜单的普通链接 -->
+              <router-link
+                v-else-if="item.to"
+                :to="item.to"
+                class="menu-link"
+                active-class="active"
+              >
+                {{ item.text }}
+              </router-link>
+            </template>
           </nav>
           <div class="navbar-actions">
             <ThemeToggle />
@@ -59,11 +139,6 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
 }
 
 .navbar-wrapper {
-  /* max-width: 1400px; Remove max-width for full width feel on docs, match DocLayout preference or DefaultLayout? 
-     DefaultLayout had max-width: 1400px. DocLayout removed it.
-     Let's keep it fluid (removed) for consistency with docs, or make it a prop? 
-     Actually, looking at VitePress, usually it's fluid but constrained content.
-     Let's use the DocLayout version (fluid) as it fits both. */
   margin: 0 auto;
   height: 100%;
 }
@@ -116,6 +191,82 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
 .menu-link:hover,
 .menu-link.active {
   color: var(--vp-c-brand-1);
+}
+
+.menu-link.has-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dropdown-icon {
+  transition: transform 0.2s;
+}
+
+.menu-item-with-dropdown:hover .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.menu-item-with-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 12px;
+  min-width: 160px;
+  padding: 8px 0;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+:global(.dark) .dropdown-menu {
+  background: rgba(30, 30, 32, 0.98);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  color: var(--vp-c-text-1);
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.dropdown-item:hover {
+  background-color: var(--vp-c-bg-soft);
+  color: var(--vp-c-brand-1);
+}
+
+/* Dropdown Animation */
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 0.2s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-8px);
+}
+
+.dropdown-enter-to,
+.dropdown-leave-from {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .navbar-actions {
