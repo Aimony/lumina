@@ -25,8 +25,8 @@ export default defineConfig({
         md.use(
           await Shiki({
             themes: {
-              light: 'vitesse-light',
-              dark: 'vitesse-dark'
+              light: 'one-dark-pro',
+              dark: 'one-dark-pro'
             }
           })
         )

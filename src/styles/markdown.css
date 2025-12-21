@@ -68,8 +68,10 @@
 }
 
 /* Code Blocks (Shiki) */
+/* Code Blocks (Shiki) */
 .markdown-body pre.shiki {
-  padding: 20px 24px;
+  position: relative;
+  padding: 40px 24px 20px 24px;
   border-radius: 8px;
   margin: 16px 0;
   overflow-x: auto;
@@ -78,12 +80,28 @@
   border: 1px solid var(--vp-c-brand-soft);
   background-color: #ffffff !important;
   /* Force light bg for light mode */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.markdown-body pre.shiki::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #fc605c;
+  box-shadow:
+    20px 0 0 #fdbc40,
+    40px 0 0 #27ca40;
 }
 
 html.dark .markdown-body pre.shiki {
   background-color: #121212 !important;
   /* Force dark bg for dark mode */
   border: 1px solid var(--vp-c-divider);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Let Shiki handle text colors, but ensure background consistency */
