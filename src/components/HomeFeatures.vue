@@ -59,6 +59,8 @@ const features: Feature[] = [
 /* Features Section */
 .features-section {
   padding: 0 24px;
+  overflow: hidden;
+  /* 防止负边距引起的溢出 */
 }
 
 @media (min-width: 640px) {
@@ -73,6 +75,11 @@ const features: Feature[] = [
   }
 }
 
+.container {
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
 .items {
   display: flex;
   flex-wrap: wrap;
@@ -82,6 +89,8 @@ const features: Feature[] = [
 .item {
   width: 100%;
   padding: 8px;
+  box-sizing: border-box;
+  /* 确保 padding 不增加宽度 */
 }
 
 @media (min-width: 640px) {

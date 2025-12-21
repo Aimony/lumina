@@ -1,5 +1,67 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+
+interface TechItem {
+  name: string
+  icon: string
+}
+
+const techStack: TechItem[] = [
+  {
+    name: 'JavaScript',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg'
+  },
+  {
+    name: 'TypeScript',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg'
+  },
+  {
+    name: 'Vue.js',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg'
+  },
+  {
+    name: 'Java',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg'
+  },
+  {
+    name: 'Spring',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg'
+  },
+  {
+    name: 'MySQL',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg'
+  },
+  {
+    name: 'Redis',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg'
+  },
+  {
+    name: 'Docker',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg'
+  },
+  { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
+  {
+    name: 'Linux',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg'
+  },
+  {
+    name: 'Nginx',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg'
+  },
+  {
+    name: 'Maven',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/maven/maven-original.svg'
+  },
+  {
+    name: 'Ubuntu',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/ubuntu/ubuntu-original-wordmark.svg'
+  },
+  {
+    name: 'IEDA',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/intellij/intellij-original.svg'
+  },
+  { name: 'Vite', icon: 'https://vitejs.dev/logo.svg' }
+]
 </script>
 
 <template>
@@ -27,6 +89,22 @@ import { RouterLink } from 'vue-router'
         <div class="image-container">
           <div class="avatar-circle">
             <span class="avatar-text">L</span>
+            <!-- 环绕技术栈图标 -->
+            <div class="tech-icons">
+              <div
+                v-for="(tech, index) in techStack"
+                :key="tech.name"
+                class="tech-icon-wrapper"
+                :style="{
+                  '--index': index,
+                  '--total': techStack.length
+                }"
+              >
+                <div class="tech-icon-card">
+                  <img :src="tech.icon" :alt="tech.name" class="tech-icon-img" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -38,6 +116,8 @@ import { RouterLink } from 'vue-router'
 /* Hero Section */
 .hero-section {
   padding: calc(var(--vp-nav-height) + 48px) 24px 48px;
+  overflow: hidden;
+  /* 防止旋转图标溢出 */
 }
 
 @media (min-width: 640px) {
@@ -76,7 +156,7 @@ import { RouterLink } from 'vue-router'
 @media (min-width: 960px) {
   .main {
     order: 1;
-    width: calc(100% - 320px);
+    width: calc(100% - 360px);
     text-align: left;
   }
 }
@@ -214,8 +294,8 @@ import { RouterLink } from 'vue-router'
   .image-bg {
     order: 2;
     margin-bottom: 0;
-    width: 320px;
-    height: 320px;
+    width: 360px;
+    height: 360px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -235,6 +315,7 @@ import { RouterLink } from 'vue-router'
   color: white;
   box-shadow: var(--vp-shadow-3);
   position: relative;
+  z-index: 10;
 }
 
 .avatar-circle::after {
@@ -249,5 +330,90 @@ import { RouterLink } from 'vue-router'
   filter: blur(40px);
   z-index: -1;
   border-radius: 50%;
+}
+
+/* 技术栈图标环绕样式 */
+.tech-icons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  animation: rotate-orbit 30s linear infinite;
+  pointer-events: none;
+}
+
+.tech-icon-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  margin-top: -18px;
+  margin-left: -18px;
+  transform: rotate(calc(var(--index) * (360deg / var(--total)))) translate(130px)
+    rotate(calc(var(--index) * (-360deg / var(--total))));
+}
+
+.tech-icon-card {
+  width: 100%;
+  height: 100%;
+  background: var(--vp-c-bg);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  box-shadow: var(--vp-shadow-2);
+  border: 1px solid var(--vp-c-divider);
+  transition: transform 0.3s ease;
+  animation: rotate-counter 30s linear infinite;
+  pointer-events: auto;
+}
+
+.tech-icon-card:hover {
+  transform: scale(1.2);
+  border-color: var(--vp-c-brand-1);
+}
+
+.tech-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes rotate-orbit {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes rotate-counter {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .tech-icon-wrapper {
+    transform: rotate(calc(var(--index) * (360deg / var(--total)))) translate(100px)
+      rotate(calc(var(--index) * (-360deg / var(--total))));
+  }
+
+  .tech-icon-card {
+    width: 28px;
+    height: 28px;
+    padding: 3px;
+  }
 }
 </style>
