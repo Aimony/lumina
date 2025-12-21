@@ -2,7 +2,7 @@
 
 ## 第一章 引言
 
-<Linkcard url="https://docs.anthropic.com/zh-CN/docs/claude-code/overview/" title="Claude Code 文档" description="Claude Code 官方文档" logo="https://storage.googleapis.com/organization-image-assets/anthropic-botAvatarDarkSrcUrl-1715877068491.svg"/>
+<LinkCard url="https://docs.anthropic.com/zh-CN/docs/claude-code/overview/" title="Claude Code 文档" description="Claude Code 官方文档" logo="https://storage.googleapis.com/organization-image-assets/anthropic-botAvatarDarkSrcUrl-1715877068491.svg"/>
 
 ### 1.1 为什么不用Cursor了
 
