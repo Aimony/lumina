@@ -6,6 +6,7 @@ import DocLayout from '@/layouts/DocLayout.vue'
 import { useThemeProvider } from '@/composables/useTheme'
 import { useCodeCopy } from '@/composables/useCodeCopy'
 import { useCodeFold } from '@/composables/useCodeFold'
+import SearchModal from '@/components/SearchModal.vue'
 
 const route = useRoute()
 useThemeProvider()
@@ -22,7 +23,29 @@ const layout = computed(() => {
 
 <template>
   <component :is="layout" v-if="layout">
-    <RouterView />
+    <RouterView v-slot="{ Component }">
+      <Transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </Transition>
+    </RouterView>
   </component>
-  <RouterView v-else />
+  <RouterView v-else v-slot="{ Component }">
+    <Transition name="fade" mode="out-in">
+      <component :is="Component" />
+    </Transition>
+  </RouterView>
+  <SearchModal />
+  <SearchModal />
 </template>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

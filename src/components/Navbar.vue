@@ -4,6 +4,9 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
 import YearProgress from '@/components/YearProgress.vue'
 import { navItems } from '@/config/nav'
 import { useDocsTree, type DocTreeNode } from '@/composables/useDocsTree'
+import { useSearch } from '@/composables/useSearch'
+
+const { openModal } = useSearch()
 
 const { docsTree } = useDocsTree()
 
@@ -124,6 +127,24 @@ const hideDropdown = () => {
               </router-link>
             </template>
           </nav>
+          <div class="search-trigger" @click="openModal">
+            <span class="search-key-hint">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span class="key-combo hidden lg:flex">
+                <span class="key">Ctrl</span><span class="key">K</span>
+              </span>
+            </span>
+          </div>
           <div class="navbar-actions">
             <ThemeToggle />
           </div>
@@ -278,5 +299,37 @@ const hideDropdown = () => {
   align-items: center;
   padding-left: 16px;
   border-left: 1px solid var(--vp-c-divider);
+}
+
+.search-trigger {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0 12px;
+  color: var(--vp-c-text-2);
+  transition: color 0.25s;
+}
+
+.search-trigger:hover {
+  color: var(--vp-c-text-1);
+}
+
+.search-key-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.key-combo {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vp-c-text-3);
+  padding: 2px 4px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  background-color: var(--vp-c-bg-alt);
 }
 </style>

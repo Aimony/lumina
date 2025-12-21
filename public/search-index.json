@@ -1,0 +1,248 @@
+[
+  {
+    "id": "guide/structure",
+    "title": "structure",
+    "content": "项目结构 本文档详细介绍了 Lumina 项目的源代码结构和关键组件。 目录结构概览 核心目录说明 pages/ 这是知识库的核心。基于 vite-plugin-pages 和 unplugin-vue-markdown，该目录下的每个 .md 或 .vue 文件都会自动转换为对应的路由。 - Markdown 支持：可以直接编写 Markdown 文件，它们会被渲染为 Vue 组件。 - 动态路由：目录结构即路由结构。例如 pages/guide/intro.md 对应的 URL 是 /guide/intro。 layouts/ 项目采用多布局架构： - DefaultLayout：用于简洁的页面，如首页。 - DocLayout：专为文档设计，集成了左侧导航、右侧目录（TOC）以及深色模式切换等功能。 布局的选择在 App.vue 中根据路由的 meta.layout 属性动态决定。 components/ 存放可复用的 Vue 组件。你可以在 Markdown 文件中直接引用这些组件，增强文档的交互性。 关键文件 - main.ts：配置了 vue-router，并导入了自动生成的路由表 ~pages。 - App.vue：处理全局布局切换逻辑，并提供深色模式的主题状态。 - style.css：利用 Tailwind CSS 进行全局样式定义。 技术栈 - Vue 3：核心框架，使用 Composition API。 - Vite：高性能的前端构建工具。 - Tailwind CSS：原子化 CSS 框架，负责整站样式。 - FlexSearch：高性能全身搜索库（计划中）。 - Shiki：用于代码块的精确语法高亮。",
+    "tags": []
+  },
+  {
+    "id": "guide/intro",
+    "title": "intro",
+    "content": "入门指南 欢迎阅读 Lumina 入门指南！本文将帮助你快速上手这个知识库系统。 什么是 Lumina？ Lumina 是一个现代化的个人知识库系统，它让你能够： - 使用 Markdown 编写文档 - 在 Markdown 中嵌入 Vue 组件 - 享受 实时热更新 的开发体验 - 自动生成 侧边栏 和 目录 项目结构 创建新页面 在 src/pages 目录下创建 .md 文件即可： 文件路径会自动映射为路由： - src/pages/index.md → / - src/pages/guide/intro.md → /guide/intro - src/pages/blog/post.md → /blog/post 在 Markdown 中使用 Vue 你可以直接在 Markdown 中编写 Vue 代码： 代码高亮 支持多种编程语言的语法高亮： JavaScript TypeScript Python 下一步 - 查看 $1 - 探索 $1 - 阅读 $1",
+    "tags": []
+  },
+  {
+    "id": "guide/",
+    "title": "index",
+    "content": "欢迎使用 Lumina 这是一个基于 Vue 3 的个人知识库系统，复刻了 VitePress 的优雅体验。 核心特性 - 📝 Markdown 即组件 - 直接在 Markdown 中使用 Vue 组件 - 🎨 深色/浅色主题 - 自动跟随系统或手动切换 - 📚 自动侧边栏 - 根据目录结构自动生成导航 - 📖 文章目录 - 自动提取 h2/h3 生成 TOC - 🔍 本地搜索 - FlexSearch 全文搜索（开发中） - ⚡ 极速热更新 - Vite 驱动的开发体验 快速开始 技术栈 | 技术                  | 用途          | | --------------------- | ------------- | | Vue 3.5+              | 核心框架      | | Vite 7.x              | 构建工具      | | Tailwind CSS          | 样式方案      | | unplugin-vue-markdown | Markdown 渲染 | | Shiki                 | 代码高亮      | | FlexSearch            | 本地搜索      | --- 开始探索 → $1",
+    "tags": []
+  },
+  {
+    "id": "guide/config",
+    "title": "config",
+    "content": "配置说明 本文介绍 Lumina 的配置选项。 Vite 配置 主要配置位于 vite.config.ts： Tailwind 配置 样式配置位于 tailwind.config.js： 主题定制 CSS 变量 你可以通过修改 src/style.css 中的 CSS 变量来自定义主题： 路由配置 路由由 vite-plugin-pages 自动生成，你也可以通过 extendRoute 自定义：",
+    "tags": []
+  },
+  {
+    "id": "frontend/",
+    "title": "index",
+    "content": "前端开发",
+    "tags": []
+  },
+  {
+    "id": "example/",
+    "title": "index",
+    "content": "这是示例",
+    "tags": []
+  },
+  {
+    "id": "example/gfm-example",
+    "title": "GitHub Flavored Markdown 示例",
+    "content": "GitHub Flavored Markdown 完整示例 本文档展示了所有支持的 GFM 扩展语法。 任务列表 (Task Lists) 项目进度追踪： - [x] 安装 GFM 插件 - [x] 配置 markdown-it - [x] 添加 CSS 样式 - [ ] 编写示例文档 - [ ] 测试所有功能 嵌套任务列表： - [x] 前端开发   - [x] 组件设计   - [x] 状态管理   - [ ] 单元测试 - [ ] 后端开发   - [ ] API 设计   - [ ] 数据库建模 --- 删除线 (Strikethrough) ~~这段文字已被删除~~ 这是新的内容。 功能更新：~~旧版本不再支持~~ 请使用新版本。 --- 表格 (Tables) 基础表格 | 功能     | 状态 |     说明 | | -------- | :--: | -------: | | 任务列表 |  ✅  |   左对齐 | | 删除线   |  ✅  | 居中对齐 | | 表格     |  ✅  |   右对齐 | | 脚注     |  ✅  | 完整支持 | 技术栈对比 | 框架   | 语言          | 特点              | 适用场景 | | ------ | ------------- | ----------------- | -------- | | Vue 3  | TypeScript    | 渐进式、响应式    | SPA、SSR | | React  | JavaScript/TS | 函数式、Hooks     | 大型应用 | | Svelte | JavaScript    | 编译时、无虚拟DOM | 性能敏感 | --- 脚注 (Footnotes) 这是一段包含脚注的文本[^1]，脚注可以包含详细的解释或引用来源。 GitHub Flavored Markdown[^gfm] 是 GitHub 对标准 Markdown 的扩展。 你也可以使用内联脚注^[这是一个内联脚注，直接写在正文中]。 多个脚注可以混合使用[^2]，它们会在文档底部统一展示[^note]。 [^1]: 这是第一个脚注的内容，可以包含粗体和 代码。 [^gfm]: GitHub Flavored Markdown 规范：https://github.github.com/gfm/ [^2]: 脚注支持多行内容：     - 第一点说明     - 第二点说明     以及代码块。 [^note]: 脚注标识符可以是数字或文字，会自动编号。 --- GitHub Alerts 告警块 NOTE - 备注信息 [!NOTE] 这是一条备注信息，用于提供背景上下文或补充说明。 支持多行内容和 Markdown 格式。 TIP - 提示建议 [!TIP] 使用 Ctrl + S 快速保存文件。 这个技巧可以提升你的开发效率！ IMPORTANT - 重要信息 [!IMPORTANT] 请确保在部署前运行所有测试用例。 这是保证代码质量的关键步骤。 WARNING - 警告提醒 [!WARNING] 此操作将修改数据库结构，请先备份数据。 建议在测试环境验证后再应用到生产环境。 CAUTION - 危险警告 [!CAUTION] 此操作不可逆！ 删除账户将永久移除所有相关数据，包括： - 用户资料 - 历史记录 - 关联文件 --- 引用块 (Blockquotes) 普通引用： 代码是写给人看的，顺便让机器执行。 —— Donald Knuth 嵌套引用： 第一层引用 第二层引用 第三层引用 --- 自动链接 (Autolinks) 直接输入网址会自动转换为链接： - https://github.com - https://vuejs.org - contact@example.com --- 混合使用示例 [!TIP] 快速上手指南 1. 克隆仓库 2. 安装依赖：npm install 3. 启动开发服务器：npm run dev | 命令      | 说明     | | --------- | -------- | | dev     | 开发模式 | | build   | 生产构建 | | preview | 预览构建 | 更多信息请参考官方文档[^docs]。 [^docs]: 完整文档地址：https://lumina.dev/docs --- 代码块 --- _本文档涵盖了 GFM 的所有主要扩展特性。_",
+    "tags": []
+  },
+  {
+    "id": "AIGC/",
+    "title": "index",
+    "content": "AIGC MCP Claude Code",
+    "tags": []
+  },
+  {
+    "id": "backend/",
+    "title": "index",
+    "content": "后端技术文档 欢迎来到后端技术知识库。这里记录了关于服务器端开发、数据库管理、架构设计及 API 规范的相关内容。 技术栈概览 1. 运行时与框架 - Node.js: 基于 Chrome V8 引擎的 JavaScript 运行时。   - $1 | $1 - Python: 简洁强大的通用编程语言。   - $1 - Go: 极简且高效的并发语言。   - $1 | $1 - Rust: 极致性能与内存安全。   - $1 2. 数据库 - MySQL 深度解析:   - $1 | $1   - $1 - PostgreSQL 进阶:   - $1 | $1   - $1 - NoSQL / Cache:   - $1   - $1 - 核心理论:   - $1 3. 工程化与设计 - $1 - $1 --- [!TIP] 建议从基础开始，逐步深入到具体框架和数据库优化。",
+    "tags": []
+  },
+  {
+    "id": "frontend/vue/vue",
+    "title": "vue",
+    "content": "Vue.js 深度指南：从入门到架构实战 Vue.js 是一套用于构建用户界面的渐进式框架。与其它大型框架不同的是，Vue 被设计为可以自底向上逐层应用。本文将深入解析 Vue 3 的核心原理、实战技巧及性能优化。 --- 1. Vue.js 的核心灵魂：渐进式与 SFC 1.1 什么是“渐进式”？ Vue 的设计哲学允许开发者根据需求规模选择不同的集成方式： 1.  作为库使用：在 HTML 中通过 <script标签引入，增强现有页面。 2.  声明式 UI：使用模板语法，关注“是什么”而非“怎么做”。 3.  单文件组件 (SFC)：通过 .vue 文件组织代码，实现高度解耦。 4.  全功能框架：集成 Router、Pinia、Vite 等，构建复杂的单页应用 (SPA)。 1.2 单文件组件 (SFC) 的威力 Vue 的组件化思想通过 .vue 文件体现得淋漓尽致，它将 HTML、CSS 和 JS 封装在一起： --- 2. 响应式原理深度剖析 Vue 的响应式系统是其最迷人的特性之一。它让状态管理变得直观且自动化。 2.1 从 Vue 2 到 Vue 3 的演进 - Vue 2 (Object.defineProperty)：局限于对象属性的拦截，无法检测对象属性的添加/删除或数组索引的变化。 - Vue 3 (Proxy)：基于 ES6 Proxy 实现，可以拦截对象、数组甚至集合类（Map/Set）的所有操作，性能更优。 2.2 响应式核心流程 响应式的本质是：发布-订阅模式。 2.3 手写一个极简响应式 (Vue 3 风格) --- 3. Composition API：逻辑复用的艺术 Composition API (组合式 API) 是 Vue 3 最重大的变革，它解决了 Options API 在大型项目中代码碎片化的问题。 3.1 ref vs reactive - ref：用于定义基本类型或对象的响应式引用。访问时需要 .value（模板中自动解包）。 - reactive：用于定义复杂的响应式对象。无法处理基本类型，且直接解构会失去响应性。 [!TIP] 推荐在大多数情况下使用 ref，因为它在类型检查和逻辑追踪上更加清晰。 3.2 Composables：自定义组合式函数 通过将逻辑提取到外部函数中，我们可以轻松实现跨组件的代码复用。 --- 4. Vue 3 性能优化黑科技 Vue 3 之所以比 Vue 2 快得多，主要得益于编译器的智能化。 4.1 静态提升 (Static Hoisting) 编译器会将不随状态变化的静态节点提升到渲染函数之外，避免重复创建内存开销。 4.2 Patch Flags (静态标记) 在动态节点上添加补丁标记，让 Diff 算法能够直接跳过静态部分，实现精准更新。 4.3 缓存事件处理函数 (Event Handler Caching) 自动缓存事件回调，避免不必要的组件重新渲染。 --- 5. 工程化生态：Vite & Pinia 5.1 Vite：为什么它快得离谱？ 传统工具 (Webpack) 需要先打包再启动。Vite 利用浏览器原生支持的 ES Modules (ESM)，采取“按需加载”策略，冷启动速度近乎瞬发。 5.2 Pinia：现代化状态管理 Pinia 移出了冗余的 Mutations，支持完整的 TypeScript 自动补全，且天然支持模块化。 --- 6. 组件通信的艺术：从 Props 到跨层级方案 在构建大型应用时，组件间的通信模式决定了代码的可维护性。 6.1 Provide / Inject：摆脱 Prop Drilling 当需要深层传递数据时，Provide/Inject 提供了依赖注入能力。 6.2 外部状态管理：Pinia 与全局单例 虽然 Composition API 可以通过导出单例实现状态共享，但 Pinia 提供了更好的开发者工具支持、SSR 兼容性和插件扩展。 --- 7. 进阶特性：自定义能力 7.1 自定义指令 (Directives) 用于直接操作 DOM。在需要集成第三方库（如地图、图表）时非常有用。 7.2 插件系统 (Plugins) 插件可以为整个应用添加全局功能，如全局组件、指令或注入全局属性。 --- 8. 现代渲染方案：SSR vs SSG 8.1 服务端渲染 (SSR) 由服务器生成 HTML，提高 SEO 和首屏加载速度。Vue 3 的 Server Renderer 提供了极高的生成效率。 8.2 静态站点生成 (SSG) 在构建时生成静态 HTML 页面（如 VitePress）。 [!IMPORTANT] 水合 (Hydration)：由于 SSR 返回的是静态 HTML，Vue 需要在客户端接管这些 DOM 并建立响应式绑定，这个过程称为“水合”。 --- 9. 总结与展望 Vue.js 的真正强大之处在于其平衡性——既有足够低的学习门槛，又提供了支撑大型复杂应用的技术深度。掌握 Composition API 与响应式原理，是迈向 Vue 专家的必经之路。",
+    "tags": []
+  },
+  {
+    "id": "frontend/vue/vue-composition-api",
+    "title": "vue-composition-api",
+    "content": "Composition API 深度解析：setup, ref 与 reactive Vue 3 的组合式 API (Composition API) 是一组 API，允许我们使用导入的函数而不是声明选项来编写 Vue 组件。 1. 为什么需要 Composition API？ - 逻辑复用：相比 mixins，它可以更清晰地组织和重用代码。 - 类型推导：对 TypeScript 的支持更加友好。 - 更小的生产包体积：甚至在生产环境下通过更好的 tree-shaking 减少包大小。 2. ref vs reactive：响应式的两大支柱 这是最基础也最容易混淆的两个 API。 - ref：   - 定义：创建一个响应式且可变的 ref 对象。   - 用法：主要用于原始数据类型（string, number, boolean）或需要整体替换的对象。   - 注意：在内层脚本中需要使用 .value，而在模板中会自动解包。 - reactive：   - 定义：创建一个对象的响应式代理。   - 用法：通常用于定义包含多个属性的复杂对象。   - 注意：解构会丢失响应式。 3. 计算属性与侦听器 - computed：基于其他响应式状态派生的状态。具有缓存性。 - watch：侦听响应式源，并在源变化时执行回调函数。适合执行异步操作或开销较大的操作。 4. 逻辑复用：自定义 Composables 这是 Composition API 最强大的地方。你可以将逻辑提取到外部函数中，并在多个组件间共享。 总结 Composition API 让 Vue 开发更加贴近 JavaScript 原生的编写方式。掌握了 ref 与 reactive 及其背后的 Composables 思想，你就能构建出更具弹性、更易测试的应用。",
+    "tags": []
+  },
+  {
+    "id": "frontend/vue/vue-communication",
+    "title": "vue-communication",
+    "content": "Vue 组件通信与 Pinia 状态管理 在 Vue 应用中，组件之间的数据交互是构建复杂系统的基石。根据组件之间的关系，我们可以选择不同的通信策略。 1. 父子组件通信：Props 与 Emits 这是 Vue 中最基本、最符合单向数据流原则的通信方式。 - defineProps：子组件声明接收父组件的数据。 - defineEmits：子组件向父组件发送自定义事件以传递数据。 2. 跨组件通信：Provide / Inject 当组件嵌套太深，或者需要跨越多个层级传递数据时，provide 与 inject 提供了便捷的方案。 - provide：在父级组件提供数据。 - inject：在任意深度的子组件中接收数据。 [!CAUTION] 尽量不要滥用 Provide/Inject 来替代 Props，因为它会让组件的依赖变得不透明。 3. 全局状态管理：Pinia Pinia 是 Vue 官方推荐的 Store 库。它具有类型安全、极简 API、支持热模块替换等特点。 创建 Store 在组件中使用 结论 - 父传子：通过 Props。 - 子传父：通过 Emits。 - 跨层级：通过 Provide/Inject。 - 多组件共享复杂逻辑/状态：使用 Pinia。 掌握这些通信机制，不仅能让你的应用代码更加健壮，也能在团队协作中极大提升开发效率。",
+    "tags": []
+  },
+  {
+    "id": "frontend/vue/vue-basic",
+    "title": "vue-basic",
+    "content": "Vue 3 核心入门：响应式原理与模板语法 Vue 是一套用于构建用户界面的渐进式框架。Vue 3 引入了更加高效、灵活的特性，其核心思想是数据驱动视图与高灵活性。 1. 声明式渲染 Vue 的核心功能是声明式地渲染数据到 DOM。你只需描述数据是什么，Vue 会自动处理更新。 2. 常用模板指令 Vue 提供了一系列指令（Directives）来快速处理常见的逻辑： - v-bind (:)：响应式地更新 HTML 属性。 - v-on (@)：绑定事件监听器。 - v-if / v-else：条件渲染。 - v-for：基于源数据多次渲染元素或模板块。 3. 响应式原理：Proxy Vue 3 使用了 JavaScript 的 Proxy 对象来实现响应式系统。相比 Vue 2 的 Object.defineProperty，它能够通过底层拦截对象的所有操作（包括动态添加属性、数组索引修改等），从而提供更好的性能和更完整的功能。 4. 生命周期钩子 每个 Vue 组件实例在创建时都会经历一系列初始化步骤： - onMounted：组件挂载到 DOM 后调用。 - onUpdated：组件 DOM 因为响应式数据变化而更新后调用。 - onUnmounted：组件卸载之前调用。 [!TIP] 组合式 API 与生命周期：在 <script setup中，可以直接调用以 on 开头的生命周期钩子，非常直观。 总结 Vue 3 的模板语法非常符合 HTML 的习惯，结合其高效的响应式系统，极大地降低了前端开发的复杂度。",
+    "tags": []
+  },
+  {
+    "id": "frontend/vue/vite",
+    "title": "vite",
+    "content": "这是 vite $1",
+    "tags": []
+  },
+  {
+    "id": "frontend/react/react-styling",
+    "title": "react-styling",
+    "content": "React 生态下的样式解决方案 在 React 中写样式有很多种选择，从全局 CSS 到 CSS-in-JS。每种方案都有其优缺点，选择适合团队和项目的方案至关重要。 1. CSS Modules：经典之选 通过在文件名后缀添加 .module.css，构建工具会自动为类名添加哈希，解决全局命名冲突问题。 - 优点：原生 CSS 语法，学习成本低，性能好（零运行开销）。 2. Styled Components：CSS-in-JS 在 JavaScript 中写样式，利用模板字符串提供强大的样式逻辑处理能力。 - 优点：样式与逻辑紧密耦合，支持 Props 动态修改样式。 - 缺点： runtime 开销大，增加了包体积。 3. Tailwind CSS：当前的潮流 实用优先（Utility-first）的 CSS 框架。通过在 HTML 中组合预定义的类来快速构建 UI。 - 优点：开发效率极高，包体积最小化（PurgeCSS），无需为起类名而烦恼。 总结：如何选型？ [!IMPORTANT] - 希望极致性能且语法传统：选 CSS Modules。 - 追求开发灵活性与样式复用：选 Tailwind CSS。 - 需要高度动态化、逻辑驱动的样式：选 Styled Components。 无论选哪种，核心目标都是为了实现样式的封装性和可维护性。",
+    "tags": []
+  },
+  {
+    "id": "frontend/react/react-router",
+    "title": "react-router",
+    "content": "React Router 路由管理：构建 SPA 的核心 React Router 是 React 生态中构建单页应用（SPA）的事实标准。它允许我们将 URL 与特定的组件关联起来。 1. 基础配置 在现代项目中，我们通常使用 BrowserRouter 来包裹整个应用。 2. 动态路由与参数获取 通过在路径中使用 : 来定义动态部分，并使用 useParams 获取。 3. 编程式导航 除了使用 <Link组件，我们还可以通过 useNavigate 钩子在代码中跳转。 4. 路由守卫与私有路由 [!TIP] 保护你的路由：不要手动在每个页面写判断，而是利用组件复合来实现通用拦截。 总结 React Router 不仅仅是地址栏的映射，它提供的嵌套路由（Outlet）、数据加载器（Loaders）等特性可以让你的应用结构不仅清晰，而且加载性能更佳。",
+    "tags": []
+  },
+  {
+    "id": "frontend/react/react-performance",
+    "title": "react-performance",
+    "content": "React 性能优化实战：渲染控制与代码分割 React 的渲染速度很快，但在处理复杂 UI 或大量数据时，不必要的重复渲染（Re-render）会成为性能瓶颈。本文将探讨如何让你的 React 应用跑得更快。 1. 理解 React 渲染机制 在 React 中，当组件的 props 或 state 发生改变时，组件会重新渲染。 - Reconciliation (调和)：React 通过 Diff 算法比较新旧虚拟 DOM。 - Rerender ≠ DOM Update：渲染是生成虚拟 DOM 的过程，如果虚拟 DOM 没变，React 不会触碰真实的 DOM。但渲染过程本身也是有开销的。 2. 避免不必要的渲染 使用 React.memo 对于纯展示组件，可以使用 React.memo 包裹。它会执行浅比较，只有当 props 改变时才重绘组件。 稳定的引用：useCallback 与 useMemo 传递给子组件的函数或对象，在父组件重新渲染时会生成新的引用，导致 React.memo 失效。 3. 代码分割与懒加载 不要让用户在首次进入页面时就下载整个应用的代码包。 React.lazy & Suspense 4. 列表优化 [!IMPORTANT] 始终提供唯一的 Key：不要使用 index 作为 key，除非列表永远不会被重新排序或过滤。错误的 key 会导致大量的 DOM 销毁与重建。 对于超长列表，推荐使用 虚拟滚动 (Windowing) 技术，如 react-window。 结论 性能优化不是“越早越好”，而应该“按需优化”。优先处理最明显的性能瓶颈，保持代码的简洁性通常比微小的性能提升更重要。",
+    "tags": []
+  },
+  {
+    "id": "frontend/react/react-hooks",
+    "title": "react-hooks",
+    "content": "React Hooks 深度进阶：从入门到实战 React 16.8 引入的 Hooks 标志着 React 开发范式的巨大转型。它允许你在不编写类的情况下使用 state 以及其他的 React 特性。 1. 为什么需要 Hooks？ 在 Hooks 出现之前，React 开发者面临三大痛点： 1. 组件间逻辑复用困难：必须依赖 HOC (高阶组件) 或 Render Props，这会导致“嵌套地狱”。 2. 复杂组件难以理解：生命周期方法（如 componentDidMount）中往往充斥着互不相关的逻辑。 3. 难以理解的 Class：this 的指向问题、繁琐的样板代码使得学习曲线陡峭。 2. 常用 Hooks 详解 useState: 状态驱动 用于在函数组件中声明状态变量。 useEffect: 处理副作用 它是 componentDidMount, componentDidUpdate 和 componentWillUnmount 的合体。 useContext: 跨层级数据共享 轻松读取 context 的值，避免层层传递 props。 useMemo & useCallback: 性能优化 - useMemo：缓存计算结果。 - useCallback：缓存函数定义。 3. Hooks 的使用规则 [!CAUTION] 必须遵守以下两条核心规则： 1. 只在最顶层使用 Hooks：不要在循环、条件或嵌套函数中调用 Hooks。 2. 只在 React 函数中调用 Hooks：在函数组件或自定义 Hooks 中调用。 4. 实战：编写自定义 Hook 自定义 Hook 是逻辑复用的高级手段。它允许我们将组件逻辑提取到可重用的函数中。 结论 Hooks 让 React 组件变得更加函数化和模块化。掌握了自定义 Hook，你就掌握了 React 逻辑复用的精髓。",
+    "tags": []
+  },
+  {
+    "id": "frontend/react/react-forms",
+    "title": "react-forms",
+    "content": "React 表单处理：从受控组件到 React Hook Form 在 React 中处理表单可能非常繁琐，特别是当你需要实时验证、处理数十个字段或关联验证时。 1. 受控组件 (Controlled Components) 这是 React 官方推荐的模式。表单数据由 React 组件的 state 处理。 - 优点：可以随时修改、验证值。 - 缺点：字段多了之后，State 数量激增，每次按键都会导致组件重绘。 2. 非受控组件 (Uncontrolled Components) 数据存储在 DOM 节点中，而不是组件内部。使用 useRef 来从 DOM 节点中获取表单数据。 3. 实战推荐：React Hook Form 当你的表单变得复杂时，手动管理 state 会让你感到崩溃。React Hook Form 通过“非受控”底层实现和“受控”逻辑封装，提供了极简的 API 和高性能体验。 4. 模式选型建议 [!TIP] - 简单搜索框/登录框：使用受控组件。 - 对性能要求极高的庞大表单：使用非受控组件。 - 中大型项目/复杂表单：直接上 React Hook Form，这是目前行业的最优解。 总结 选择正确的表单模式能大幅减少你的样板代码，并提升用户的交互体验。",
+    "tags": []
+  },
+  {
+    "id": "frontend/react/react-communication",
+    "title": "react-communication",
+    "content": "React 组件通信与全局状态管理方案 在构建大型 React 应用时，如何高效地在组件之间传递和共享数据是架构设计的重点。本文将由浅入深介绍几种常见的通信模式。 1. 父子组件通信 这是最基本、最常用的通信方式。 - 父传子：通过 props 直接传递。 - 子传父：父组件向子组件传递一个回调函数，子组件调用该函数将数据传回。 2. 跨层级通信：Context API 当组件嵌套过深时，Props Drilling（属性钻取）会变得非常痛苦。React 提供的 Context API 可以实现“跨级”传输。 使用步骤： 1. React.createContext() 创建 Context。 2. 在顶层组件使用 <Provider value={...}包裹。 3. 在需要数据的子组件使用 useContext(MyContext)。 3. 兄弟组件通信：状态提升 React 本身没有直接的兄弟通信机制。通常的做法是将共享状态“提升”到它们最近的共同父组件中，然后通过 props 下发。 4. 全局状态管理方案 当应用规模增长到一定程度，状态提升和 Context 可能会导致性能瓶颈或代码杂乱。此时可以考虑第三方状态管理库： Zustand (推荐) Zustand 是目前 React 社区最受推崇的轻量级状态管理方案，它的 API 极其简洁。 Redux Toolkit 企业级应用的首选方案，虽然样板代码较多，但在复杂事务和中间件处理上有天然优势。 5. 总结：如何选择？ - 少量层级传递：直接用 Props。 - 全局配置/主题/用户身份：优先使用 Context API。 - 复杂的业务逻辑状态：选择 Zustand (轻量) 或 Redux Toolkit (重型)。 [!TIP] 永远记住：尽量保持状态的局部性。不要为了用状态管理而用状态管理。",
+    "tags": []
+  },
+  {
+    "id": "frontend/react/react-basic",
+    "title": "react-basic",
+    "content": "React 基础入门：核心概念与 JSX 深度解析 React 是当前最流行的前端 UI 库之一，其核心哲学是声明式编程与组件化驱动。本文将带你重新审视 React 的基础，理解其设计的核心思想。 1. React 的哲学：声明式 vs 命令式 在传统的 DOM 操作中，我们需要告诉浏览器“如何执行”： 而在 React 中，我们描述“UI 应该长什么样”，由 React 负责处理底层的变更： 2. JSX 深度解析 JSX 不是 HTML，也不是字符串。它是 JavaScript 的语法扩展。 JSX 的本质 Babel 会将 JSX 转译为 React.createElement() 调用： 为什么使用 JSX？ - 逻辑与标记耦合：在组件化环境下，逻辑与渲染放在一起更易维护。 - 防止 XSS 攻击：React 在渲染前会默认转义所有嵌入的值。 3. 组件：函数 vs 类 随着 React 16.8 Hooks 的发布，函数组件已成为主流。 - 类组件：通过 ES6 Class 定义，拥有 lifecycle 方法，但逻辑复用困难（HOC, Render Props）。 - 函数组件：本质是返回 React 元素的 JavaScript 函数。配合 Hooks 后，它拥有了比类组件更强大的逻辑复用能力。 4. Props 与 State 这是 React 中最核心的两个数据概念。 - Props (属性)：组件的“配置参数”。它是只读的，组件不能修改自己的 Props。 - State (状态)：组件的“私有内存”。当 State 改变时，React 会自动重新渲染组件。 [!IMPORTANT] 单向数据流：在 React 中，数据总是从父组件流向子组件。 总结 理解了 JSX 的本质和组件的属性/状态模型，你就掌握了 React 的地基。接下来的文章我们将深入探讨如何利用 Hooks 赋予函数组件更强大的能力。",
+    "tags": []
+  },
+  {
+    "id": "frontend/react/",
+    "title": "index",
+    "content": "React",
+    "tags": []
+  },
+  {
+    "id": "AIGC/MCP/mcp",
+    "title": "mcp",
+    "content": "这是MCP",
+    "tags": []
+  },
+  {
+    "id": "AIGC/Claude-Code/cc",
+    "title": "cc",
+    "content": "Claude Code 第一章 引言 <LinkCard url=\"https://docs.anthropic.com/zh-CN/docs/claude-code/overview/\" title=\"Claude Code 文档\" description=\"Claude Code 官方文档\" logo=\"https://storage.googleapis.com/organization-image-assets/anthropic-botAvatarDarkSrcUrl-1715877068491.svg\"/ 1.1 为什么不用Cursor了 ​ Cursor是一款基于人工智能的代码编辑器，旨在帮助开发人员编写代码，并于AI进行实时互动，提供写代码建议、错误检测和自动补全功能。支持多种编程语言（如Python、JavaScript、Java等） ​ 现在AI开发工具在开发中的能力和重要性越来越高，Cursor的高能力让很多人趋之若鹜，但是Cursor计价规则的黑箱模式、朝令夕改、费用上调又让开发者们感到无奈且遗憾。 ​ Cursor首先是修改了免费用户的使用权限，从不限制模型到只能使用gpt4.1模型，再到只能使用Auto模式；其次修改了每个月充值了 20美元的Pro用户的权限，首先是从每月500次快速，额度用尽后转为慢速，变成了无次数限制，但是快速慢速混用，可以通过额外付费避免慢速。其实这倒是也能接受，无非是每天可能会有几个任务卡住几分钟或者十几分钟而已。但是最近一次的计费规则修改堪称抽象，Pro用户每月只能发起总价$20的请求。下图是我上个月的用量： ​ 原来这些模型这么贵。那$20想必也是稍纵即逝。这种朝令夕改、不公布计价细节的行为让人无法接受，Cursor是其母公司的唯一产品，其并没有一线大厂的一言九鼎和尊重用户的品质，因此，选择一个合适的替代品十分重要 1.2 为什么使用Claude Code ​ Calude（克劳德）Code 是由 Anthropic 开发的官方 CLI 工具，用于协助用户处理软件工程任务。 Anthropic 发现了Cursor的成功后，开发了Claude Code作为Cursor的竞品。Claude Code是一个革命性的AI编程工具，它将强大的Claude AI直接集成到您的开发环境中。 与传统的代码编辑器插件不同，Claude Code在终端中运行，具有以下特点： - 智能代码理解: 深度理解您的项目结构和代码逻辑 - 自然语言交互: 用普通话描述需求，AI自动执行编程任务 - 全项目上下文: 理解整个代码库的架构和依赖关系 - 安全可靠: 直接连接Anthropic API，所有操作在本地执行 - Git集成: 智能的版本控制操作和历史分析 除此之外，Claude Code还有以下优势： - 原生Claude模型，没有Cursor暗加的种种故意为了耗费提问次数的提示词，能按照需求制定完善的执行计划 - 可按token计费，而不是提问次数。这样无论问题大小尽管提问，按需付费。 - 可接入其他模型，这是很重要的一点，因为只要是符合Anthropic框架的LLM都可以接入Claude Code平台 - 安装简单，调用国内最新模型价格低廉。后续会详细说明安装流程 1.3 应用场景举例 - 项目分析 - 添加功能 - 项目性能分析 第二章 Claude Code的安装 2.1 Kimi K2模型 ​ KimiK2是北京月之暗面科技有限公司于2025年7月11日推出的模型，具备更强代码能力、更擅长通用Agent任务的MoE架构基础模型。Kimi K2继承了DeepSeek-V3的架构，并在后者基础上进行增加专家数量、减少注意力头数量等调整。号称代码能力与Agent能力强大，真实水平虽然并没有达到无比强大，但是做到了很棒的性价比 ​ 关于这里为什么提到了Kimi K2？在经常使用大模型的人眼中月之暗面的Kimi的存在感几乎为0，但是这一次它的新模型遵循Anthropic协议，这代表着其可以顺利接入Claude Code，并且无需任何路由代理，只需要配置好URL与API即可直接使用。 ​ 如果使用Anthropic的Claude服务的话，其实有很多困难的地方，虽然Claude的代码能力在全世界是毋庸置疑的遥遥领先，但是其并没有开放对中国大陆地区的服务，当检测到异常IP的话会给中国用户进行迅速封号（会把充值的钱原路返回）。因此如果需要使用其服务要么就是自己搭建一套稳定的海外中转站，要么从一些国内开发者搭建的镜像平台购买服务。外加上Claude服务的价格也不是很低，也要至少$20一个月。所以如果不是为了极致的性能和开发质量，我们可以接入Kimi K2实现一个向下兼容的替代。 2.2 Kimi 服务的配置 ​ 我们直接来到Moonshot官网获取自己的API key $1 新建API key。妥善保存，key不能二次查看 接下来将Moonshot的url以及API key设置进环境变量的系统变量中。 2.3 Claude Code 的安装 ​ Claude Code的最新版本终于支持Windows系统了，不用再用wsl去进行繁琐的配置了！ 在开始之前，需要确保系统满足以下要求： 2.3.1 必备组件 - Windows 10 版本 2004 及以上（Build 19041+）或 Windows 11 - 管理员权限 - Git 版本控制工具 - Node.js 18+ 版本（推荐使用最新LTS版本） - 稳定的网络连接 - 终端功能，比如使用 iTerm2、Windows Terminal 等（非必须） 2.3.2 安装Git - 下载网址 https://git-scm.com/downloads 首先，下载windows安装软件，按照提示一步一步进行安装即可 其次，安装之后，配置环境变量，为了后面Claude Code使用 CLAUDE_CODE_GIT_BASH_PATH D:\\Program Files\\Git\\bin\\bash.exe（git路径） 最后，安装完成后，打开cmd，输入命令，如果看到版本号，证明安装成功 命令：git --version 2.3.3 安装 Node.js 下载网址：https://nodejs.org/zh-tw/download/current 下载Node.js 18+ 版本，安装提示一步一步进行安装 打开cmd查看版本 2.3.4 安装claude-code 1、通过npm包管理器直接安装 2、安装完成后验证是否安装成功 3、启动网络代理服务 - 在启动之前需要启动一下网络的代理服务，因为如果识别到国内网络环境会禁止登录，详细配置过程参考文档 4、开启代理服务 - 在开启代理服务后还需要在当前终端中输入以下配置，为让cmd也能使用代理服务。 5、启动后首先选择颜色配置 - 根据需要，自行选择 6、登录 - 之后是登陆方式，选择第二种，会自动从环境变量中寻找配置信息登陆进去 - 之后正常来说就可以进行使用了 ​ 如果这里显示并发数限制之类的Error 429报错，则是Kimi那边的问题。Kimi给每个用户提供了15元的免费额度，但是免费用户的并发数限制为1，这很可能导致不能正常使用。需要至少充值50元让用户等级从free到Tier1就可以解决这个问题。 2.4 Claude Code 简单入门 ​ Claude是完全通过终端进行交互的，其中内置了多种工具，比如文件操作、搜索等。可以理解自然语言并转化为相应的命令执行。 启动Claude Code 语言设置 在启动目录，创建文件夹.claude，在.claude文件夹中创建文件config.json 测试 - 比如说让其进入某个工作目录下： ​ 然后可以理解每一句自然语言并执行，其还有很多丰富的用法，比如Calude Code的一些命令、以及可以通过编写一个规范说明文档限制其行为等。以上是最方便简易的使用方式。 第三章 Claude Code 自然语言输入 ​ 在使用 Claude Code 时有一些提升便捷性和功能性的操作，不仅可以通过输入框进行对话式问答，还可以输入内置命令、shell命令、使用编译器运行等多种方式实现效果。 ​ 在初体验使用Claude Code的时候，首先可以仅仅通过自然语言输入你的问题。Claude内置了很多的工具，并且可以通过理解自然语言自动调用工具实现。接下来进行两个任务测试： 1. 读取工作目录下一个项目文件，并生成一份项目分析报告 2. 从零开始创建一个简单项目（复杂项目会消耗巨量的token，并且由于并不是使用的原生Claude模型，所以效果并不是很好） 3.1 通过自然语言生成项目分析报告 ​ 这里我们让其对一个LangChain4j的项目进行一下分析 ​ 分析的过程会比较慢，这和Kimi的充值等级额度有关。目前使用的是只充值50元的 Tier1 等级 有时会询问是否允许操作 在运行的时候其会自动制定计划 制作完毕 3.2 从零开始创建简单项目 ​ Kimi K2的代码能力还是不如Claude、Gemini、ChatGPT等一众国际一线编程模型，这里选择进行一个简单案例演示其效果 ​ 这里首先通过一个简单的工作路径添加命令传入工作目录 输入指令，输入后开始执行 在一段等待时间之后，其完成了该任务，创建了一个前端页面 可以正常运行 <img src=\"./images/image-20250718161538059.png\" alt=\"image-20250718161538059\" style=\"zoom:67%;\" / ​ 对于代码能力的见解： ​ 由于是调用的Kimi K2，所以虽然其编写的前端还不错，但是后端能力实在差强人意，不要对让它帮忙写后端有着太大的希望。如果需要使用Claude的极致功能的话还是建议通过配置纯净IP的手段或者从国内代理购买服务调用原生Claude服务，Claude4模型是目前毋庸置疑的全世界代码能力第一名的大模型，但其并不为中国大陆地区提供服务。其价格也是很高，远超过调用Kimi K2的价格（但由于这边并没有进行过实际的代码能力测试与费用估算，因此不能给出准确的评价） 第四章 Claude Code 的命令行输入 ​ Claude Code 是 Anthropic 推出的终端 AI 编码助手，在交互界面中通过 斜杠命令（Slash Commands）来控制 AI 助手的行为和上下文，合理使用斜杠命令，配合自然语言输入更加顺利完成开发操作。 4.1 Calude Code 执行初始化命令 ​ 在使用Claude Code的时候，一般都会首先添加工作目录。这里一般通过一个斜杠： /来表示输入指令。这里输入如下指令选定工作目录 ​ 在创建工作目录后，使用初始化工具对该目录下的项目进行初始化分析，生成一份CLAUDE.md文档。这个文档的作用是建立上下文，让Claude Code理解当前项目的目标和结构、设置代码风格和一些规则、设置Claude Code的角色。可以在进行初始化之后通过自然语言输入让其修改该初始化说明文档，进而实现所需的设定 现在来到一个已完成的项目下，通过 /init完成项目分析的初始化 - /init – 初始化项目记忆指南 定义与语法： /init 无参数。运行此命令会扫描当前项目代码库，在项目根目录生成一个 CLAUDE.md 文件，作为该项目的知识指南。CLAUDE.md 通常包含项目结构摘要、主要模块说明、依赖列表等内容。 使用场景： 建议首次在新项目中使用 Claude Code时立即执行 /init。这样Claude会自动了解项目的大概结构和背景，相当于给Claude这个AI同事一本项目手册。/init 生成的 CLAUDE.md 可由Claude根据代码自动提取要点，你也可以在Claude的帮助下完善它——比如询问 “请列出项目架构的关键部分写入 CLAUDE.md” 等。完成后，将 CLAUDE.m",
+    "tags": []
+  },
+  {
+    "id": "backend/node/node-basic",
+    "title": "node-basic",
+    "content": "Node.js 基础 Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时环境。 核心概念 1. 事件循环 (Event Loop) Node.js 采用单线程非阻塞 I/O 模型，其核心就是事件循环。 - 阶段: timers, pending callbacks, idle/prepare, poll, check, close callbacks. - 微任务: process.nextTick 和 Promise 回调。 2. 模块系统 - CommonJS: require / module.exports (同步加载)。 - ES Modules (ESM): import / export (静态加载，Node.js 12+ 推荐)。 3. 非阻塞 I/O 通过回调函数、Promise 或 async/await 处理 I/O 操作，而不会阻塞主线程执行。 性能优化建议 - 避免在主线程执行耗时的同步操作。 - 合理利用 Stream 处理大文件，减少内存占用。 - 关键逻辑使用 C++ 插件扩展。",
+    "tags": []
+  },
+  {
+    "id": "backend/node/nestjs",
+    "title": "nestjs",
+    "content": "NestJS 框架 NestJS 是一个用于构建高效、可扩展的 Node.js 服务器端应用程序的框架。 核心特性 NestJS 使用 TypeScript 开发，深受 Angular 启发，采用依赖注入和模块化架构。 1. 模块 (Modules) 每个应用至少有一个根模块，用于组织代码结构。 2. 控制器 (Controllers) 负责处理传入的请求并向客户端返回响应。 3. 提供者 (Providers) 几乎所有的基础类（Service, Repository等）都可以被视为 Provider，通过依赖注入进行解耦。 为什么选择 NestJS？ - 企业级架构: 强制要求代码组织，减少混乱。 - 生态系统: 完美支持 TypeORM, Mongoose, GraphQL 等。 - 易于测试: 依赖注入使单元测试非常简单。",
+    "tags": []
+  },
+  {
+    "id": "backend/python/fastapi",
+    "title": "fastapi",
+    "content": "FastAPI 指南 (Python) FastAPI 是一个现代、快速（高性能）的 Web 框架，用于基于标准 Python 3.6+ 类型提示构建 API。 主要优点 - 速度快: 与 NodeJS 和 Go 并肩（由于 Starlette 和 Pydantic）。 - 减少人为错误: 减少约 40% 的开发错误。 - 自动文档: 基于 OpenAPI 和 JSON Schema 自动生成交互式文档 (Swagger UI)。 核心用法 1. 定义路由 2. 数据验证 (Pydantic) 异步编程 FastAPI 原生支持 async 和 await，非常适合 I/O 密集型应用。",
+    "tags": []
+  },
+  {
+    "id": "backend/lang/api-design",
+    "title": "api-design",
+    "content": "API 设计规范 一份规范的 API 文档能显著降低前后端沟通成本。 RESTful 原则 1. 资源路径 (URIs) 使用名词，避免动词。使用层级结构。 - 正确: GET /v1/users - 错误: GET /v1/getUsers 2. HTTP 方法 - GET: 获取资源 - POST: 创建资源 - PUT: 替换资源 - PATCH: 部分更新 - DELETE: 删除资源 3. 状态码 (Status Codes) - 200 OK: 请求成功。 - 201 Created: 资源创建成功。 - 400 Bad Request: 请求参数错误。 - 401 Unauthorized: 未授权。 - 403 Forbidden: 已授权但无权限。 - 404 Not Found: 资源不存在。 - 500 Internal Server Error: 服务器内部错误。 安全性建议 - HTTPS: 必须全程加密。 - 认证: 使用 JWT 或 OAuth2.0。 - 过滤: 严格校验输入，防止 SQL 注入和 XSS。 - 限流: 防止恶意暴力请求。",
+    "tags": []
+  },
+  {
+    "id": "backend/database/mongodb-guide",
+    "title": "mongodb-guide",
+    "content": "MongoDB 文档数据库指南 MongoDB 是一个基于分布式文件存储的开源数据库系统，是 NoSQL 数据库的代表。 1. 核心概念 - Document (文档): 对应关系型数据库的 Row，使用 BSON 格式。 - Collection (集合): 对应关系型数据库的 Table。 - Schema-less (无模式): 允许在同一个集合中存储不同结构的文档。 2. 数据建模建议 - 冗余 (Denormalization) vs 引用 (Reference):   - 频繁读取、数据量小 -嵌套在同一个文档中。   - 数据量大、更新频繁 -使用 _id 引用并分表存储。 - 上限集合 (Capped Collections): 适用于固定大小的日志存储。 3. 常用操作 4. 适用场景 - 内容管理系统 (CMS)。 - 实时分析平台。 - 元数据存储。",
+    "tags": []
+  },
+  {
+    "id": "backend/database/database-transactions",
+    "title": "database-transactions",
+    "content": "深入理解数据库事务 事务是数据库区别于文件系统的核心特性，确保了数据的一致性和完整性。 1. ACID 特性 - Atomicity (原子性): 事务是最小的执行单位，要么全部成功，要么全部失败回滚。 - Consistency (一致性): 执行前后数据库的逻辑状态一致。 - Isolation (隔离性): 并发执行的事务之间互不干扰。 - Durability (持久性): 事务一旦提交，其结果就是永久性的。 2. 并发问题与隔离级别 | 隔离级别         |  脏读  | 不可重复读 |  幻读  | | :--------------- | :----: | :--------: | :----: | | Read Uncommitted |  可能  |    可能    |  可能  | | Read Committed   | 不可能 |    可能    |  可能  | | Repeatable Read  | 不可能 |   不可能   |  可能  | | Serializable     | 不可能 |  不不可能  | 不可能 | [!NOTE] MySQL 默认隔离级别是 Repeatable Read，通过 MVCC 和 Next-Key Lock 极大程度规避了幻读。 3. 分布式事务 在微服务架构中，一个业务逻辑可能跨越多个数据库。 - 2PC (两阶段提交): 强一致性，但性能较差，存在单点故障风险。 - TCC (Try-Confirm-Cancel): 业务侵入性强，柔性事务。 - Saga: 最终一致性，通过补偿机制解决失败情况。 - 基于消息的最大努力通知: 适用于对实时性要求不高的场景。",
+    "tags": []
+  },
+  {
+    "id": "backend/lang/rust/",
+    "title": "index",
+    "content": "Rust 语言指南 Rust 是一门专注于安全、并发和性能的现代系统编程语言。 核心支柱 - 内存安全: 无需垃圾回收 (GC)，通过所有权系统在编译期消除内存错误。 - 无畏并发: 编译器确保并发代码没有数据竞争。 - 极致性能: 与 C/C++ 相当的零成本抽象。 1. 所有权系统 (Ownership) 这是 Rust 最独特的特性： - 每个值都有一个所有者。 - 同一时刻只能有一个所有者。 - 当所有者离开作用域，值会被自动销毁。 2. 借用与生命周期 - 引用: 分为不可变引用 (&T) 和可变引用 (&mut T)。 - 规则: 在同一作用域内，要么只能有一个可变引用，要么可以有多个不可变引用。 3. 生态系统：Cargo Cargo 是 Rust 的构建工具和包管理器，被公认为业界标杆。 --- [!IMPORTANT] Rust 的学习曲线虽然陡峭，但它带来的系统稳定性和性能收益是巨大的。",
+    "tags": []
+  },
+  {
+    "id": "backend/lang/go/",
+    "title": "index",
+    "content": "Go 语言指南 Go（又称 Golang）是由 Google 开发的一种静态强类型、编译型语言。它以简洁、高效和原生支持并发著称。 为什么选择 Go？ - 极简主义: 语法简洁，易于学习和维护。 - 原生并发: 通过 Goroutine 和 Channel 实现轻量级并发，非常适合高性能服务端开发。 - 静态链接: 编译后生成单个二进制文件，部署极致简单。 - 丰富的标准库: 内置了强大的网络编程、加密和编码处理库。 学习路径 1. $1 2. Go 常用框架 (Gin/Gorm) (即将推出) 3. 微服务架构 (go-zero/Kratos) (即将推出) --- [!TIP] Go 的哲学是 \"少即是多\" (Less is more)。",
+    "tags": []
+  },
+  {
+    "id": "backend/lang/go/go-base",
+    "title": "go-base",
+    "content": "Go 语言基础与并发 深入理解 Go 语言的核心语法与其引以为傲的并发模型。 1. 核心语法要点 - 变量与类型: 强类型，支持类型推断。 - 结构体 (Structs): Go 没用类，通过结构体和方法接收者实现面向对象特性。 - 接口 (Interfaces): 非侵入式接口（Duck Typing），极大地增强了代码解耦。 - 错误处理: 显式返回 error，崇尚“失败即数据”的理念。 2. 并发模型：CSP Go 实现了 Communicating Sequential Processes (CSP) 模型。 Goroutine (协程) 轻量级的用户态线程，启动成本极低。 Channel (通道) 不要通过共享内存来通信，而要通过通信来共享内存。 3. 标准库亮点 - net/http: 构建高性能 Web 服务。 - encoding/json: 极致简洁的序列化。 - context: 优雅地控制请求生命周期与超时。",
+    "tags": []
+  },
+  {
+    "id": "backend/database/redis/redis-guide",
+    "title": "redis-guide",
+    "content": "Redis 应用实践 Redis 是内存中的数据结构存储系统，通常用作数据库、缓存和消息中间件。 核心数据结构 1. String (字符串): 最基础，用于 Token、简单缓存。 2. Hash (哈希): 存储对象结构。 3. List (列表): 简单队列、消息列表。 4. Set (集合): 无序去重，求交并集。 5. Sorted Set (有序集合): 排行榜、限流。 典型应用场景 1. 缓存实现 减轻数据库压力，注意缓存穿透、击穿和雪崩。 2. 分布式锁 使用 SET key value NX PX milliseconds 实现原子加锁。 3. 限流 在高并发接口中使用，如每秒最多 100 次请求。 持久化 - RDB: 快照，每隔一段时间保存一次（适合备份）。 - AOF: 追加日志，记录写指令（安全性更高）。",
+    "tags": []
+  },
+  {
+    "id": "backend/database/postgresql/postgresql-search-pl",
+    "title": "postgresql-search-pl",
+    "content": "PostgreSQL 全文搜索与 PL/pgSQL Postgres 不仅仅是一个关系型数据库，它的编程能力非常强大。 1. 原生全文搜索 (Full Text Search) 无需依赖 ElasticSearch，Postgres 内置了强大的分词与匹配功能。 - TSVector: 存储分词后的词袋。 - TSQuery: 定义查询逻辑。 2. PL/pgSQL 存储过程 支持复杂的业务逻辑在数据库内部执行。 3. 触发器 (Triggers) 自动在 INSERT、UPDATE 或 DELETE 发生前/后执行特定逻辑，确保持久性的业务规则。 4. 索引优化进阶 - Partial Indexes (部分索引): 只对满足条件的子集建立索引，减小开销。 - Expression Indexes (表达式索引): 对函数计算后的结果建立索引。",
+    "tags": []
+  },
+  {
+    "id": "backend/database/postgresql/postgresql-ha",
+    "title": "postgresql-ha",
+    "content": "PostgreSQL 高可用与扩展性 PostgreSQL 提供了多种机制来确保服务的持续可用性。 1. 复制机制 - 流复制 (Streaming Replication): 物理级别复制，延迟低，分为同步和异步。 - 逻辑复制 (Logical Replication): 支持跨大版本、跨库复制，灵活性更高。 2. 自动故障转移工具 - Patroni: 目前最主流的云原生解决方案，配合 Etcd/Consul 实现选举。 - Repmgr: 传统的轻量级命令行工具。 3. 连接池转发 - PgBouncer: 轻量级、极低开销，有效解决 Postgres 进程创建成本高的问题。 4. 读写分离实践 通过应用层切换或使用 HAProxy 配合监控健康检查，实现请求的精准分发。",
+    "tags": []
+  },
+  {
+    "id": "backend/database/postgresql/postgresql-basics",
+    "title": "postgresql-basics",
+    "content": "PostgreSQL 进阶指南 PostgreSQL 是世界上最先进的开源关系型数据库，以其强大的功能和标准兼容性著称。 1. 核心特性 - 复杂类型支持: 完美支持 JSONB、数组、Hstore 等非结构化数据。 - 并发控制 (MVCC): 读写互不阻塞，极大地提高了并发性能。 - 扩展性: 支持自定义函数 (PL/pgSQL, Python, Javascript) 和 插件 (PostGIS, TimescaleDB)。 2. 高级查询示例 JSONB 操作 PostgreSQL 的 jsonb 类型支持索引，性能优于传统 JSON。 窗口函数 (Window Functions) 用于处理复杂的报表统计。 3. 性能优化技巧 - 使用 GIN 索引: 提升全文本搜索和 JSONB 查询速度。 - 分区表: 针对大数据量表，按时间或地域进行物理分割。 - EXPLAIN ANALYZE: 查看真实的执行计划和耗时。",
+    "tags": []
+  },
+  {
+    "id": "backend/database/mysql/mysql高可用",
+    "title": "mysql高可用",
+    "content": "MySQL 高可用架构与集群 在生产环境中，单节点的数据库无法满足可用性和扩展性要求。 1. 主从复制 (Master-Slave) - 异步复制: 性能最高，但在宕机时可能丢失数据。 - 半同步复制 (Semi-Sync): 至少一个从库收到数据并写入 Relay Log 后返回成功。 - 并行复制: 提高从库回放能力，减轻延迟。 2. 高可用方案 - MHA (Master High Availability): 自动主库故障转移，相对成熟。 - MGR (MySQL Group Replication): 官方基于 Paxos 协议提供的强一致性插件，支持多主模式。 - Keepalived + VIP: 通过虚拟 IP 漂移实现简单的故障切换。 3. 读写分离与负载均衡 - Mycat / ShardingSphere: 代理层实现，透明度高。 - ProxySQL: 专门针对 MySQL 的高性能协议级代理，支持查询缓存优化。",
+    "tags": []
+  },
+  {
+    "id": "backend/database/mysql/mysql锁和日志",
+    "title": "mysql锁和日志",
+    "content": "MySQL 锁机制与日志系统 深入理解 InnoDB 的并发控制与崩溃恢复机制。 1. 锁机制 (Locks) MySQL 的锁是为了解决并发事务带来的数据一致性问题。 行级锁 (Row Locks) - Record Lock (记录锁): 锁定单条索引记录。 - Gap Lock (间隙锁): 锁定索引记录之间的间隙，防止幻读。 - Next-Key Lock (临键锁): 记录锁与间隙锁的组合。 表级锁 (Table Locks) - 意向锁 (Intention Locks): 提高表锁与行锁共存时的检测效率。 - MDL (元数据锁): 防止 DDL 语句导致 DML 语句失效。 2. 三大日志系统 - Redo Log (重做日志): 物理日志，记录“在某个数据页做了什么修改”，确保持久性 (Durability)。 - Undo Log (回滚日志): 逻辑日志，记录数据的反向操作，确保原子性 (Atomicity) 和支持 MVCC。 - Binlog (归档日志): 服务层产生的逻辑日志，用于数据同步、备份和恢复。 3. 两阶段提交 为了保证 Redo Log 和 Binlog 的逻辑一致性，MySQL 采用两阶段提交机制。 1. Prepare 阶段: 写入 Redo Log 并标记为 prepare。 2. Commit 阶段: 写入 Binlog，随后将 Redo Log 标记为 commit。",
+    "tags": []
+  },
+  {
+    "id": "backend/database/mysql/mysql优化",
+    "title": "mysql优化",
+    "content": "MySQL 优化指南 性能优化的核心在于减少磁盘 I/O 和 CPU 的计算负担。 1. 索引优化 (最重要) - 选择合适的索引: B+Tree 是默认类型，适用于范围查询。 - 最左匹配原则: 多列索引时，查询需从左向右匹配。 - 覆盖索引: 只通过索引就能获取所有数据，无需“回表”。 - 避免索引失效:   - 不要在索引列上做运算（如 year(create_time) = 2023）。   - 避免模糊查询以 % 开头。 2. 查询优化 - 避免 SELECT : 只取需要的字段。 - 使用 EXPLAIN: 分析查询计划，查看是否命中索引。 - 分页优化: LIMIT 1000000, 10 会扫描前一百万行，改用游标或 ID 范围。 3. 架构优化 - 读写分离: 主库写，从库读。 - 分库分表: 应对海量数据（如超过 500 万行或文件大小超过 2GB）。",
+    "tags": []
+  },
+  {
+    "id": "backend/database/mysql/",
+    "title": "index",
+    "content": "这是mysql 这是mysql 这是mysql 这是mysql",
+    "tags": []
+  }
+]

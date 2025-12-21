@@ -18,3 +18,7 @@ declare module '~pages' {
   const routes: RouteRecordRaw[]
   export default routes
 }
+
+declare module 'markdown-it-task-lists'
+declare module 'markdown-it-footnote'
+declare module 'markdown-it-github-alerts'

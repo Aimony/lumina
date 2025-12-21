@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node scripts/generate-search-index.js && vite",
+    "build": "node scripts/generate-search-index.js && vite build",
     "tsc": "vue-tsc -b",
     "preview": "vite preview",
     "commit": "git-cz",
@@ -43,6 +43,8 @@
     "cz-git": "^1.12.0",
     "eslint": "^9.39.2",
     "eslint-plugin-vue": "^10.6.2",
+    "glob": "^13.0.0",
+    "gray-matter": "^4.0.3",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "markdown-it-anchor": "^9.2.0",
@@ -51,9 +53,11 @@
     "markdown-it-task-lists": "^2.1.1",
     "postcss": "^8.5.6",
     "prettier": "^3.7.4",
+    "reading-time": "^1.5.0",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
     "vite-plugin-pages": "^0.33.2",
+    "vite-plugin-sitemap": "^0.8.2",
     "vue-tsc": "^3.1.4"
   },
   "lint-staged": {

@@ -11,6 +11,10 @@ import { default as githubAlerts } from 'markdown-it-github-alerts'
 import { linkCardPlugin } from './src/plugins/markdown-it-link-card'
 import { codeEnhancementsPlugin } from './src/plugins/markdown-it-code-enhancements'
 import { imageLazyPlugin } from './src/plugins/markdown-it-image-lazy'
+import Sitemap from 'vite-plugin-sitemap'
+import matter from 'gray-matter'
+import fs from 'node:fs'
+import readingTime from 'reading-time'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -59,13 +63,31 @@ export default defineConfig({
       extendRoute(route) {
         // 为 Markdown 页面添加元数据
         if (route.component.endsWith('.md')) {
+          const filePath = resolve(__dirname, route.component.slice(1))
+          const content = fs.readFileSync(filePath, 'utf-8')
+          const { data, content: markdownBody } = matter(content)
+          const stats = readingTime(markdownBody)
+
           return {
             ...route,
-            meta: { layout: 'doc' }
+            meta: {
+              layout: 'doc',
+              ...data,
+              readingTime: stats.text,
+              wordCount: stats.words,
+              // 确保 tags 是数组
+              tags: Array.isArray(data.tags) ? data.tags : data.tags ? [data.tags] : []
+            }
           }
         }
         return route
       }
+    }),
+    Sitemap({
+      hostname: 'https://lumina.site', // TODO: Replace with actual hostname
+      dynamicRoutes: [
+        // 动态路由如果需要生成 sitemap 可以在这里配置
+      ]
     })
   ],
   resolve: {
