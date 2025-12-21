@@ -69,7 +69,8 @@
 
 /* Code Blocks (Shiki) */
 /* Code Blocks (Shiki) */
-.markdown-body pre.shiki {
+/* Code Blocks (Shiki) */
+.markdown-body pre {
   position: relative;
   padding: 40px 24px 20px 24px;
   border-radius: 8px;
@@ -83,7 +84,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.markdown-body pre.shiki::before {
+.markdown-body pre::before {
   content: '';
   position: absolute;
   top: 14px;
@@ -97,7 +98,7 @@
     40px 0 0 #27ca40;
 }
 
-html.dark .markdown-body pre.shiki {
+html.dark .markdown-body pre {
   background-color: #121212 !important;
   /* Force dark bg for dark mode */
   border: 1px solid var(--vp-c-divider);
