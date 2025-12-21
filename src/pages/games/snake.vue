@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import SnakeGame from '@/pages/games/components/SnakeGame.vue'
+import FloatingMenu from '@/components/FloatingMenu.vue'
 </script>
 
 <template>
   <div class="game-page">
+    <FloatingMenu />
     <div class="page-header">
       <h1 class="title">Retro Snake</h1>
       <p class="subtitle">Use WASD or Arrow keys to move. Press Space to play.</p>
