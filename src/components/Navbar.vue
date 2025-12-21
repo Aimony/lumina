@@ -149,6 +149,7 @@ const hideDropdown = () => {
   align-items: center;
   height: 100%;
   padding: 0 24px;
+  padding-right: 65px;
 }
 
 .navbar-title {

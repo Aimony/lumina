@@ -4,6 +4,7 @@ import Sidebar from '@/components/Sidebar.vue'
 import TOC from '@/components/TOC.vue'
 import Navbar from '@/components/Navbar.vue'
 import ImageViewer from '@/components/ImageViewer.vue'
+import BackToTopCat from '@/components/BackToTopCat.vue'
 import { useSidebar } from '@/composables/useSidebar'
 import { useTOC } from '@/composables/useTOC'
 import { useLinkCards } from '@/composables/useLinkCards'
@@ -79,6 +80,9 @@ provide('headings', headings)
 
     <!-- 图片查看器 -->
     <ImageViewer :image="currentImage" @close="hide" />
+
+    <!-- 小猫回到顶部 -->
+    <BackToTopCat />
   </div>
 </template>
 
