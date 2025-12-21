@@ -69,21 +69,52 @@
 
 /* Code Blocks (Shiki) */
 /* Code Blocks (Shiki) */
-/* Code Blocks (Shiki) */
+
+/* Wrapper */
+.code-block-wrapper {
+  margin: 16px 0;
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-brand-soft);
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html.dark .code-block-wrapper {
+  background-color: #121212;
+  border-color: var(--vp-c-divider);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Header */
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  padding: 0 16px;
+  background-color: rgba(125, 125, 125, 0.04);
+  border-bottom: 1px solid transparent;
+  user-select: none;
+}
+
+html.dark .code-block-header {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
 /* Mac-style controls */
 .mac-controls {
-  position: absolute;
-  top: 12px;
-  left: 16px;
   display: flex;
   gap: 8px;
-  z-index: 4;
+  align-items: center;
 }
 
 .mac-icon {
   width: 12px;
   height: 12px;
   border-radius: 50%;
+  transition: transform 0.2s ease;
 }
 
 .mac-icon-red {
@@ -92,14 +123,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s;
 }
 
 .mac-icon-red:hover {
   opacity: 0.8;
+  transform: scale(1.1);
 }
 
-/* Hover icon for red dot */
+/* Toggle Icon in Red Dot */
 .mac-icon-red::before {
   content: '';
   opacity: 0;
@@ -110,188 +141,87 @@
   background-repeat: no-repeat;
   background-position: center;
   transition: opacity 0.2s;
-  transform: translateY(1px); /* optical adjustment */
-}
-/* When collapsed, rotate the arrow */
-.code-block-wrapper.collapsed .mac-icon-red::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(0,0,0,0.6)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
-  transform: translateY(0);
+  transform: translateY(0.5px);
 }
 
 .mac-icon-red:hover::before {
   opacity: 1;
 }
 
+.code-block-wrapper.collapsed .mac-icon-red::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(0,0,0,0.6)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+  transform: translateX(0.5px);
+}
+
 .mac-icon-yellow {
   background-color: #fdbc40;
 }
-
 .mac-icon-green {
   background-color: #27ca40;
 }
 
-.markdown-body pre {
-  position: relative;
-  padding: 40px 24px 20px 24px;
-  border-radius: 8px;
-  margin: 0;
-  overflow-x: auto;
-  font-size: 0.875em;
-  line-height: 1.5;
-  border: 1px solid var(--vp-c-brand-soft);
-  background-color: #ffffff !important;
-  /* Force light bg for light mode */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition:
-    max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.3s ease,
-    padding 0.3s ease,
-    margin 0.3s ease;
-  max-height: 3000px; /* Arbitrary large height for transition */
-  opacity: 1;
-}
-
-/* Remove old dot implementation from pre::before */
-.markdown-body pre::before {
-  display: none;
-}
-
-html.dark .markdown-body pre {
-  background-color: #121212 !important;
-  /* Force dark bg for dark mode */
-  border: 1px solid var(--vp-c-divider);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* Collapsed State */
-.code-block-wrapper.collapsed pre {
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  overflow: hidden;
-  opacity: 0;
-  border: none;
-}
-
-.code-block-wrapper.collapsed {
-  /* Minimal height to show the header dots and buttons */
-  height: 40px;
-  border-radius: 8px;
-  border: 1px solid var(--vp-c-brand-soft);
-  background-color: var(--vp-c-bg-alt);
-  margin-bottom: 16px;
-  position: relative;
-}
-
-html.dark .code-block-wrapper.collapsed {
-  border-color: var(--vp-c-divider);
-  background-color: #1e1e20;
-}
-
-/* Rotate fold icon when collapsed - Handled in dot pseudo-element now */
-/* .code-block-wrapper.collapsed .code-fold-btn .fold-icon {
-  transform: rotate(-90deg);
-}
-
-.code-block-wrapper .code-fold-btn .fold-icon {
-  transition: transform 0.3s ease;
-} */
-
-/* Let Shiki handle text colors, but ensure background consistency */
-/* The Shiki dual-theme setup usually handles text colors via CSS variables or specific classes. 
-   If using Vitesse themes, they are generally good. */
-
-.markdown-body ul {
-  padding-left: 1.25rem;
-  list-style-type: disc;
-}
-
-.markdown-body ol {
-  padding-left: 1.25rem;
-  list-style-type: decimal;
-}
-
-.markdown-body blockquote {
-  margin: 1rem 0;
-  border-left: 3px solid var(--vp-c-brand-1);
-  background-color: var(--vp-c-brand-soft);
-  padding: 1rem;
-  color: var(--vp-c-text-2);
-  border-radius: 4px;
-}
-
-.markdown-body table {
-  display: block;
-  border-collapse: collapse;
-  margin: 1rem 0;
-  overflow-x: auto;
-}
-
-.markdown-body tr {
-  background-color: var(--vp-c-bg);
-  border-top: 1px solid var(--vp-c-divider);
-}
-
-.markdown-body tr:nth-child(2n) {
-  background-color: var(--vp-c-bg-alt);
-}
-
-.markdown-body th,
-.markdown-body td {
-  border: 1px solid var(--vp-c-divider);
-  padding: 0.6em 1em;
-}
-
-.markdown-body th {
-  font-weight: 600;
-  background-color: var(--vp-c-bg-alt);
-}
-
-/* Code Block Wrapper */
-.code-block-wrapper {
-  position: relative;
-  margin: 16px 0;
-}
-
-.code-block-wrapper:hover .code-copy-btn {
-  opacity: 1;
+/* Right Side (Lang + Copy) */
+.code-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .code-lang {
-  position: absolute;
-  top: 10px;
-  right: 16px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--vp-c-text-2);
-  user-select: none;
-  z-index: 2;
-  transition:
-    color 0.25s,
-    opacity 0.25s;
+  opacity: 0.8;
 }
 
 .code-copy-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 3;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  background-color: var(--vp-c-bg-alt);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background-color: transparent;
   color: var(--vp-c-text-2);
-  opacity: 0;
   cursor: pointer;
-  transition:
-    opacity 0.25s,
-    background-color 0.25s;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  opacity: 0.6;
 }
 
-/* .code-fold-btn removed */
+.code-copy-btn:hover {
+  background-color: var(--vp-c-bg-alt);
+  border-color: var(--vp-c-divider);
+  opacity: 1;
+  color: var(--vp-c-brand-1);
+}
+
+/* Content Area & Animation */
+.code-block-content {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.code-block-wrapper.collapsed .code-block-content {
+  grid-template-rows: 0fr;
+}
+
+.markdown-body pre {
+  margin: 0;
+  padding: 16px 24px 20px 24px;
+  overflow-x: auto;
+  min-height: 0;
+  background-color: transparent !important;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  font-size: 0.9em;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.code-block-wrapper.collapsed pre {
+  opacity: 0;
+}
