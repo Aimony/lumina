@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
+import YearProgress from '@/components/YearProgress.vue'
 import { navItems } from '@/config/nav'
 import { useDocsTree, type DocTreeNode } from '@/composables/useDocsTree'
 
@@ -54,6 +55,7 @@ const hideDropdown = () => {
 
 <template>
   <header class="navbar">
+    <YearProgress />
     <div class="navbar-wrapper">
       <div class="navbar-container">
         <!-- Left: Slot for Toggle & Logo -->
