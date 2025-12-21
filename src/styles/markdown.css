@@ -70,6 +70,66 @@
 /* Code Blocks (Shiki) */
 /* Code Blocks (Shiki) */
 /* Code Blocks (Shiki) */
+/* Mac-style controls */
+.mac-controls {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 4;
+}
+
+.mac-icon {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.mac-icon-red {
+  background-color: #fc605c;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.mac-icon-red:hover {
+  opacity: 0.8;
+}
+
+/* Hover icon for red dot */
+.mac-icon-red::before {
+  content: '';
+  opacity: 0;
+  width: 6px;
+  height: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(0,0,0,0.6)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: opacity 0.2s;
+  transform: translateY(1px); /* optical adjustment */
+}
+/* When collapsed, rotate the arrow */
+.code-block-wrapper.collapsed .mac-icon-red::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(0,0,0,0.6)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+  transform: translateY(0);
+}
+
+.mac-icon-red:hover::before {
+  opacity: 1;
+}
+
+.mac-icon-yellow {
+  background-color: #fdbc40;
+}
+
+.mac-icon-green {
+  background-color: #27ca40;
+}
+
 .markdown-body pre {
   position: relative;
   padding: 40px 24px 20px 24px;
@@ -82,20 +142,18 @@
   background-color: #ffffff !important;
   /* Force light bg for light mode */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition:
+    max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease,
+    padding 0.3s ease,
+    margin 0.3s ease;
+  max-height: 3000px; /* Arbitrary large height for transition */
+  opacity: 1;
 }
 
+/* Remove old dot implementation from pre::before */
 .markdown-body pre::before {
-  content: '';
-  position: absolute;
-  top: 14px;
-  left: 16px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #fc605c;
-  box-shadow:
-    20px 0 0 #fdbc40,
-    40px 0 0 #27ca40;
+  display: none;
 }
 
 html.dark .markdown-body pre {
@@ -104,6 +162,42 @@ html.dark .markdown-body pre {
   border: 1px solid var(--vp-c-divider);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
+
+/* Collapsed State */
+.code-block-wrapper.collapsed pre {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  overflow: hidden;
+  opacity: 0;
+  border: none;
+}
+
+.code-block-wrapper.collapsed {
+  /* Minimal height to show the header dots and buttons */
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-brand-soft);
+  background-color: var(--vp-c-bg-alt);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+html.dark .code-block-wrapper.collapsed {
+  border-color: var(--vp-c-divider);
+  background-color: #1e1e20;
+}
+
+/* Rotate fold icon when collapsed - Handled in dot pseudo-element now */
+/* .code-block-wrapper.collapsed .code-fold-btn .fold-icon {
+  transform: rotate(-90deg);
+}
+
+.code-block-wrapper .code-fold-btn .fold-icon {
+  transition: transform 0.3s ease;
+} */
 
 /* Let Shiki handle text colors, but ensure background consistency */
 /* The Shiki dual-theme setup usually handles text colors via CSS variables or specific classes. 
@@ -200,12 +294,4 @@ html.dark .markdown-body pre {
   border: 1px solid var(--vp-c-divider);
 }
 
-.code-copy-btn:hover {
-  background-color: var(--vp-c-bg);
-  color: var(--vp-c-brand-1);
-}
-
-.code-copy-btn svg {
-  width: 16px;
-  height: 16px;
-}
+/* .code-fold-btn removed */
