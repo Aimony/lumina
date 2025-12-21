@@ -19,5 +19,6 @@ export const navItems: NavItemConfig[] = [
   { text: '贪吃蛇', to: '/games/snake' },
   { text: '前端', basePath: '/frontend' },
   { text: '后端', basePath: '/backend' },
-  { text: 'AIGC', basePath: '/AIGC' }
+  { text: 'AIGC', basePath: '/AIGC' },
+  { text: '示例', basePath: '/example' }
 ]

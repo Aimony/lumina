@@ -225,3 +225,234 @@ html.dark .code-block-header {
 .code-block-wrapper.collapsed pre {
   opacity: 0;
 }
+
+/* ============================================
+   GitHub Flavored Markdown Extensions
+   ============================================ */
+
+/* Task Lists (任务列表) */
+.markdown-body .task-list-item {
+  list-style: none;
+  position: relative;
+}
+
+.markdown-body .task-list-item-checkbox {
+  position: absolute;
+  left: -1.5em;
+  top: 0.25em;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--vp-c-brand-1);
+  cursor: pointer;
+}
+
+.markdown-body ul.contains-task-list {
+  padding-left: 2em;
+}
+
+/* Strikethrough (删除线) - markdown-it 默认支持 ~~text~~ */
+.markdown-body del {
+  color: var(--vp-c-text-3);
+  text-decoration: line-through;
+}
+
+/* Footnotes (脚注) */
+.markdown-body .footnotes {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--vp-c-divider);
+  font-size: 0.9em;
+  color: var(--vp-c-text-2);
+}
+
+.markdown-body .footnotes-sep {
+  display: none;
+}
+
+.markdown-body .footnotes ol {
+  padding-left: 1.5em;
+}
+
+.markdown-body .footnote-ref {
+  font-size: 0.75em;
+  vertical-align: super;
+  text-decoration: none;
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+}
+
+.markdown-body .footnote-ref::before {
+  content: '[';
+}
+
+.markdown-body .footnote-ref::after {
+  content: ']';
+}
+
+.markdown-body .footnote-backref {
+  font-size: 0.8em;
+  margin-left: 0.25em;
+  text-decoration: none;
+  color: var(--vp-c-brand-1);
+}
+
+/* Tables (表格) */
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  display: block;
+  overflow-x: auto;
+}
+
+.markdown-body thead {
+  background-color: var(--vp-c-bg-alt);
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: 0.75em 1em;
+  border: 1px solid var(--vp-c-divider);
+  text-align: left;
+}
+
+.markdown-body th {
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.markdown-body tr:nth-child(even) {
+  background-color: var(--vp-c-bg-soft);
+}
+
+/* Anchor Links (标题锚点) */
+.markdown-body .header-anchor {
+  float: left;
+  margin-left: -1.25em;
+  padding-right: 0.5em;
+  font-size: 0.85em;
+  opacity: 0;
+  text-decoration: none;
+  color: var(--vp-c-brand-1);
+  transition: opacity 0.2s;
+}
+
+.markdown-body h1:hover .header-anchor,
+.markdown-body h2:hover .header-anchor,
+.markdown-body h3:hover .header-anchor,
+.markdown-body h4:hover .header-anchor,
+.markdown-body h5:hover .header-anchor,
+.markdown-body h6:hover .header-anchor {
+  opacity: 1;
+}
+
+/* GitHub Alerts (告警块) */
+.markdown-body .markdown-alert {
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+
+.markdown-body .markdown-alert-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body .markdown-alert-title svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+/* NOTE - 蓝色 */
+.markdown-body .markdown-alert-note {
+  background-color: rgba(56, 139, 253, 0.1);
+  border-color: #388bfd;
+}
+
+.markdown-body .markdown-alert-note .markdown-alert-title {
+  color: #388bfd;
+}
+
+/* TIP - 绿色 */
+.markdown-body .markdown-alert-tip {
+  background-color: rgba(46, 160, 67, 0.1);
+  border-color: #2ea043;
+}
+
+.markdown-body .markdown-alert-tip .markdown-alert-title {
+  color: #2ea043;
+}
+
+/* IMPORTANT - 紫色 */
+.markdown-body .markdown-alert-important {
+  background-color: rgba(130, 80, 223, 0.1);
+  border-color: #8250df;
+}
+
+.markdown-body .markdown-alert-important .markdown-alert-title {
+  color: #8250df;
+}
+
+/* WARNING - 黄色 */
+.markdown-body .markdown-alert-warning {
+  background-color: rgba(187, 128, 9, 0.1);
+  border-color: #bb8009;
+}
+
+.markdown-body .markdown-alert-warning .markdown-alert-title {
+  color: #bb8009;
+}
+
+/* CAUTION - 红色 */
+.markdown-body .markdown-alert-caution {
+  background-color: rgba(218, 54, 51, 0.1);
+  border-color: #da3633;
+}
+
+.markdown-body .markdown-alert-caution .markdown-alert-title {
+  color: #da3633;
+}
+
+/* Dark mode adjustments for alerts */
+html.dark .markdown-body .markdown-alert-note {
+  background-color: rgba(56, 139, 253, 0.15);
+}
+
+html.dark .markdown-body .markdown-alert-tip {
+  background-color: rgba(46, 160, 67, 0.15);
+}
+
+html.dark .markdown-body .markdown-alert-important {
+  background-color: rgba(130, 80, 223, 0.15);
+}
+
+html.dark .markdown-body .markdown-alert-warning {
+  background-color: rgba(187, 128, 9, 0.15);
+}
+
+html.dark .markdown-body .markdown-alert-caution {
+  background-color: rgba(218, 54, 51, 0.15);
+}
+
+/* Blockquote base style */
+.markdown-body blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  color: var(--vp-c-text-2);
+  border-left: 4px solid var(--vp-c-divider);
+  background-color: var(--vp-c-bg-soft);
+  border-radius: 0 8px 8px 0;
+}
+
+.markdown-body blockquote > :first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote > :last-child {
+  margin-bottom: 0;
+}

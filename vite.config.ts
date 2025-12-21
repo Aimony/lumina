@@ -4,6 +4,10 @@ import Markdown from 'unplugin-vue-markdown/vite'
 import Pages from 'vite-plugin-pages'
 import { resolve } from 'path'
 import Shiki from '@shikijs/markdown-it'
+import anchor from 'markdown-it-anchor'
+import footnote from 'markdown-it-footnote'
+import taskLists from 'markdown-it-task-lists'
+import { default as githubAlerts } from 'markdown-it-github-alerts'
 import { linkCardPlugin } from './src/plugins/markdown-it-link-card'
 import { codeEnhancementsPlugin } from './src/plugins/markdown-it-code-enhancements'
 import { imageLazyPlugin } from './src/plugins/markdown-it-image-lazy'
@@ -24,6 +28,12 @@ export default defineConfig({
       },
       // Shiki 代码高亮在 markdown 处理中配置
       async markdownItSetup(md) {
+        // GFM 扩展插件
+        md.use(anchor, { permalink: false }) // 标题锚点
+        md.use(footnote) // 脚注支持
+        md.use(taskLists, { enabled: true, label: true }) // 任务列表
+        md.use(githubAlerts) // GitHub 告警块
+
         md.use(
           await Shiki({
             themes: {

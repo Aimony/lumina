@@ -27,8 +27,8 @@ const getValidPath = (node: DocTreeNode): string => {
 // 获取子菜单项
 const getChildren = (basePath: string): DocTreeNode[] => {
   const node = docsTree.value.find((n) => n.path === basePath)
-  // 只返回目录类型的子节点
-  return node?.children?.filter((c) => c.isDirectory) || []
+  // 返回所有子节点（无论是目录还是文件）
+  return node?.children || []
 }
 
 // 处理后的导航项，包含动态生成的 children
