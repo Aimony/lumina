@@ -142,16 +142,12 @@ const hideDropdown = () => {
   right: 0;
   z-index: 50;
   height: var(--vp-nav-height);
-  background-color: rgba(255, 255, 255, 0.82);
+  background-color: var(--vp-nav-bg);
   backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid var(--vp-c-divider);
   transition:
     background-color 0.25s,
     border-color 0.25s;
-}
-
-:global(.dark) .navbar {
-  background-color: rgba(27, 27, 31, 0.82);
 }
 
 .navbar-wrapper {
@@ -237,20 +233,11 @@ const hideDropdown = () => {
   margin-top: 12px;
   min-width: 160px;
   padding: 8px 0;
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--vp-nav-dropdown-bg);
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.1),
-    0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--vp-shadow-3);
   backdrop-filter: blur(12px);
-}
-
-:global(.dark) .dropdown-menu {
-  background: rgba(30, 30, 32, 0.98);
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.3),
-    0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-item {
