@@ -5,6 +5,7 @@ import Pages from 'vite-plugin-pages'
 import { resolve } from 'path'
 import Shiki from '@shikijs/markdown-it'
 import { linkCardPlugin } from './src/plugins/markdown-it-link-card'
+import { codeEnhancementsPlugin } from './src/plugins/markdown-it-code-enhancements'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -32,6 +33,8 @@ export default defineConfig({
         )
         // 注册链接卡片插件
         md.use(linkCardPlugin)
+        // 注册代码块增强插件
+        md.use(codeEnhancementsPlugin)
       }
     }),
     Pages({

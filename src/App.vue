@@ -4,9 +4,11 @@ import { computed } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import DocLayout from '@/layouts/DocLayout.vue'
 import { useThemeProvider } from '@/composables/useTheme'
+import { useCodeCopy } from '@/composables/useCodeCopy'
 
 const route = useRoute()
 useThemeProvider()
+useCodeCopy()
 
 // 根据路由 meta 选择布局
 const layout = computed(() => {
