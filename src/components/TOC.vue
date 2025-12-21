@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+import ReadingProgress from '@/components/ReadingProgress.vue'
 
 interface Heading {
   id: string
@@ -57,7 +58,10 @@ const scrollTo = (id: string) => {
 <!-- 文章目录大纲 -->
 <template>
   <div v-if="headings.length > 0" class="toc-container">
-    <div class="toc-title">本页目录</div>
+    <div class="toc-header">
+      <div class="toc-title">本页目录</div>
+      <ReadingProgress />
+    </div>
 
     <ul class="toc-list">
       <li
@@ -84,11 +88,18 @@ const scrollTo = (id: string) => {
   border-left: 1px solid var(--vp-c-divider);
 }
 
+.toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-right: 16px;
+}
+
 .toc-title {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--vp-c-text-1);
-  margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }

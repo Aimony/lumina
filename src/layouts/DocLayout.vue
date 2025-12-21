@@ -7,7 +7,6 @@ import ImageViewer from '@/components/ImageViewer.vue'
 import BackToTopCat from '@/components/BackToTopCat.vue'
 import PrevNextNav from '@/components/PrevNextNav.vue'
 import ArticleTags from '@/components/ArticleTags.vue'
-import ReadingProgress from '@/components/ReadingProgress.vue'
 import { useSidebar } from '@/composables/useSidebar'
 import { useTOC } from '@/composables/useTOC'
 import { useLinkCards } from '@/composables/useLinkCards'
@@ -30,7 +29,6 @@ provide('headings', headings)
 
 <template>
   <div class="layout-container">
-    <ReadingProgress />
     <!-- Header (Consistent with DefaultLayout) -->
     <Navbar>
       <template #toggle-bar>
