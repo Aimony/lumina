@@ -5,6 +5,7 @@ import TOC from '@/components/article/TOC.vue'
 import Navbar from '@/components/layout/Navbar.vue'
 import ImageViewer from '@/components/common/ImageViewer.vue'
 import BackToTopCat from '@/components/common/BackToTopCat.vue'
+import ReadingProgress from '@/components/article/ReadingProgress.vue'
 import PrevNextNav from '@/components/article/PrevNextNav.vue'
 import ArticleTags from '@/components/article/ArticleTags.vue'
 import ArticleMeta from '@/components/article/ArticleMeta.vue'
@@ -90,6 +91,9 @@ provide('headings', headings)
 
     <!-- 图片查看器 -->
     <ImageViewer :image="currentImage" @close="hide" />
+
+    <!-- 阅读进度悬浮球 -->
+    <ReadingProgress />
 
     <!-- 小猫回到顶部 -->
     <BackToTopCat />

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import ReadingProgress from '@/components/article/ReadingProgress.vue'
 
 interface Heading {
   id: string
@@ -60,7 +59,6 @@ const scrollTo = (id: string) => {
   <div v-if="headings.length > 0" class="toc-container">
     <div class="toc-header">
       <div class="toc-title">本页目录</div>
-      <ReadingProgress />
     </div>
 
     <ul class="toc-list">
