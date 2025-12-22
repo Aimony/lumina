@@ -23,6 +23,7 @@
     "@tailwindcss/postcss": "^4.1.18",
     "@unhead/vue": "^2.0.19",
     "flexsearch": "^0.8.212",
+    "mermaid": "^11.12.2",
     "shiki": "^3.20.0",
     "tailwindcss": "^4.1.18",
     "unplugin-vue-markdown": "^29.2.0",

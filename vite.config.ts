@@ -19,6 +19,7 @@ import { wikilinksPlugin } from './src/plugins/markdown-it-wikilinks'
 import { obsidianCalloutsPlugin } from './src/plugins/markdown-it-obsidian-callouts'
 import { commentsPlugin } from './src/plugins/markdown-it-comments'
 import mark from 'markdown-it-mark'
+import { mermaidPlugin } from './src/plugins/markdown-it-mermaid'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -61,6 +62,8 @@ export default defineConfig({
         md.use(obsidianCalloutsPlugin)
         md.use(commentsPlugin)
         md.use(mark)
+        // Mermaid 图表支持
+        md.use(mermaidPlugin)
       }
     }),
     Pages({

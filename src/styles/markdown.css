@@ -460,3 +460,54 @@ html.dark .markdown-body .markdown-alert-caution {
 .markdown-body blockquote > :last-child {
   margin-bottom: 0;
 }
+
+/* ============================================
+   Mermaid Diagrams (Mermaid 图表)
+   ============================================ */
+.mermaid-container {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background-color: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  overflow-x: auto;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.mermaid-container:hover {
+  border-color: var(--vp-c-brand-soft);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+html.dark .mermaid-container:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.mermaid-diagram {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid-container.error {
+  border-color: var(--vp-c-danger-1, #da3633);
+  background-color: rgba(218, 54, 51, 0.05);
+}
+
+.mermaid-error {
+  color: var(--vp-c-danger-1, #da3633);
+  font-size: 0.9em;
+  padding: 1rem;
+}
+
+/* 渲染前的加载状态 */
+.mermaid-container:not(.rendered):not(.error) .mermaid-diagram::before {
+  content: '正在加载图表...';
+  color: var(--vp-c-text-3);
+  font-size: 0.9em;
+}
