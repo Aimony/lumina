@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useDocsTree, type DocTreeNode } from '@/composables/useDocsTree'
+import { useDocsTree, type DocTreeNode } from '@/composables/article/useDocsTree'
 
 export interface NavLink {
   path: string

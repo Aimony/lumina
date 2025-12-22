@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import { useSearch } from '@/composables/useSearch'
+import { useSearch } from '@/composables/core/useSearch'
 
 const router = useRouter()
 const { query, results, isModalOpen, closeModal, performSearch, loading } = useSearch()

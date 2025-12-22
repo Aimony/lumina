@@ -1,6 +1,6 @@
 import { onMounted, onUpdated, nextTick } from 'vue'
 import { createApp, h } from 'vue'
-import LinkCard from '@/components/LinkCard.vue'
+import LinkCard from '@/components/common/LinkCard.vue'
 
 /**
  * Composable 用于在 Markdown 内容中检测独占一行的链接并渲染为卡片

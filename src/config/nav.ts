@@ -1,4 +1,4 @@
-import type { DocTreeNode } from '@/composables/useDocsTree'
+import type { DocTreeNode } from '@/composables/article/useDocsTree'
 
 /**
  * 导航栏菜单配置

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import Navbar from '@/components/Navbar.vue'
+import Navbar from '@/components/layout/Navbar.vue'
 
 // 使用 useRouter 来获取所有路由信息
 const router = useRouter()

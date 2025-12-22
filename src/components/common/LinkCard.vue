@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useMetaInfo } from '@/composables/useMetaInfo'
+import { useMetaInfo } from '@/composables/core/useMetaInfo'
 
 interface Props {
   url: string

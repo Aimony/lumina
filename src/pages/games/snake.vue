@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SnakeGame from '@/pages/games/components/SnakeGame.vue'
-import FloatingMenu from '@/components/FloatingMenu.vue'
+import FloatingMenu from '@/components/layout/FloatingMenu.vue'
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useReadingProgress } from '@/composables/useReadingProgress'
+import { useReadingProgress } from '@/composables/article/useReadingProgress'
 
 const { progress } = useReadingProgress()
 

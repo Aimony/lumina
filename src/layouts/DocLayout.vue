@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { provide } from 'vue'
-import Sidebar from '@/components/Sidebar.vue'
-import TOC from '@/components/TOC.vue'
-import Navbar from '@/components/Navbar.vue'
-import ImageViewer from '@/components/ImageViewer.vue'
-import BackToTopCat from '@/components/BackToTopCat.vue'
-import PrevNextNav from '@/components/PrevNextNav.vue'
-import ArticleTags from '@/components/ArticleTags.vue'
-import { useSidebar } from '@/composables/useSidebar'
-import { useTOC } from '@/composables/useTOC'
-import { useLinkCards } from '@/composables/useLinkCards'
-import { useImageZoom } from '@/composables/useImageZoom'
+import Sidebar from '@/components/layout/Sidebar.vue'
+import TOC from '@/components/article/TOC.vue'
+import Navbar from '@/components/layout/Navbar.vue'
+import ImageViewer from '@/components/common/ImageViewer.vue'
+import BackToTopCat from '@/components/common/BackToTopCat.vue'
+import PrevNextNav from '@/components/article/PrevNextNav.vue'
+import ArticleTags from '@/components/article/ArticleTags.vue'
+import { useSidebar } from '@/composables/ui/useSidebar'
+import { useTOC } from '@/composables/article/useTOC'
+import { useLinkCards } from '@/composables/ui/useLinkCards'
+import { useImageZoom } from '@/composables/article/useImageZoom'
 
 // 使用 Composables
 const { isOpen: sidebarOpen, toggleSidebar } = useSidebar()

@@ -3,10 +3,10 @@ import { RouterView, useRoute } from 'vue-router'
 import { computed } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import DocLayout from '@/layouts/DocLayout.vue'
-import { useThemeProvider } from '@/composables/useTheme'
-import { useCodeCopy } from '@/composables/useCodeCopy'
-import { useCodeFold } from '@/composables/useCodeFold'
-import SearchModal from '@/components/SearchModal.vue'
+import { useThemeProvider } from '@/composables/core/useTheme'
+import { useCodeCopy } from '@/composables/ui/useCodeCopy'
+import { useCodeFold } from '@/composables/ui/useCodeFold'
+import SearchModal from '@/components/common/SearchModal.vue'
 
 const route = useRoute()
 useThemeProvider()

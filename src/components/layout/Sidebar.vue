@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useDocsTree, type DocTreeNode } from '@/composables/useDocsTree'
+import { useDocsTree, type DocTreeNode } from '@/composables/article/useDocsTree'
 
 const route = useRoute()
 const { docsTree } = useDocsTree()

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePrevNext } from '@/composables/usePrevNext'
+import { usePrevNext } from '@/composables/article/usePrevNext'
 
 const prevNext = usePrevNext()
 </script>

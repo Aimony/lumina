@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import ReadingProgress from '@/components/ReadingProgress.vue'
+import ReadingProgress from '@/components/article/ReadingProgress.vue'
 
 interface Heading {
   id: string

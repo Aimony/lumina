@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import ThemeToggle from '@/components/ThemeToggle.vue'
-import YearProgress from '@/components/YearProgress.vue'
+import ThemeToggle from '@/components/common/ThemeToggle.vue'
+import YearProgress from '@/components/home/YearProgress.vue'
 import { navItems } from '@/config/nav'
-import { useDocsTree, type DocTreeNode } from '@/composables/useDocsTree'
-import { useSearch } from '@/composables/useSearch'
+import { useDocsTree, type DocTreeNode } from '@/composables/article/useDocsTree'
+import { useSearch } from '@/composables/core/useSearch'
 
 const { openModal } = useSearch()
 
