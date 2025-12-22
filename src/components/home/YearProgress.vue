@@ -12,7 +12,7 @@
       ></div>
     </div>
     <div class="tooltip-anchor" :style="{ left: animatedProgress + '%' }">
-      <div class="tooltip">
+      <div class="tooltip" :style="{ transform: `translateX(-${animatedProgress}%)` }">
         {{ currentDayTooltipText }}
       </div>
     </div>
@@ -192,8 +192,8 @@ const monthMarkers = computed(() => {
   position: absolute;
   top: 6px;
   /* 调整位置 */
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  /* transform 由内联样式动态控制，以防止在边缘被遮挡 */
   background-color: var(--vp-c-bg-soft);
   color: var(--vp-c-text-1);
   padding: 4px 12px;
