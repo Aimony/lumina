@@ -7,6 +7,7 @@ import ImageViewer from '@/components/common/ImageViewer.vue'
 import BackToTopCat from '@/components/common/BackToTopCat.vue'
 import PrevNextNav from '@/components/article/PrevNextNav.vue'
 import ArticleTags from '@/components/article/ArticleTags.vue'
+import ArticleMeta from '@/components/article/ArticleMeta.vue'
 import { useSidebar } from '@/composables/ui/useSidebar'
 import { useTOC } from '@/composables/article/useTOC'
 import { useLinkCards } from '@/composables/ui/useLinkCards'
@@ -68,6 +69,7 @@ provide('headings', headings)
             <main class="main">
               <article class="markdown-body">
                 <ArticleTags />
+                <ArticleMeta />
                 <slot />
                 <PrevNextNav />
               </article>

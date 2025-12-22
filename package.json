@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "set \"BROWSER=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" && vite --host --open",
     "build": "node scripts/generate-search-index.js && vite build",
     "tsc": "vue-tsc -b",
     "preview": "vite preview",
