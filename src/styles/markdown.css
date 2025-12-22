@@ -42,7 +42,7 @@
 .markdown-body p,
 .markdown-body ul,
 .markdown-body ol {
-  margin-bottom: 1.2em;
+  /* margin-bottom: 1.2em; */
   line-height: 1.6;
 }
 
@@ -348,7 +348,7 @@ html.dark .code-block-header {
 
 /* GitHub Alerts (告警块) */
 .markdown-body .markdown-alert {
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   margin: 1rem 0;
   border-radius: 8px;
   border-left: 4px solid;
@@ -359,7 +359,7 @@ html.dark .code-block-header {
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .markdown-body .markdown-alert-title svg {
