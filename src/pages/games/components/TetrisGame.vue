@@ -4,7 +4,6 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 // --- Constants & Types ---
 const COLS = 10
 const ROWS = 20
-const BLOCK_SIZE = 30 // px, adjustable via CSS mostly but used for dimensions
 const INITIAL_SPEED = 800
 const MIN_SPEED = 100
 const SPEED_DECREMENT = 50
@@ -92,7 +91,7 @@ const renderBoard = computed(() => {
         if (val) {
           const boardY = y + rIdx
           const boardX = x + cIdx
-          if (boardY >= 0 && boardY < ROWS && boardX >= 0 && boardX < COLS) {
+          if (boardY >= 0 && boardY < ROWS && boardX >= 0 && boardX < COLS && render[boardY]) {
             render[boardY][boardX] = color
           }
         }
@@ -114,7 +113,7 @@ const createPiece = (type: PieceType): Piece => {
   return {
     type,
     matrix: shape.matrix,
-    x: Math.floor(COLS / 2) - Math.floor(shape.matrix[0].length / 2),
+    x: Math.floor(COLS / 2) - Math.floor((shape.matrix[0]?.length || 0) / 2),
     y: 0,
     color: shape.color
   }
@@ -122,7 +121,7 @@ const createPiece = (type: PieceType): Piece => {
 
 const getRandomType = (): PieceType => {
   const types = Object.keys(SHAPES) as PieceType[]
-  return types[Math.floor(Math.random() * types.length)]
+  return types[Math.floor(Math.random() * types.length)] as PieceType
 }
 
 const spawnPiece = () => {
@@ -140,8 +139,10 @@ const spawnPiece = () => {
 
 const collision = (offsetX: number, offsetY: number, matrix: number[][]) => {
   for (let r = 0; r < matrix.length; r++) {
-    for (let c = 0; c < matrix[r].length; c++) {
-      if (matrix[r][c]) {
+    const row = matrix[r]
+    if (!row) continue
+    for (let c = 0; c < row.length; c++) {
+      if (row[c]) {
         const newX = offsetX + c
         const newY = offsetY + r
 
@@ -151,7 +152,7 @@ const collision = (offsetX: number, offsetY: number, matrix: number[][]) => {
         // Floor/Block collision
         // Note: newY < 0 is "above board", usually allowed for rotation spawning,
         // but we check if it hits existing blocks if it's within board
-        if (newY >= 0 && board.value[newY][newX]) return true
+        if (newY >= 0 && board.value[newY] && board.value[newY][newX]) return true
       }
     }
   }
@@ -160,11 +161,13 @@ const collision = (offsetX: number, offsetY: number, matrix: number[][]) => {
 
 const rotateMatrix = (matrix: number[][]) => {
   const N = matrix.length
-  const M = matrix[0].length
+  const M = matrix[0]?.length || 0
   const rotated = Array.from({ length: M }, () => Array(N).fill(0))
   for (let r = 0; r < N; r++) {
+    const row = matrix[r]
+    if (!row) continue
     for (let c = 0; c < M; c++) {
-      rotated[c][N - 1 - r] = matrix[r][c]
+      rotated[c]![N - 1 - r] = row[c] || 0
     }
   }
   return rotated
@@ -225,8 +228,8 @@ const lockPiece = () => {
   matrix.forEach((row, rIdx) => {
     row.forEach((val, cIdx) => {
       if (val) {
-        if (y + rIdx >= 0) {
-          board.value[y + rIdx][x + cIdx] = color
+        if (y + rIdx >= 0 && board.value[y + rIdx]) {
+          board.value[y + rIdx]![x + cIdx] = color
         }
       }
     })
@@ -251,7 +254,8 @@ const checkLines = () => {
   if (linesCleared > 0) {
     // Scoring: 100, 300, 500, 800
     const points = [0, 100, 300, 500, 800]
-    score.value += points[linesCleared] * level.value
+    const baseScore = points[linesCleared] ?? 0
+    score.value += baseScore * level.value
     level.value = Math.floor(score.value / 1000) + 1
 
     // Update High Score

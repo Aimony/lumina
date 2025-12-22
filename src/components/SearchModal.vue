@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, nextTick, computed } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSearch } from '@/composables/useSearch'
 
@@ -7,7 +7,6 @@ const router = useRouter()
 const { query, results, isModalOpen, closeModal, performSearch, loading } = useSearch()
 const inputRef = ref<HTMLInputElement | null>(null)
 const selectedIndex = ref(0)
-const searchContainer = ref<HTMLElement | null>(null)
 
 // 自动聚焦
 watch(isModalOpen, async (val) => {

@@ -99,9 +99,7 @@ export function useSearch() {
     // 执行搜索
     const searchResult = index.search(q, {
       limit: 20,
-      enrich: true,
-      // @ts-ignore
-      bool: 'or'
+      enrich: true
     })
 
     const uniqueIds = new Set<string>()
