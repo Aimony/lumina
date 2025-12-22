@@ -1,115 +1,75 @@
-import { onMounted, onUnmounted } from 'vue'
-import mermaid from 'mermaid'
+import { onMounted, onUnmounted, createApp, h } from 'vue'
+import MermaidDiagram from '@/components/article/MermaidDiagram.vue'
 
 /**
  * Mermaid 图表渲染 Composable
  *
- * 在组件挂载时初始化 Mermaid 并渲染所有图表容器，
- * 同时监听主题变化以切换 Mermaid 主题。
+ * 在组件挂载时查找所有 .mermaid-container 容器，
+ * 并动态挂载 MermaidDiagram Vue 组件进行渲染。
  */
 export function useMermaid() {
-  let isInitialized = false
-  let renderCounter = 0
-
-  /**
-   * 获取当前主题（亮/暗）
-   */
-  function isDarkMode(): boolean {
-    return document.documentElement.classList.contains('dark')
-  }
-
-  /**
-   * 初始化 Mermaid 配置
-   */
-  function initMermaid() {
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: isDarkMode() ? 'dark' : 'default',
-      securityLevel: 'loose',
-      fontFamily: 'inherit',
-      flowchart: {
-        useMaxWidth: true,
-        htmlLabels: true,
-        curve: 'basis'
-      },
-      sequence: {
-        useMaxWidth: true,
-        showSequenceNumbers: false,
-        wrap: true
-      }
-    })
-    isInitialized = true
-  }
+  const mountedApps: Array<{ unmount: () => void }> = []
 
   /**
    * 渲染所有 Mermaid 容器
    */
-  async function renderAllDiagrams() {
-    const containers = document.querySelectorAll('.mermaid-container')
+  function renderAllDiagrams() {
+    const containers = document.querySelectorAll('.mermaid-container:not(.vue-mounted)')
 
-    for (const container of containers) {
+    containers.forEach((container) => {
       const sourceEl = container.querySelector('.mermaid-source')
-      const diagramEl = container.querySelector('.mermaid-diagram')
-
-      if (!sourceEl || !diagramEl) continue
+      if (!sourceEl) return
 
       const code = sourceEl.textContent || ''
-      if (!code.trim()) continue
+      if (!code.trim()) return
 
-      try {
-        // 为每个图表生成唯一 ID
-        const id = `mermaid-${Date.now()}-${renderCounter++}`
-        const { svg } = await mermaid.render(id, code)
-        diagramEl.innerHTML = svg
-        container.classList.add('rendered')
-        container.classList.remove('error')
-      } catch (error) {
-        console.error('Mermaid 渲染错误:', error)
-        container.classList.add('error')
-        diagramEl.innerHTML = `<div class="mermaid-error">图表渲染失败：${error instanceof Error ? error.message : '未知错误'}</div>`
-      }
-    }
+      // 标记为已挂载
+      container.classList.add('vue-mounted')
+
+      // 清空容器
+      container.innerHTML = ''
+
+      // 创建并挂载 Vue 应用
+      const app = createApp({
+        render() {
+          return h(MermaidDiagram, { code: code.trim() })
+        }
+      })
+
+      app.mount(container)
+      mountedApps.push(app)
+    })
   }
-
-  /**
-   * 主题变化时重新渲染
-   */
-  function handleThemeChange() {
-    if (isInitialized) {
-      initMermaid() // 重新初始化以应用新主题
-      renderAllDiagrams()
-    }
-  }
-
-  // 设置 MutationObserver 监听主题变化
-  let observer: MutationObserver | null = null
 
   onMounted(() => {
-    initMermaid()
+    // 初始渲染
     renderAllDiagrams()
 
-    // 监听 documentElement 的 class 变化（主题切换）
-    observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        if (mutation.attributeName === 'class') {
-          handleThemeChange()
-          break
-        }
-      }
+    // 使用 MutationObserver 监听 DOM 变化（路由切换时）
+    const observer = new MutationObserver(() => {
+      renderAllDiagrams()
     })
 
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
     })
+
+    // 保存 observer 以便清理
+    ;(window as any).__mermaidObserver = observer
   })
 
   onUnmounted(() => {
+    // 卸载所有挂载的应用
+    mountedApps.forEach((app) => app.unmount())
+    mountedApps.length = 0
+
+    // 断开 observer
+    const observer = (window as any).__mermaidObserver as MutationObserver | undefined
     observer?.disconnect()
   })
 
   return {
-    renderAllDiagrams,
-    initMermaid
+    renderAllDiagrams
   }
 }
