@@ -3,12 +3,57 @@ import { ref, watchEffect, provide, inject, type InjectionKey, type Ref } from '
 const IS_DARK_KEY = Symbol('IS_DARK') as InjectionKey<Ref<boolean>>
 const TOGGLE_DARK_KEY = Symbol('TOGGLE_DARK') as InjectionKey<(event?: MouseEvent) => void>
 
+const STORAGE_KEY = 'lumina-theme-pref'
+const EXPIRY_MS = 3 * 24 * 60 * 60 * 1000 // 3 days
+
+interface ThemePreference {
+  value: boolean
+  timestamp: number
+}
+
+function getStoredTheme(): boolean | null {
+  if (typeof window === 'undefined') return null
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+
+    const pref: ThemePreference = JSON.parse(raw)
+    const now = Date.now()
+
+    // Check if expired
+    if (now - pref.timestamp > EXPIRY_MS) {
+      localStorage.removeItem(STORAGE_KEY)
+      return null
+    }
+
+    return pref.value
+  } catch (e) {
+    console.error('Failed to parse theme preference', e)
+    return null
+  }
+}
+
 export function useThemeProvider() {
   const isDark = ref(false)
 
   // Initialize theme
   if (typeof window !== 'undefined') {
-    isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const stored = getStoredTheme()
+    if (stored !== null) {
+      isDark.value = stored
+    } else {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+      isDark.value = mediaQuery.matches
+
+      // Listen for system changes if no valid user preference
+      const handler = (e: MediaQueryListEvent) => {
+        if (getStoredTheme() === null) {
+          isDark.value = e.matches
+        }
+      }
+      mediaQuery.addEventListener('change', handler)
+    }
   }
 
   // Watch effect to update DOM
@@ -19,10 +64,24 @@ export function useThemeProvider() {
   })
 
   const toggleDark = async (event?: MouseEvent) => {
+    const nextValue = !isDark.value
+
+    // Save preference *before* transition to ensure state is captured
+    // even if animation fails or is interrupted, though logically it's part of the action.
+    // However, purely for visual sync, we might want to do it inside/after.
+    // But for reliability, let's treat the user intent as "save this".
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        value: nextValue,
+        timestamp: Date.now()
+      })
+    )
+
     // 检查浏览器是否支持 View Transitions API
     if (!document.startViewTransition || !event) {
       // 不支持或没有事件对象，直接切换
-      isDark.value = !isDark.value
+      isDark.value = nextValue
       return
     }
 
@@ -41,7 +100,7 @@ export function useThemeProvider() {
 
     // 使用 View Transitions API 执行过渡
     const transition = document.startViewTransition(() => {
-      isDark.value = !isDark.value
+      isDark.value = nextValue
     })
 
     // 等待过渡完成
