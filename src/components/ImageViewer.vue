@@ -63,7 +63,7 @@ const handleWheel = (e: WheelEvent) => {
         <div class="toolbar">
           <span class="zoom-indicator">{{ Math.round(scale * 100) }}%</span>
         </div>
-        <button class="close-button" @click="emit('close')" aria-label="关闭">
+        <!-- <button class="close-button" @click="emit('close')" aria-label="关闭">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -78,7 +78,7 @@ const handleWheel = (e: WheelEvent) => {
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
-        </button>
+        </button> -->
       </div>
     </Transition>
   </Teleport>
