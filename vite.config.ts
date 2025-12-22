@@ -15,6 +15,10 @@ import Sitemap from 'vite-plugin-sitemap'
 import matter from 'gray-matter'
 import fs from 'node:fs'
 import readingTime from 'reading-time'
+import { wikilinksPlugin } from './src/plugins/markdown-it-wikilinks'
+import { obsidianCalloutsPlugin } from './src/plugins/markdown-it-obsidian-callouts'
+import { commentsPlugin } from './src/plugins/markdown-it-comments'
+import mark from 'markdown-it-mark'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -52,6 +56,11 @@ export default defineConfig({
         md.use(codeEnhancementsPlugin)
         // 注册图片懒加载插件
         md.use(imageLazyPlugin)
+        // Obsidian 语法支持
+        md.use(wikilinksPlugin)
+        md.use(obsidianCalloutsPlugin)
+        md.use(commentsPlugin)
+        md.use(mark)
       }
     }),
     Pages({
