@@ -219,11 +219,15 @@ html.dark .code-block-header {
   border-radius: 0;
   font-size: 0.9em;
   opacity: 1;
-  transition: opacity 0.2s;
+  transition:
+    opacity 0.3s,
+    padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .code-block-wrapper.collapsed pre {
   opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 /* ============================================
