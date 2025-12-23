@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import Navbar from '@/components/layout/Navbar.vue'
+import ArticleTags from '@/components/article/ArticleTags.vue'
 
 // 使用 useRouter 来获取所有路由信息
 const router = useRouter()
@@ -36,24 +37,29 @@ const allArticles = computed<Article[]>(() => {
     }))
 })
 
-// 提取所有唯一标签
-const allTags = computed(() => {
-  const tagsSet = new Set<string>()
-  allArticles.value.forEach((article) => {
-    article.tags.forEach((tag) => tagsSet.add(tag))
-  })
-  return Array.from(tagsSet).sort()
-})
-
 const selectedTag = ref<string | null>(null)
 
 // 监听路由参数
-onMounted(() => {
+const updateTagFromRoute = () => {
   const queryTag = route.query.tag as string
-  if (queryTag && allTags.value.includes(queryTag)) {
+  if (queryTag) {
     selectedTag.value = queryTag
+  } else {
+    selectedTag.value = null
   }
+}
+
+onMounted(() => {
+  updateTagFromRoute()
 })
+
+import { watch } from 'vue'
+watch(
+  () => route.query.tag,
+  () => {
+    updateTagFromRoute()
+  }
+)
 
 const filteredArticles = computed(() => {
   if (!selectedTag.value) {
@@ -79,20 +85,19 @@ const selectTag = (tag: string | null) => {
     <div class="content">
       <h1 class="page-title">Tags</h1>
 
-      <div class="tags-cloud">
-        <button class="tag-pill" :class="{ active: !selectedTag }" @click="selectTag(null)">
-          All
-        </button>
-        <button
-          v-for="tag in allTags"
-          :key="tag"
-          class="tag-pill"
-          :class="{ active: selectedTag === tag }"
-          @click="selectTag(tag)"
-        >
-          #{{ tag }}
-        </button>
+      <div class="word-cloud-section">
+        <ArticleTags cloud />
       </div>
+
+      <div class="filter-status" v-if="selectedTag">
+        <span
+          >Filtering by: <span class="current-tag">#{{ selectedTag }}</span></span
+        >
+        <button class="clear-btn" @click="selectTag(null)">Clear Filter (Show All)</button>
+      </div>
+
+      <!-- Remove original tags-cloud since ArticleTags provides the list and cloud -->
+      <!-- <div class="tags-cloud"> ... </div> -->
 
       <div class="articles-list">
         <div v-if="filteredArticles.length === 0" class="no-articles">No articles found.</div>
@@ -132,33 +137,37 @@ const selectTag = (tag: string | null) => {
   color: var(--vp-c-text-1);
 }
 
-.tags-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+.word-cloud-section {
   margin-bottom: 48px;
 }
 
-.tag-pill {
-  padding: 6px 16px;
-  border-radius: 20px;
-  background-color: var(--vp-c-bg-alt);
+.filter-status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  font-size: 16px;
   color: var(--vp-c-text-2);
-  border: 1px solid var(--vp-c-divider);
+}
+
+.current-tag {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+}
+
+.clear-btn {
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: var(--vp-c-bg-mute);
+  color: var(--vp-c-text-2);
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.25s;
-  font-size: 14px;
 }
 
-.tag-pill:hover {
-  border-color: var(--vp-c-brand-1);
+.clear-btn:hover {
+  background-color: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
-}
-
-.tag-pill.active {
-  background-color: var(--vp-c-brand-1);
-  color: white;
-  border-color: var(--vp-c-brand-1);
 }
 
 .articles-list {
