@@ -9,6 +9,7 @@ import ReadingProgress from '@/components/article/ReadingProgress.vue'
 import PrevNextNav from '@/components/article/PrevNextNav.vue'
 import ArticleTags from '@/components/article/ArticleTags.vue'
 import ArticleMeta from '@/components/article/ArticleMeta.vue'
+import GraphView from '@/components/article/GraphView.vue'
 import { useSidebar } from '@/composables/ui/useSidebar'
 import { useTOC } from '@/composables/article/useTOC'
 import { useLinkCards } from '@/composables/ui/useLinkCards'
@@ -86,6 +87,7 @@ provide('headings', headings)
             <div class="aside-container">
               <div class="aside-content">
                 <TOC :headings="headings" />
+                <GraphView />
               </div>
             </div>
           </aside>

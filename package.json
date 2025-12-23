@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "set \"BROWSER=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" && vite --host --open",
-    "build": "node scripts/generate-search-index.js && vite build",
+    "build": "node scripts/generate-search-index.js && node scripts/generate-graph-data.js && vite build",
     "tsc": "vue-tsc -b",
     "preview": "vite preview",
     "commit": "git-cz",
@@ -22,6 +22,7 @@
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.18",
     "@unhead/vue": "^2.0.19",
+    "d3": "^7.9.0",
     "echarts": "^5.6.0",
     "echarts-wordcloud": "^2.1.0",
     "flexsearch": "^0.8.212",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.15.0",
     "@shikijs/markdown-it": "^3.20.0",
+    "@types/d3": "^7.4.3",
     "@types/flexsearch": "^0.7.6",
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.1",

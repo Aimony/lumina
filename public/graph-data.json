@@ -1,0 +1,398 @@
+{
+  "nodes": [
+    {
+      "id": "/guide/structure",
+      "title": "structure",
+      "path": "/guide/structure",
+      "links": 0
+    },
+    {
+      "id": "/guide/intro",
+      "title": "intro",
+      "path": "/guide/intro",
+      "links": 0
+    },
+    {
+      "id": "/guide",
+      "title": "index",
+      "path": "/guide",
+      "links": 0
+    },
+    {
+      "id": "/guide/config",
+      "title": "config",
+      "path": "/guide/config",
+      "links": 0
+    },
+    {
+      "id": "/frontend",
+      "title": "index",
+      "path": "/frontend",
+      "links": 0
+    },
+    {
+      "id": "/example/tabs-example",
+      "title": "标签页组件示例",
+      "path": "/example/tabs-example",
+      "links": 0
+    },
+    {
+      "id": "/example/obsidian-features",
+      "title": "Obsidian 语法扩展演示",
+      "path": "/example/obsidian-features",
+      "links": 3
+    },
+    {
+      "id": "/docs/guide/intro",
+      "title": "intro",
+      "path": "/docs/guide/intro",
+      "links": 2
+    },
+    {
+      "id": "/",
+      "title": "",
+      "path": "/",
+      "links": 4
+    },
+    {
+      "id": "/docs/example/obsidian-demo",
+      "title": "obsidian-demo",
+      "path": "/docs/example/obsidian-demo",
+      "links": 1
+    },
+    {
+      "id": "/example/obsidian-demo2",
+      "title": "Obsidian Syntax Support Demo",
+      "path": "/example/obsidian-demo2",
+      "links": 6
+    },
+    {
+      "id": "/games",
+      "title": "games",
+      "path": "/games",
+      "links": 3
+    },
+    {
+      "id": "/games/tetris",
+      "title": "tetris",
+      "path": "/games/tetris",
+      "links": 2
+    },
+    {
+      "id": "/README",
+      "title": "README",
+      "path": "/README",
+      "links": 2
+    },
+    {
+      "id": "/example/obsidian-demo",
+      "title": "Obsidian Syntax Support Demo",
+      "path": "/example/obsidian-demo",
+      "links": 6
+    },
+    {
+      "id": "/example/mermaid-example",
+      "title": "Mermaid 图表示例",
+      "path": "/example/mermaid-example",
+      "links": 0
+    },
+    {
+      "id": "/example",
+      "title": "index",
+      "path": "/example",
+      "links": 0
+    },
+    {
+      "id": "/example/gfm-example",
+      "title": "GitHub Flavored Markdown 示例",
+      "path": "/example/gfm-example",
+      "links": 0
+    },
+    {
+      "id": "/AIGC",
+      "title": "index",
+      "path": "/AIGC",
+      "links": 0
+    },
+    {
+      "id": "/backend",
+      "title": "index",
+      "path": "/backend",
+      "links": 0
+    },
+    {
+      "id": "/frontend/vue/vue",
+      "title": "vue",
+      "path": "/frontend/vue/vue",
+      "links": 0
+    },
+    {
+      "id": "/frontend/vue/vue-composition-api",
+      "title": "vue-composition-api",
+      "path": "/frontend/vue/vue-composition-api",
+      "links": 0
+    },
+    {
+      "id": "/frontend/vue/vue-communication",
+      "title": "vue-communication",
+      "path": "/frontend/vue/vue-communication",
+      "links": 0
+    },
+    {
+      "id": "/frontend/vue/vue-basic",
+      "title": "vue-basic",
+      "path": "/frontend/vue/vue-basic",
+      "links": 0
+    },
+    {
+      "id": "/frontend/vue/vite",
+      "title": "vite",
+      "path": "/frontend/vue/vite",
+      "links": 0
+    },
+    {
+      "id": "/frontend/react/react-styling",
+      "title": "react-styling",
+      "path": "/frontend/react/react-styling",
+      "links": 0
+    },
+    {
+      "id": "/frontend/react/react-router",
+      "title": "react-router",
+      "path": "/frontend/react/react-router",
+      "links": 0
+    },
+    {
+      "id": "/frontend/react/react-performance",
+      "title": "react-performance",
+      "path": "/frontend/react/react-performance",
+      "links": 0
+    },
+    {
+      "id": "/frontend/react/react-hooks",
+      "title": "react-hooks",
+      "path": "/frontend/react/react-hooks",
+      "links": 0
+    },
+    {
+      "id": "/frontend/react/react-forms",
+      "title": "react-forms",
+      "path": "/frontend/react/react-forms",
+      "links": 0
+    },
+    {
+      "id": "/frontend/react/react-communication",
+      "title": "react-communication",
+      "path": "/frontend/react/react-communication",
+      "links": 0
+    },
+    {
+      "id": "/frontend/react/react-basic",
+      "title": "react-basic",
+      "path": "/frontend/react/react-basic",
+      "links": 0
+    },
+    {
+      "id": "/frontend/react",
+      "title": "index",
+      "path": "/frontend/react",
+      "links": 0
+    },
+    {
+      "id": "/AIGC/MCP/mcp",
+      "title": "mcp",
+      "path": "/AIGC/MCP/mcp",
+      "links": 0
+    },
+    {
+      "id": "/AIGC/Claude-Code/cc",
+      "title": "cc",
+      "path": "/AIGC/Claude-Code/cc",
+      "links": 0
+    },
+    {
+      "id": "/backend/python/fastapi",
+      "title": "fastapi",
+      "path": "/backend/python/fastapi",
+      "links": 0
+    },
+    {
+      "id": "/backend/node/node-basic",
+      "title": "node-basic",
+      "path": "/backend/node/node-basic",
+      "links": 0
+    },
+    {
+      "id": "/backend/node/nestjs",
+      "title": "nestjs",
+      "path": "/backend/node/nestjs",
+      "links": 0
+    },
+    {
+      "id": "/backend/lang/api-design",
+      "title": "api-design",
+      "path": "/backend/lang/api-design",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mongodb-guide",
+      "title": "mongodb-guide",
+      "path": "/backend/database/mongodb-guide",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/database-transactions",
+      "title": "database-transactions",
+      "path": "/backend/database/database-transactions",
+      "links": 0
+    },
+    {
+      "id": "/backend/lang/rust",
+      "title": "index",
+      "path": "/backend/lang/rust",
+      "links": 0
+    },
+    {
+      "id": "/backend/lang/go",
+      "title": "index",
+      "path": "/backend/lang/go",
+      "links": 0
+    },
+    {
+      "id": "/backend/lang/go/go-base",
+      "title": "go-base",
+      "path": "/backend/lang/go/go-base",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/redis/redis-guide",
+      "title": "redis-guide",
+      "path": "/backend/database/redis/redis-guide",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/postgresql/postgresql-search-pl",
+      "title": "postgresql-search-pl",
+      "path": "/backend/database/postgresql/postgresql-search-pl",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/postgresql/postgresql-ha",
+      "title": "postgresql-ha",
+      "path": "/backend/database/postgresql/postgresql-ha",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/postgresql/postgresql-basics",
+      "title": "postgresql-basics",
+      "path": "/backend/database/postgresql/postgresql-basics",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mysql/mysql高可用",
+      "title": "mysql高可用",
+      "path": "/backend/database/mysql/mysql高可用",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mysql/mysql锁和日志",
+      "title": "mysql锁和日志",
+      "path": "/backend/database/mysql/mysql锁和日志",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mysql/mysql优化",
+      "title": "mysql优化",
+      "path": "/backend/database/mysql/mysql优化",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mysql",
+      "title": "index",
+      "path": "/backend/database/mysql",
+      "links": 0
+    },
+    {
+      "id": "/obsidian-demo",
+      "title": "Obsidian Syntax Support Demo",
+      "path": "/obsidian-demo",
+      "links": 4
+    },
+    {
+      "id": "/docs/guide/config",
+      "title": "config",
+      "path": "/docs/guide/config",
+      "links": 1
+    }
+  ],
+  "links": [
+    {
+      "source": "/example/obsidian-features",
+      "target": "/docs/guide/intro"
+    },
+    {
+      "source": "/example/obsidian-features",
+      "target": "/"
+    },
+    {
+      "source": "/example/obsidian-features",
+      "target": "/docs/example/obsidian-demo"
+    },
+    {
+      "source": "/example/obsidian-demo2",
+      "target": "/"
+    },
+    {
+      "source": "/example/obsidian-demo2",
+      "target": "/games"
+    },
+    {
+      "source": "/example/obsidian-demo2",
+      "target": "/games/tetris"
+    },
+    {
+      "source": "/example/obsidian-demo2",
+      "target": "/README"
+    },
+    {
+      "source": "/example/obsidian-demo2",
+      "target": "/example/obsidian-demo"
+    },
+    {
+      "source": "/example/obsidian-demo",
+      "target": "/"
+    },
+    {
+      "source": "/example/obsidian-demo",
+      "target": "/games"
+    },
+    {
+      "source": "/example/obsidian-demo",
+      "target": "/games/tetris"
+    },
+    {
+      "source": "/example/obsidian-demo",
+      "target": "/README"
+    },
+    {
+      "source": "/example/obsidian-demo",
+      "target": "/example/obsidian-demo2"
+    },
+    {
+      "source": "/obsidian-demo",
+      "target": "/"
+    },
+    {
+      "source": "/obsidian-demo",
+      "target": "/games"
+    },
+    {
+      "source": "/obsidian-demo",
+      "target": "/docs/guide/intro"
+    },
+    {
+      "source": "/obsidian-demo",
+      "target": "/docs/guide/config"
+    }
+  ]
+}
