@@ -112,10 +112,16 @@ async function generateGraphData() {
       // 添加节点
       if (!nodeSet.has(routePath)) {
         nodeSet.add(routePath)
+        // 从路径提取分类（第一段路径）
+        const pathParts = routePath.split('/').filter(Boolean)
+        const category = pathParts[0] || 'root'
+
         nodes.push({
           id: routePath,
           title: title,
-          path: routePath
+          path: routePath,
+          category: category,
+          tags: data.tags || []
         })
       }
 
@@ -128,25 +134,33 @@ async function generateGraphData() {
         if (targetPath && targetPath !== routePath) {
           // 确保目标节点存在
           if (!nodeSet.has(targetPath)) {
-            // 尝试获取目标文件的标题
+            // 尝试获取目标文件的标题和元数据
             const targetInfo = allPaths.find((p) => p.routePath === targetPath)
             let targetTitle = path.basename(targetPath)
+            let targetTags = []
 
             if (targetInfo) {
               try {
                 const targetContent = fs.readFileSync(targetInfo.filePath, 'utf-8')
                 const { data: targetData } = matter(targetContent)
                 targetTitle = targetData.title || targetTitle
+                targetTags = targetData.tags || []
               } catch (e) {
                 // 忽略读取错误
               }
             }
 
+            // 从路径提取分类
+            const targetPathParts = targetPath.split('/').filter(Boolean)
+            const targetCategory = targetPathParts[0] || 'root'
+
             nodeSet.add(targetPath)
             nodes.push({
               id: targetPath,
               title: targetTitle,
-              path: targetPath
+              path: targetPath,
+              category: targetCategory,
+              tags: targetTags
             })
           }
 

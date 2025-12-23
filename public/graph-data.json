@@ -4,342 +4,456 @@
       "id": "/guide/structure",
       "title": "structure",
       "path": "/guide/structure",
+      "category": "guide",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/guide/intro",
       "title": "intro",
       "path": "/guide/intro",
+      "category": "guide",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/guide",
       "title": "index",
       "path": "/guide",
+      "category": "guide",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/guide/config",
       "title": "config",
       "path": "/guide/config",
+      "category": "guide",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend",
       "title": "index",
       "path": "/frontend",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/example/tabs-example",
       "title": "标签页组件示例",
       "path": "/example/tabs-example",
+      "category": "example",
+      "tags": ["示例", "Tabs", "组件"],
       "links": 0
     },
     {
       "id": "/example/smart-connections",
       "title": "智能连接 (Smart Connections)",
       "path": "/example/smart-connections",
+      "category": "example",
+      "tags": ["功能", "交互", "用户体验"],
       "links": 0
     },
     {
       "id": "/example/obsidian-features",
       "title": "Obsidian 语法扩展演示",
       "path": "/example/obsidian-features",
+      "category": "example",
+      "tags": ["obsidian", "markdown", "demo"],
       "links": 3
     },
     {
       "id": "/docs/guide/intro",
       "title": "intro",
       "path": "/docs/guide/intro",
+      "category": "docs",
+      "tags": [],
       "links": 2
     },
     {
       "id": "/",
       "title": "",
       "path": "/",
+      "category": "root",
+      "tags": [],
       "links": 4
     },
     {
       "id": "/docs/example/obsidian-demo",
       "title": "obsidian-demo",
       "path": "/docs/example/obsidian-demo",
+      "category": "docs",
+      "tags": [],
       "links": 1
     },
     {
       "id": "/example/obsidian-demo2",
       "title": "Obsidian Syntax Support Demo",
       "path": "/example/obsidian-demo2",
+      "category": "example",
+      "tags": ["demo", "markdown", "obsidian"],
       "links": 6
     },
     {
       "id": "/games",
       "title": "games",
       "path": "/games",
+      "category": "games",
+      "tags": [],
       "links": 3
     },
     {
       "id": "/games/tetris",
       "title": "tetris",
       "path": "/games/tetris",
+      "category": "games",
+      "tags": [],
       "links": 2
     },
     {
       "id": "/README",
       "title": "README",
       "path": "/README",
+      "category": "README",
+      "tags": [],
       "links": 2
     },
     {
       "id": "/example/obsidian-demo",
       "title": "Obsidian Syntax Support Demo",
       "path": "/example/obsidian-demo",
+      "category": "example",
+      "tags": ["demo", "markdown", "obsidian"],
       "links": 6
     },
     {
       "id": "/example/mermaid-example",
       "title": "Mermaid 图表示例",
       "path": "/example/mermaid-example",
+      "category": "example",
+      "tags": ["示例", "Mermaid"],
       "links": 0
     },
     {
       "id": "/example/knowledge-graph",
       "title": "知识图谱 (Knowledge Graph)",
       "path": "/example/knowledge-graph",
+      "category": "example",
+      "tags": ["概念", "可视化", "知识管理"],
       "links": 0
     },
     {
       "id": "/example",
       "title": "index",
       "path": "/example",
+      "category": "example",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/example/gfm-example",
       "title": "GitHub Flavored Markdown 示例",
       "path": "/example/gfm-example",
+      "category": "example",
+      "tags": ["示例", "GFM", "Markdown"],
       "links": 0
     },
     {
       "id": "/example/digital-garden",
       "title": "数字花园 (Digital Garden)",
       "path": "/example/digital-garden",
+      "category": "example",
+      "tags": ["理念", "个人成长", "写作"],
       "links": 0
     },
     {
       "id": "/backend",
       "title": "index",
       "path": "/backend",
+      "category": "backend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/AIGC",
       "title": "index",
       "path": "/AIGC",
+      "category": "AIGC",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/vue/vue",
       "title": "vue",
       "path": "/frontend/vue/vue",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/vue/vue-composition-api",
       "title": "vue-composition-api",
       "path": "/frontend/vue/vue-composition-api",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/vue/vue-communication",
       "title": "vue-communication",
       "path": "/frontend/vue/vue-communication",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/vue/vue-basic",
       "title": "vue-basic",
       "path": "/frontend/vue/vue-basic",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/vue/vite",
       "title": "vite",
       "path": "/frontend/vue/vite",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/react/react-styling",
       "title": "react-styling",
       "path": "/frontend/react/react-styling",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/react/react-router",
       "title": "react-router",
       "path": "/frontend/react/react-router",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/react/react-performance",
       "title": "react-performance",
       "path": "/frontend/react/react-performance",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/react/react-hooks",
       "title": "react-hooks",
       "path": "/frontend/react/react-hooks",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/react/react-forms",
       "title": "react-forms",
       "path": "/frontend/react/react-forms",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/react/react-communication",
       "title": "react-communication",
       "path": "/frontend/react/react-communication",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/react/react-basic",
       "title": "react-basic",
       "path": "/frontend/react/react-basic",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/frontend/react",
       "title": "index",
       "path": "/frontend/react",
+      "category": "frontend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/backend/python/fastapi",
       "title": "fastapi",
       "path": "/backend/python/fastapi",
+      "category": "backend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/backend/node/node-basic",
       "title": "node-basic",
       "path": "/backend/node/node-basic",
+      "category": "backend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/backend/node/nestjs",
       "title": "nestjs",
       "path": "/backend/node/nestjs",
-      "links": 0
-    },
-    {
-      "id": "/backend/lang/api-design",
-      "title": "api-design",
-      "path": "/backend/lang/api-design",
-      "links": 0
-    },
-    {
-      "id": "/backend/database/mongodb-guide",
-      "title": "mongodb-guide",
-      "path": "/backend/database/mongodb-guide",
-      "links": 0
-    },
-    {
-      "id": "/backend/database/database-transactions",
-      "title": "database-transactions",
-      "path": "/backend/database/database-transactions",
+      "category": "backend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/AIGC/MCP/mcp",
       "title": "mcp",
       "path": "/AIGC/MCP/mcp",
+      "category": "AIGC",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/lang/api-design",
+      "title": "api-design",
+      "path": "/backend/lang/api-design",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mongodb-guide",
+      "title": "mongodb-guide",
+      "path": "/backend/database/mongodb-guide",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/database-transactions",
+      "title": "database-transactions",
+      "path": "/backend/database/database-transactions",
+      "category": "backend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/AIGC/Claude-Code/cc",
       "title": "cc",
       "path": "/AIGC/Claude-Code/cc",
+      "category": "AIGC",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/backend/lang/rust",
       "title": "index",
       "path": "/backend/lang/rust",
+      "category": "backend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/backend/lang/go",
       "title": "index",
       "path": "/backend/lang/go",
+      "category": "backend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/backend/lang/go/go-base",
       "title": "go-base",
       "path": "/backend/lang/go/go-base",
-      "links": 0
-    },
-    {
-      "id": "/backend/database/postgresql/postgresql-search-pl",
-      "title": "postgresql-search-pl",
-      "path": "/backend/database/postgresql/postgresql-search-pl",
-      "links": 0
-    },
-    {
-      "id": "/backend/database/postgresql/postgresql-ha",
-      "title": "postgresql-ha",
-      "path": "/backend/database/postgresql/postgresql-ha",
-      "links": 0
-    },
-    {
-      "id": "/backend/database/postgresql/postgresql-basics",
-      "title": "postgresql-basics",
-      "path": "/backend/database/postgresql/postgresql-basics",
-      "links": 0
-    },
-    {
-      "id": "/backend/database/mysql/mysql高可用",
-      "title": "mysql高可用",
-      "path": "/backend/database/mysql/mysql高可用",
-      "links": 0
-    },
-    {
-      "id": "/backend/database/mysql/mysql锁和日志",
-      "title": "mysql锁和日志",
-      "path": "/backend/database/mysql/mysql锁和日志",
-      "links": 0
-    },
-    {
-      "id": "/backend/database/mysql/mysql优化",
-      "title": "mysql优化",
-      "path": "/backend/database/mysql/mysql优化",
-      "links": 0
-    },
-    {
-      "id": "/backend/database/mysql",
-      "title": "index",
-      "path": "/backend/database/mysql",
+      "category": "backend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/backend/database/redis/redis-guide",
       "title": "redis-guide",
       "path": "/backend/database/redis/redis-guide",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/postgresql/postgresql-search-pl",
+      "title": "postgresql-search-pl",
+      "path": "/backend/database/postgresql/postgresql-search-pl",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/postgresql/postgresql-ha",
+      "title": "postgresql-ha",
+      "path": "/backend/database/postgresql/postgresql-ha",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/postgresql/postgresql-basics",
+      "title": "postgresql-basics",
+      "path": "/backend/database/postgresql/postgresql-basics",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mysql/mysql高可用",
+      "title": "mysql高可用",
+      "path": "/backend/database/mysql/mysql高可用",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mysql/mysql锁和日志",
+      "title": "mysql锁和日志",
+      "path": "/backend/database/mysql/mysql锁和日志",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mysql/mysql优化",
+      "title": "mysql优化",
+      "path": "/backend/database/mysql/mysql优化",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mysql",
+      "title": "index",
+      "path": "/backend/database/mysql",
+      "category": "backend",
+      "tags": [],
       "links": 0
     },
     {
       "id": "/obsidian-demo",
       "title": "Obsidian Syntax Support Demo",
       "path": "/obsidian-demo",
+      "category": "obsidian-demo",
+      "tags": ["demo", "markdown", "obsidian"],
       "links": 4
     },
     {
       "id": "/docs/guide/config",
       "title": "config",
       "path": "/docs/guide/config",
+      "category": "docs",
+      "tags": [],
       "links": 1
     }
   ],

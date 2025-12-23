@@ -5,6 +5,8 @@ export interface GraphNode {
   title: string
   path: string
   links: number
+  category?: string
+  tags?: string[]
   // D3 会添加这些属性
   x?: number
   y?: number
