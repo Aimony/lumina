@@ -16,8 +16,19 @@ interface Article {
 
 const allArticles = computed<Article[]>(() => {
   const routes = router.getRoutes()
+  // 排除的页面路由前缀
+  const excludePaths = ['/tags', '/games', '/404', '/:all']
   return routes
-    .filter((r) => r.path.startsWith('/docs/') && r.meta?.title)
+    .filter((r) => {
+      // 必须有 title 元数据
+      if (!r.meta?.title) return false
+      // 排除特定页面路由
+      if (excludePaths.some((prefix) => r.path.startsWith(prefix) || r.path === prefix))
+        return false
+      // 排除根路径
+      if (r.path === '/') return false
+      return true
+    })
     .map((r) => ({
       path: r.path,
       title: (r.meta.title as string) || 'Untitled',
