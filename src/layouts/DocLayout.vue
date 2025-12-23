@@ -235,5 +235,16 @@ provide('headings', headings)
   top: calc(var(--vp-nav-height) + 32px);
   max-height: calc(100vh - var(--vp-nav-height) - 64px);
   overflow-y: auto;
+
+  /* 隐藏滚动条但保留滚动功能 */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+}
+
+.aside-container::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera */
 }
 </style>
