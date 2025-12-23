@@ -30,6 +30,48 @@
     "tags": []
   },
   {
+    "id": "example/tabs-example",
+    "title": "标签页组件示例",
+    "content": "标签页组件示例 本文档展示了如何使用 :::tabs 语法创建标签页组件，方便在文档中展示多语言代码示例或分组内容。 --- 基本用法 使用 :::tabs 包裹内容，用 @tab TabName 定义每个标签页： :::tabs @tab JavaScript @tab TypeScript @tab Python ::: --- 安装指南示例 :::tabs @tab npm @tab yarn @tab pnpm ::: --- 配置文件示例 :::tabs @tab JSON @tab YAML @tab TOML ::: --- 框架对比 :::tabs @tab Vue 3 Vue 3 是一个渐进式 JavaScript 框架，特点包括： - 组合式 API (Composition API) - 更好的 TypeScript 支持 - 更小的打包体积 - Teleport、Suspense 等新特性 @tab React React 是一个用于构建用户界面的 JavaScript 库，特点包括： - 函数式组件和 Hooks - 虚拟 DOM - 单向数据流 - 庞大的生态系统 @tab Svelte Svelte 是一个编译时框架，特点包括： - 无虚拟 DOM - 更少的样板代码 - 内置状态管理 - 编译时优化 ::: --- 语法说明 在 Markdown 文件中，使用以下语法创建标签页： 注意事项 1. :::tabs 和 ::: 必须单独成行 2. @tab 后面需要跟随标签名称 3. 每个标签页内容可以包含任意 Markdown 语法 4. 标签页会自动添加交互功能和滑块动画",
+    "tags": ["示例", "Tabs", "组件"]
+  },
+  {
+    "id": "example/smart-connections",
+    "title": "智能连接 (Smart Connections)",
+    "content": "智能连接：上下文即是王道 告别盲目的跳转 在传统的维基系统中，点击一个链接往往是一次赌博——你不知道点击后会看到什么，也不知道是否值得打断当前的阅读流。 Lumina 引入了智能连接的概念，核心体现就是你现在正在使用的悬浮预览卡片 (Hover Cards)。 工作原理 当你创建一个指向 [[Knowledge Graph]] 的链接时，系统会在构建时建立索引。 1.  预加载索引：我们在应用启动时加载了一个轻量级的 search-index.json。 2.  即时渲染：当你悬停在 [[Digital Garden]] 上时，我们从内存中直接读取目标文章的摘要和元数据。 3.  零延迟：不需要额外的 API 请求，体验丝般顺滑。 [!NOTE] 这是一个技术演示文档。你可以随意修改这个文件来测试 Markdown 的渲染效果。 下一步计划 我们计划引入 AI 辅助的连接推荐。想象一下，当你写下“第二大脑”时，系统自动提示你连接到 [[Knowledge Graph]] 或 [[Digital Garden]]，这将极大降低维护知识库的心智负担。",
+    "tags": ["功能", "交互", "用户体验"]
+  },
+  {
+    "id": "example/obsidian-features",
+    "title": "Obsidian 语法扩展演示",
+    "content": "Obsidian 语法扩展演示 本页面展示了已实现的 Obsidian 增强语法功能。 1. 双向链接 (Wikilinks) 使用 [[文件名]] 或 [[文件名|显示文本]] 进行快速跳转。 - 基础链接: [[/docs/guide/intro]] - 别名链接: [[/|返回首页]] - 嵌套路径: [[/docs/example/obsidian-demo|查看另一个示例]] 2. 高亮 (Highlights) 使用 ==内容== 来高亮文本。 - 这是一个 ==非常重要== 的标记。 - Obsidian 风格的高亮让内容更易于阅读。 3. 内部注释 (Comments) 使用 %%内容%% 进行内部备注，这些内容在渲染后的页面中是 不可见 的。 - 这里有一行注释：%% 你在页面上看不见我，只能在编辑器里看到 %% - 以上空白处其实隐藏了信息。 4. 内容嵌入 (Embeds) 使用 ![[文件名]] 嵌入图片或其他资源。 - 图片嵌入: ![[https://vite.dev/logo.svg|Vite 图标]] 5. 标注 (Callouts) 支持 Obsidian 风格的标注块，并支持 可折叠 属性。 基础标注 [!INFO] 信息提示 这是一个标准的信息标注块。 可折叠标注 [!TIP]+ 默认展开的提示 使用 [!TIP]+ 语法，这个块在页面加载时会自动展开。 [!WARNING]- 默认启动折叠的警告 使用 [!WARNING]- 语法，用户需要点击标题才能查看其中的详细内容。 更多样式 [!IMPORTANT] 重要事项 请确保在生产环境测试这些功能。 [!CAUTION] 危险操作 这是一个警示块，用于提醒潜在风险。 [!DANGER] 严重警告 这是最高级别的警告样式。 6. YAML 属性 (Properties) 在文档最上方定义的元数据，已在文档头部的 YAML Frontmatter 中展示。",
+    "tags": ["obsidian", "markdown", "demo"]
+  },
+  {
+    "id": "example/obsidian-demo2",
+    "title": "Obsidian Syntax Support Demo",
+    "content": "Obsidian Syntax Support Demo This page demonstrates the support for generic Obsidian markdown syntax. Wikilinks Support for [[Internal Link]] syntax. - Link to Home: [[/]] - Link to Games: [[/games]] - Link with text: [[/games/tetris|Play Tetris]] - Link to a file: [[/README|README]] - Link to a file: [[/example/obsidian-demo]] Highlights Support for ==highlighted text== syntax. This is ==highlighted text== using Obsidian syntax. Callouts (GitHub Alerts) Support for Callouts (mapped to GitHub Alerts). [!NOTE] This is a note callout. [!TIP] This is a tip callout. [!IMPORTANT] This is an important callout. [!WARNING] This is a warning callout. [!CAUTION] This is a caution callout.",
+    "tags": ["demo", "markdown", "obsidian"]
+  },
+  {
+    "id": "example/obsidian-demo",
+    "title": "Obsidian Syntax Support Demo",
+    "content": "Obsidian Syntax Support Demo This page demonstrates the support for generic Obsidian markdown syntax. Wikilinks Support for [[Internal Link]] syntax. - Link to Home: [[/]] - Link to Games: [[/games]] - Link with text: [[/games/tetris|Play Tetris]] - Link to a file: [[/README|README]] - Link to a file: [[/example/obsidian-demo2]] Highlights Support for ==highlighted text== syntax. This is ==highlighted text== using Obsidian syntax. Callouts (GitHub Alerts) Support for Callouts (mapped to GitHub Alerts). [!NOTE] This is a note callout. [!TIP] This is a tip callout. [!IMPORTANT] This is an important callout. [!WARNING] This is a warning callout. [!CAUTION] This is a caution callout.",
+    "tags": ["demo", "markdown", "obsidian"]
+  },
+  {
+    "id": "example/mermaid-example",
+    "title": "Mermaid 图表示例",
+    "content": "Mermaid 图表示例 本文演示了如何在 Markdown 文章中使用 Mermaid 图表。只需使用 ` mermaid graph TD     A[开始] --B{判断条件}     B -->|是| C[执行操作 A]     B -->|否| D[执行操作 B]     C --E[结束]     D --E mermaid sequenceDiagram     participant 用户     participant 前端     participant 后端     participant 数据库     用户->>前端: 发起请求     前端->>后端: 转发请求     后端->>数据库: 查询数据     数据库-->>后端: 返回结果     后端-->>前端: 响应数据     前端-->>用户: 展示结果 mermaid classDiagram     class Animal {         +String name         +int age         +makeSound()     }     class Dog {         +String breed         +bark()     }     class Cat {         +String color         +meow()     }     Animal <|-- Dog     Animal <|-- Cat mermaid stateDiagram-v2     [] --待处理     待处理 --处理中: 开始处理     处理中 --已完成: 处理成功     处理中 --失败: 处理失败     失败 --处理中: 重试     已完成 --[] mermaid gantt     title 项目开发计划     dateFormat  YYYY-MM-DD     section 规划     需求分析     :a1, 2024-01-01, 7d     系统设计     :a2, after a1, 5d     section 开发     前端开发     :b1, after a2, 14d     后端开发     :b2, after a2, 14d     section 测试     单元测试     :c1, after b1, 7d     集成测试     :c2, after c1, 5d `markdown `` 支持的图表类型包括： - 流程图 (graph / flowchart) - 序列图 (sequenceDiagram) - 类图 (classDiagram) - 状态图 (stateDiagram) - 甘特图 (gantt) - 饼图 (pie) - 用户旅程图 (journey) - 思维导图 (mindmap) 更多语法请参考 $1。",
+    "tags": ["示例", "Mermaid"]
+  },
+  {
+    "id": "example/knowledge-graph",
+    "title": "知识图谱 (Knowledge Graph)",
+    "content": "知识图谱：连接你的思维孤岛 什么是知识图谱？ 知识图谱本质上是一种基于图的数据结构，由节点 (Note) 和边 (Link) 组成。在我们的 Lumina 系统中，每一篇 Markdown 笔记就是一个节点，而笔记之间的引用（如 [[Digital Garden]]）则构成了边。 这种结构模仿了人类大脑的神经元连接方式。与传统的文件夹分类（树状结构）不同，知识图谱是网状的。 [!TIP] 试着把鼠标悬停在这个链接上：[[Digital Garden]]。这就展示了我们最新的智能悬浮卡功能！ 为什么它很重要？ 1.  发现隐性联系：当你积累了大量笔记后，图谱可以帮助你发现两个看似无关的主题之间的联系。 2.  上下文增强：通过 [[Smart Connections]]，我们不仅能看到谁链接了当前文章，还能理解链接的上下文。 3.  导航的自由：你不再受限于线性的目录结构，而是可以在知识网络中自由穿梭。 技术实现 我们的图谱视图使用了 D3.js 引擎，通过力导向布局算法（Force-directed graph）来实时渲染。 当你点击“全局视图”时，你会看到一个壮观的星系。 相关阅读 - [[Smart Connections]] - 了解连接如何变得更智能 - [[Obsidian Features]] - 查看原本的 Obsidian 语法支持",
+    "tags": ["概念", "可视化", "知识管理"]
+  },
+  {
     "id": "example/",
     "title": "index",
     "content": "这是示例",
@@ -39,7 +81,13 @@
     "id": "example/gfm-example",
     "title": "GitHub Flavored Markdown 示例",
     "content": "GitHub Flavored Markdown 完整示例 本文档展示了所有支持的 GFM 扩展语法。 任务列表 (Task Lists) 项目进度追踪： - [x] 安装 GFM 插件 - [x] 配置 markdown-it - [x] 添加 CSS 样式 - [ ] 编写示例文档 - [ ] 测试所有功能 嵌套任务列表： - [x] 前端开发   - [x] 组件设计   - [x] 状态管理   - [ ] 单元测试 - [ ] 后端开发   - [ ] API 设计   - [ ] 数据库建模 --- 删除线 (Strikethrough) ~~这段文字已被删除~~ 这是新的内容。 功能更新：~~旧版本不再支持~~ 请使用新版本。 --- 表格 (Tables) 基础表格 | 功能     | 状态 |     说明 | | -------- | :--: | -------: | | 任务列表 |  ✅  |   左对齐 | | 删除线   |  ✅  | 居中对齐 | | 表格     |  ✅  |   右对齐 | | 脚注     |  ✅  | 完整支持 | 技术栈对比 | 框架   | 语言          | 特点              | 适用场景 | | ------ | ------------- | ----------------- | -------- | | Vue 3  | TypeScript    | 渐进式、响应式    | SPA、SSR | | React  | JavaScript/TS | 函数式、Hooks     | 大型应用 | | Svelte | JavaScript    | 编译时、无虚拟DOM | 性能敏感 | --- 脚注 (Footnotes) 这是一段包含脚注的文本[^1]，脚注可以包含详细的解释或引用来源。 GitHub Flavored Markdown[^gfm] 是 GitHub 对标准 Markdown 的扩展。 你也可以使用内联脚注^[这是一个内联脚注，直接写在正文中]。 多个脚注可以混合使用[^2]，它们会在文档底部统一展示[^note]。 [^1]: 这是第一个脚注的内容，可以包含粗体和 代码。 [^gfm]: GitHub Flavored Markdown 规范：https://github.github.com/gfm/ [^2]: 脚注支持多行内容：     - 第一点说明     - 第二点说明     以及代码块。 [^note]: 脚注标识符可以是数字或文字，会自动编号。 --- GitHub Alerts 告警块 NOTE - 备注信息 [!NOTE] 这是一条备注信息，用于提供背景上下文或补充说明。 支持多行内容和 Markdown 格式。 TIP - 提示建议 [!TIP] 使用 Ctrl + S 快速保存文件。 这个技巧可以提升你的开发效率！ IMPORTANT - 重要信息 [!IMPORTANT] 请确保在部署前运行所有测试用例。 这是保证代码质量的关键步骤。 WARNING - 警告提醒 [!WARNING] 此操作将修改数据库结构，请先备份数据。 建议在测试环境验证后再应用到生产环境。 CAUTION - 危险警告 [!CAUTION] 此操作不可逆！ 删除账户将永久移除所有相关数据，包括： - 用户资料 - 历史记录 - 关联文件 --- 引用块 (Blockquotes) 普通引用： 代码是写给人看的，顺便让机器执行。 —— Donald Knuth 嵌套引用： 第一层引用 第二层引用 第三层引用 --- 自动链接 (Autolinks) 直接输入网址会自动转换为链接： - https://github.com - https://vuejs.org - contact@example.com --- 混合使用示例 [!TIP] 快速上手指南 1. 克隆仓库 2. 安装依赖：npm install 3. 启动开发服务器：npm run dev | 命令      | 说明     | | --------- | -------- | | dev     | 开发模式 | | build   | 生产构建 | | preview | 预览构建 | 更多信息请参考官方文档[^docs]。 [^docs]: 完整文档地址：https://lumina.dev/docs --- 代码块 --- _本文档涵盖了 GFM 的所有主要扩展特性。_",
-    "tags": []
+    "tags": ["示例", "GFM", "Markdown"]
+  },
+  {
+    "id": "example/digital-garden",
+    "title": "数字花园 (Digital Garden)",
+    "content": "数字花园：一种新的互联网存在方式 什么是数字花园？ 数字花园介于传统的“博客”和“个人维基”之间。    博客通常是按时间顺序排列的，一旦发布就很少修改，像是一个陈列室。    维基则是客观的、百科全书式的。    数字花园则是生长中的、个人的、不断迭代的。 在 Lumiina 中，你的每一篇笔记都是一颗种子。有的刚发芽（Seedling），有的正在生长（Budding），有的已经长青（Evergreen）。 核心理念 1.  地形重于时间：不按发表时间排序，而是按主题和关联度组织。这就是为什么我们需要 [[Knowledge Graph]]。 2.  双向链接：通过 [[Smart Connections]] 将思想编织成网。 3.  公开学习 (Learn in Public)：展示未完成的想法，邀请反馈，而不是只展示完美的成品。 如何开始？ 不需要等到一切完美。现在就开始写。创建一个链接，即使它指向的页面还不存在（我们称之为“幽灵链接”）。等到某一天，你会有动力去填充它。 去看看 [[Knowledge Graph]]，观察你的花园是如何一点点繁荣起来的。",
+    "tags": ["理念", "个人成长", "写作"]
   },
   {
     "id": "backend/",
@@ -138,12 +186,6 @@
     "tags": []
   },
   {
-    "id": "backend/lang/api-design",
-    "title": "api-design",
-    "content": "API 设计规范 一份规范的 API 文档能显著降低前后端沟通成本。 RESTful 原则 1. 资源路径 (URIs) 使用名词，避免动词。使用层级结构。 - 正确: GET /v1/users - 错误: GET /v1/getUsers 2. HTTP 方法 - GET: 获取资源 - POST: 创建资源 - PUT: 替换资源 - PATCH: 部分更新 - DELETE: 删除资源 3. 状态码 (Status Codes) - 200 OK: 请求成功。 - 201 Created: 资源创建成功。 - 400 Bad Request: 请求参数错误。 - 401 Unauthorized: 未授权。 - 403 Forbidden: 已授权但无权限。 - 404 Not Found: 资源不存在。 - 500 Internal Server Error: 服务器内部错误。 安全性建议 - HTTPS: 必须全程加密。 - 认证: 使用 JWT 或 OAuth2.0。 - 过滤: 严格校验输入，防止 SQL 注入和 XSS。 - 限流: 防止恶意暴力请求。",
-    "tags": []
-  },
-  {
     "id": "backend/node/node-basic",
     "title": "node-basic",
     "content": "Node.js 基础 Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行时环境。 核心概念 1. 事件循环 (Event Loop) Node.js 采用单线程非阻塞 I/O 模型，其核心就是事件循环。 - 阶段: timers, pending callbacks, idle/prepare, poll, check, close callbacks. - 微任务: process.nextTick 和 Promise 回调。 2. 模块系统 - CommonJS: require / module.exports (同步加载)。 - ES Modules (ESM): import / export (静态加载，Node.js 12+ 推荐)。 3. 非阻塞 I/O 通过回调函数、Promise 或 async/await 处理 I/O 操作，而不会阻塞主线程执行。 性能优化建议 - 避免在主线程执行耗时的同步操作。 - 合理利用 Stream 处理大文件，减少内存占用。 - 关键逻辑使用 C++ 插件扩展。",
@@ -156,9 +198,9 @@
     "tags": []
   },
   {
-    "id": "AIGC/MCP/mcp",
-    "title": "mcp",
-    "content": "这是MCP",
+    "id": "backend/lang/api-design",
+    "title": "api-design",
+    "content": "API 设计规范 一份规范的 API 文档能显著降低前后端沟通成本。 RESTful 原则 1. 资源路径 (URIs) 使用名词，避免动词。使用层级结构。 - 正确: GET /v1/users - 错误: GET /v1/getUsers 2. HTTP 方法 - GET: 获取资源 - POST: 创建资源 - PUT: 替换资源 - PATCH: 部分更新 - DELETE: 删除资源 3. 状态码 (Status Codes) - 200 OK: 请求成功。 - 201 Created: 资源创建成功。 - 400 Bad Request: 请求参数错误。 - 401 Unauthorized: 未授权。 - 403 Forbidden: 已授权但无权限。 - 404 Not Found: 资源不存在。 - 500 Internal Server Error: 服务器内部错误。 安全性建议 - HTTPS: 必须全程加密。 - 认证: 使用 JWT 或 OAuth2.0。 - 过滤: 严格校验输入，防止 SQL 注入和 XSS。 - 限流: 防止恶意暴力请求。",
     "tags": []
   },
   {
@@ -174,9 +216,21 @@
     "tags": []
   },
   {
+    "id": "AIGC/MCP/mcp",
+    "title": "mcp",
+    "content": "这是MCP",
+    "tags": []
+  },
+  {
     "id": "AIGC/Claude-Code/cc",
     "title": "cc",
     "content": "Claude Code 第一章 引言 <LinkCard url=\"https://docs.anthropic.com/zh-CN/docs/claude-code/overview/\" title=\"Claude Code 文档\" description=\"Claude Code 官方文档\" logo=\"https://storage.googleapis.com/organization-image-assets/anthropic-botAvatarDarkSrcUrl-1715877068491.svg\"/ 1.1 为什么不用Cursor了 ​ Cursor是一款基于人工智能的代码编辑器，旨在帮助开发人员编写代码，并于AI进行实时互动，提供写代码建议、错误检测和自动补全功能。支持多种编程语言（如Python、JavaScript、Java等） ​ 现在AI开发工具在开发中的能力和重要性越来越高，Cursor的高能力让很多人趋之若鹜，但是Cursor计价规则的黑箱模式、朝令夕改、费用上调又让开发者们感到无奈且遗憾。 ​ Cursor首先是修改了免费用户的使用权限，从不限制模型到只能使用gpt4.1模型，再到只能使用Auto模式；其次修改了每个月充值了 20美元的Pro用户的权限，首先是从每月500次快速，额度用尽后转为慢速，变成了无次数限制，但是快速慢速混用，可以通过额外付费避免慢速。其实这倒是也能接受，无非是每天可能会有几个任务卡住几分钟或者十几分钟而已。但是最近一次的计费规则修改堪称抽象，Pro用户每月只能发起总价$20的请求。下图是我上个月的用量： ​ 原来这些模型这么贵。那$20想必也是稍纵即逝。这种朝令夕改、不公布计价细节的行为让人无法接受，Cursor是其母公司的唯一产品，其并没有一线大厂的一言九鼎和尊重用户的品质，因此，选择一个合适的替代品十分重要 1.2 为什么使用Claude Code ​ Calude（克劳德）Code 是由 Anthropic 开发的官方 CLI 工具，用于协助用户处理软件工程任务。 Anthropic 发现了Cursor的成功后，开发了Claude Code作为Cursor的竞品。Claude Code是一个革命性的AI编程工具，它将强大的Claude AI直接集成到您的开发环境中。 与传统的代码编辑器插件不同，Claude Code在终端中运行，具有以下特点： - 智能代码理解: 深度理解您的项目结构和代码逻辑 - 自然语言交互: 用普通话描述需求，AI自动执行编程任务 - 全项目上下文: 理解整个代码库的架构和依赖关系 - 安全可靠: 直接连接Anthropic API，所有操作在本地执行 - Git集成: 智能的版本控制操作和历史分析 除此之外，Claude Code还有以下优势： - 原生Claude模型，没有Cursor暗加的种种故意为了耗费提问次数的提示词，能按照需求制定完善的执行计划 - 可按token计费，而不是提问次数。这样无论问题大小尽管提问，按需付费。 - 可接入其他模型，这是很重要的一点，因为只要是符合Anthropic框架的LLM都可以接入Claude Code平台 - 安装简单，调用国内最新模型价格低廉。后续会详细说明安装流程 1.3 应用场景举例 - 项目分析 - 添加功能 - 项目性能分析 第二章 Claude Code的安装 2.1 Kimi K2模型 ​ KimiK2是北京月之暗面科技有限公司于2025年7月11日推出的模型，具备更强代码能力、更擅长通用Agent任务的MoE架构基础模型。Kimi K2继承了DeepSeek-V3的架构，并在后者基础上进行增加专家数量、减少注意力头数量等调整。号称代码能力与Agent能力强大，真实水平虽然并没有达到无比强大，但是做到了很棒的性价比 ​ 关于这里为什么提到了Kimi K2？在经常使用大模型的人眼中月之暗面的Kimi的存在感几乎为0，但是这一次它的新模型遵循Anthropic协议，这代表着其可以顺利接入Claude Code，并且无需任何路由代理，只需要配置好URL与API即可直接使用。 ​ 如果使用Anthropic的Claude服务的话，其实有很多困难的地方，虽然Claude的代码能力在全世界是毋庸置疑的遥遥领先，但是其并没有开放对中国大陆地区的服务，当检测到异常IP的话会给中国用户进行迅速封号（会把充值的钱原路返回）。因此如果需要使用其服务要么就是自己搭建一套稳定的海外中转站，要么从一些国内开发者搭建的镜像平台购买服务。外加上Claude服务的价格也不是很低，也要至少$20一个月。所以如果不是为了极致的性能和开发质量，我们可以接入Kimi K2实现一个向下兼容的替代。 2.2 Kimi 服务的配置 ​ 我们直接来到Moonshot官网获取自己的API key $1 新建API key。妥善保存，key不能二次查看 接下来将Moonshot的url以及API key设置进环境变量的系统变量中。 2.3 Claude Code 的安装 ​ Claude Code的最新版本终于支持Windows系统了，不用再用wsl去进行繁琐的配置了！ 在开始之前，需要确保系统满足以下要求： 2.3.1 必备组件 - Windows 10 版本 2004 及以上（Build 19041+）或 Windows 11 - 管理员权限 - Git 版本控制工具 - Node.js 18+ 版本（推荐使用最新LTS版本） - 稳定的网络连接 - 终端功能，比如使用 iTerm2、Windows Terminal 等（非必须） 2.3.2 安装Git - 下载网址 https://git-scm.com/downloads 首先，下载windows安装软件，按照提示一步一步进行安装即可 其次，安装之后，配置环境变量，为了后面Claude Code使用 CLAUDE_CODE_GIT_BASH_PATH D:\\Program Files\\Git\\bin\\bash.exe（git路径） 最后，安装完成后，打开cmd，输入命令，如果看到版本号，证明安装成功 命令：git --version 2.3.3 安装 Node.js 下载网址：https://nodejs.org/zh-tw/download/current 下载Node.js 18+ 版本，安装提示一步一步进行安装 打开cmd查看版本 2.3.4 安装claude-code 1、通过npm包管理器直接安装 2、安装完成后验证是否安装成功 3、启动网络代理服务 - 在启动之前需要启动一下网络的代理服务，因为如果识别到国内网络环境会禁止登录，详细配置过程参考文档 4、开启代理服务 - 在开启代理服务后还需要在当前终端中输入以下配置，为让cmd也能使用代理服务。 5、启动后首先选择颜色配置 - 根据需要，自行选择 6、登录 - 之后是登陆方式，选择第二种，会自动从环境变量中寻找配置信息登陆进去 - 之后正常来说就可以进行使用了 ​ 如果这里显示并发数限制之类的Error 429报错，则是Kimi那边的问题。Kimi给每个用户提供了15元的免费额度，但是免费用户的并发数限制为1，这很可能导致不能正常使用。需要至少充值50元让用户等级从free到Tier1就可以解决这个问题。 2.4 Claude Code 简单入门 ​ Claude是完全通过终端进行交互的，其中内置了多种工具，比如文件操作、搜索等。可以理解自然语言并转化为相应的命令执行。 启动Claude Code 语言设置 在启动目录，创建文件夹.claude，在.claude文件夹中创建文件config.json 测试 - 比如说让其进入某个工作目录下： ​ 然后可以理解每一句自然语言并执行，其还有很多丰富的用法，比如Calude Code的一些命令、以及可以通过编写一个规范说明文档限制其行为等。以上是最方便简易的使用方式。 第三章 Claude Code 自然语言输入 ​ 在使用 Claude Code 时有一些提升便捷性和功能性的操作，不仅可以通过输入框进行对话式问答，还可以输入内置命令、shell命令、使用编译器运行等多种方式实现效果。 ​ 在初体验使用Claude Code的时候，首先可以仅仅通过自然语言输入你的问题。Claude内置了很多的工具，并且可以通过理解自然语言自动调用工具实现。接下来进行两个任务测试： 1. 读取工作目录下一个项目文件，并生成一份项目分析报告 2. 从零开始创建一个简单项目（复杂项目会消耗巨量的token，并且由于并不是使用的原生Claude模型，所以效果并不是很好） 3.1 通过自然语言生成项目分析报告 ​ 这里我们让其对一个LangChain4j的项目进行一下分析 ​ 分析的过程会比较慢，这和Kimi的充值等级额度有关。目前使用的是只充值50元的 Tier1 等级 有时会询问是否允许操作 在运行的时候其会自动制定计划 制作完毕 3.2 从零开始创建简单项目 ​ Kimi K2的代码能力还是不如Claude、Gemini、ChatGPT等一众国际一线编程模型，这里选择进行一个简单案例演示其效果 ​ 这里首先通过一个简单的工作路径添加命令传入工作目录 输入指令，输入后开始执行 在一段等待时间之后，其完成了该任务，创建了一个前端页面 可以正常运行 <img src=\"./images/image-20250718161538059.png\" alt=\"image-20250718161538059\" style=\"zoom:67%;\" / ​ 对于代码能力的见解： ​ 由于是调用的Kimi K2，所以虽然其编写的前端还不错，但是后端能力实在差强人意，不要对让它帮忙写后端有着太大的希望。如果需要使用Claude的极致功能的话还是建议通过配置纯净IP的手段或者从国内代理购买服务调用原生Claude服务，Claude4模型是目前毋庸置疑的全世界代码能力第一名的大模型，但其并不为中国大陆地区提供服务。其价格也是很高，远超过调用Kimi K2的价格（但由于这边并没有进行过实际的代码能力测试与费用估算，因此不能给出准确的评价） 第四章 Claude Code 的命令行输入 ​ Claude Code 是 Anthropic 推出的终端 AI 编码助手，在交互界面中通过 斜杠命令（Slash Commands）来控制 AI 助手的行为和上下文，合理使用斜杠命令，配合自然语言输入更加顺利完成开发操作。 4.1 Calude Code 执行初始化命令 ​ 在使用Claude Code的时候，一般都会首先添加工作目录。这里一般通过一个斜杠： /来表示输入指令。这里输入如下指令选定工作目录 ​ 在创建工作目录后，使用初始化工具对该目录下的项目进行初始化分析，生成一份CLAUDE.md文档。这个文档的作用是建立上下文，让Claude Code理解当前项目的目标和结构、设置代码风格和一些规则、设置Claude Code的角色。可以在进行初始化之后通过自然语言输入让其修改该初始化说明文档，进而实现所需的设定 现在来到一个已完成的项目下，通过 /init完成项目分析的初始化 - /init – 初始化项目记忆指南 定义与语法： /init 无参数。运行此命令会扫描当前项目代码库，在项目根目录生成一个 CLAUDE.md 文件，作为该项目的知识指南。CLAUDE.md 通常包含项目结构摘要、主要模块说明、依赖列表等内容。 使用场景： 建议首次在新项目中使用 Claude Code时立即执行 /init。这样Claude会自动了解项目的大概结构和背景，相当于给Claude这个AI同事一本项目手册。/init 生成的 CLAUDE.md 可由Claude根据代码自动提取要点，你也可以在Claude的帮助下完善它——比如询问 “请列出项目架构的关键部分写入 CLAUDE.md” 等。完成后，将 CLAUDE.m",
+    "tags": []
+  },
+  {
+    "id": "backend/lang/rust/",
+    "title": "index",
+    "content": "Rust 语言指南 Rust 是一门专注于安全、并发和性能的现代系统编程语言。 核心支柱 - 内存安全: 无需垃圾回收 (GC)，通过所有权系统在编译期消除内存错误。 - 无畏并发: 编译器确保并发代码没有数据竞争。 - 极致性能: 与 C/C++ 相当的零成本抽象。 1. 所有权系统 (Ownership) 这是 Rust 最独特的特性： - 每个值都有一个所有者。 - 同一时刻只能有一个所有者。 - 当所有者离开作用域，值会被自动销毁。 2. 借用与生命周期 - 引用: 分为不可变引用 (&T) 和可变引用 (&mut T)。 - 规则: 在同一作用域内，要么只能有一个可变引用，要么可以有多个不可变引用。 3. 生态系统：Cargo Cargo 是 Rust 的构建工具和包管理器，被公认为业界标杆。 --- [!IMPORTANT] Rust 的学习曲线虽然陡峭，但它带来的系统稳定性和性能收益是巨大的。",
     "tags": []
   },
   {
@@ -189,12 +243,6 @@
     "id": "backend/lang/go/go-base",
     "title": "go-base",
     "content": "Go 语言基础与并发 深入理解 Go 语言的核心语法与其引以为傲的并发模型。 1. 核心语法要点 - 变量与类型: 强类型，支持类型推断。 - 结构体 (Structs): Go 没用类，通过结构体和方法接收者实现面向对象特性。 - 接口 (Interfaces): 非侵入式接口（Duck Typing），极大地增强了代码解耦。 - 错误处理: 显式返回 error，崇尚“失败即数据”的理念。 2. 并发模型：CSP Go 实现了 Communicating Sequential Processes (CSP) 模型。 Goroutine (协程) 轻量级的用户态线程，启动成本极低。 Channel (通道) 不要通过共享内存来通信，而要通过通信来共享内存。 3. 标准库亮点 - net/http: 构建高性能 Web 服务。 - encoding/json: 极致简洁的序列化。 - context: 优雅地控制请求生命周期与超时。",
-    "tags": []
-  },
-  {
-    "id": "backend/lang/rust/",
-    "title": "index",
-    "content": "Rust 语言指南 Rust 是一门专注于安全、并发和性能的现代系统编程语言。 核心支柱 - 内存安全: 无需垃圾回收 (GC)，通过所有权系统在编译期消除内存错误。 - 无畏并发: 编译器确保并发代码没有数据竞争。 - 极致性能: 与 C/C++ 相当的零成本抽象。 1. 所有权系统 (Ownership) 这是 Rust 最独特的特性： - 每个值都有一个所有者。 - 同一时刻只能有一个所有者。 - 当所有者离开作用域，值会被自动销毁。 2. 借用与生命周期 - 引用: 分为不可变引用 (&T) 和可变引用 (&mut T)。 - 规则: 在同一作用域内，要么只能有一个可变引用，要么可以有多个不可变引用。 3. 生态系统：Cargo Cargo 是 Rust 的构建工具和包管理器，被公认为业界标杆。 --- [!IMPORTANT] Rust 的学习曲线虽然陡峭，但它带来的系统稳定性和性能收益是巨大的。",
     "tags": []
   },
   {

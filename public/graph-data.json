@@ -37,6 +37,12 @@
       "links": 0
     },
     {
+      "id": "/example/smart-connections",
+      "title": "智能连接 (Smart Connections)",
+      "path": "/example/smart-connections",
+      "links": 0
+    },
+    {
       "id": "/example/obsidian-features",
       "title": "Obsidian 语法扩展演示",
       "path": "/example/obsidian-features",
@@ -97,6 +103,12 @@
       "links": 0
     },
     {
+      "id": "/example/knowledge-graph",
+      "title": "知识图谱 (Knowledge Graph)",
+      "path": "/example/knowledge-graph",
+      "links": 0
+    },
+    {
       "id": "/example",
       "title": "index",
       "path": "/example",
@@ -109,15 +121,21 @@
       "links": 0
     },
     {
-      "id": "/AIGC",
-      "title": "index",
-      "path": "/AIGC",
+      "id": "/example/digital-garden",
+      "title": "数字花园 (Digital Garden)",
+      "path": "/example/digital-garden",
       "links": 0
     },
     {
       "id": "/backend",
       "title": "index",
       "path": "/backend",
+      "links": 0
+    },
+    {
+      "id": "/AIGC",
+      "title": "index",
+      "path": "/AIGC",
       "links": 0
     },
     {
@@ -199,18 +217,6 @@
       "links": 0
     },
     {
-      "id": "/AIGC/MCP/mcp",
-      "title": "mcp",
-      "path": "/AIGC/MCP/mcp",
-      "links": 0
-    },
-    {
-      "id": "/AIGC/Claude-Code/cc",
-      "title": "cc",
-      "path": "/AIGC/Claude-Code/cc",
-      "links": 0
-    },
-    {
       "id": "/backend/python/fastapi",
       "title": "fastapi",
       "path": "/backend/python/fastapi",
@@ -247,6 +253,18 @@
       "links": 0
     },
     {
+      "id": "/AIGC/MCP/mcp",
+      "title": "mcp",
+      "path": "/AIGC/MCP/mcp",
+      "links": 0
+    },
+    {
+      "id": "/AIGC/Claude-Code/cc",
+      "title": "cc",
+      "path": "/AIGC/Claude-Code/cc",
+      "links": 0
+    },
+    {
       "id": "/backend/lang/rust",
       "title": "index",
       "path": "/backend/lang/rust",
@@ -262,12 +280,6 @@
       "id": "/backend/lang/go/go-base",
       "title": "go-base",
       "path": "/backend/lang/go/go-base",
-      "links": 0
-    },
-    {
-      "id": "/backend/database/redis/redis-guide",
-      "title": "redis-guide",
-      "path": "/backend/database/redis/redis-guide",
       "links": 0
     },
     {
@@ -310,6 +322,12 @@
       "id": "/backend/database/mysql",
       "title": "index",
       "path": "/backend/database/mysql",
+      "links": 0
+    },
+    {
+      "id": "/backend/database/redis/redis-guide",
+      "title": "redis-guide",
+      "path": "/backend/database/redis/redis-guide",
       "links": 0
     },
     {

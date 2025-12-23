@@ -4,8 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "set \"BROWSER=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" && vite --host --open",
-    "build": "node scripts/generate-search-index.js && node scripts/generate-graph-data.js && vite build",
+    "predev": "npm run data && set \"BROWSER=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"",
+    "dev": "vite --host --open",
+    "data": "node scripts/generate-search-index.js && node scripts/generate-graph-data.js",
+    "build": "npm run data && vite build",
     "tsc": "vue-tsc -b",
     "preview": "vite preview",
     "commit": "git-cz",

@@ -1,5 +1,7 @@
+```vue
 <script setup lang="ts">
-import { provide } from 'vue'
+import { provide, ref, watch, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
 import Sidebar from '@/components/layout/Sidebar.vue'
 import TOC from '@/components/article/TOC.vue'
 import Navbar from '@/components/layout/Navbar.vue'
@@ -10,12 +12,14 @@ import PrevNextNav from '@/components/article/PrevNextNav.vue'
 import ArticleTags from '@/components/article/ArticleTags.vue'
 import ArticleMeta from '@/components/article/ArticleMeta.vue'
 import GraphView from '@/components/article/GraphView.vue'
+import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
 import { useSidebar } from '@/composables/ui/useSidebar'
 import { useTOC } from '@/composables/article/useTOC'
 import { useLinkCards } from '@/composables/ui/useLinkCards'
 import { useImageZoom } from '@/composables/article/useImageZoom'
 import { useMermaid } from '@/composables/article/useMermaid'
 import { useTabs } from '@/composables/article/useTabs'
+import { useSmartHover } from '@/composables/article/useSmartHover'
 
 // 使用 Composables
 const { isOpen: sidebarOpen, toggleSidebar } = useSidebar()
@@ -29,6 +33,27 @@ useMermaid()
 
 // 标签页交互
 useTabs()
+
+// 智能悬浮卡
+const { attachToContent } = useSmartHover()
+const articleRef = ref<HTMLElement | null>(null)
+const route = useRoute()
+
+// 监听路由变化，重新绑定悬浮卡事件
+watch(
+  () => route.path,
+  () => {
+    nextTick(() => {
+      // 延迟一点确保 DOM 更新
+      setTimeout(() => {
+        if (articleRef.value) {
+          attachToContent(articleRef.value)
+        }
+      }, 500)
+    })
+  },
+  { immediate: true }
+)
 
 // 图片放大功能
 const { currentImage, hide } = useImageZoom()
@@ -73,7 +98,7 @@ provide('headings', headings)
           <!-- Main Content -->
           <div class="content">
             <main class="main">
-              <article class="markdown-body">
+              <article ref="articleRef" class="markdown-body">
                 <ArticleTags />
                 <ArticleMeta />
                 <slot />
@@ -100,6 +125,9 @@ provide('headings', headings)
 
     <!-- 阅读进度悬浮球 -->
     <ReadingProgress />
+
+    <!-- 智能悬浮卡 -->
+    <SmartHoverCard />
 
     <!-- 小猫回到顶部 -->
     <BackToTopCat />
