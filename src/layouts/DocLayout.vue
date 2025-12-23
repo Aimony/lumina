@@ -86,8 +86,8 @@ provide('headings', headings)
           <aside class="VPDocAside hidden xl:block">
             <div class="aside-container">
               <div class="aside-content">
+                <GraphView class="aside-graph" />
                 <TOC :headings="headings" />
-                <GraphView />
               </div>
             </div>
           </aside>
@@ -205,5 +205,9 @@ provide('headings', headings)
   top: calc(var(--vp-nav-height) + 32px);
   max-height: calc(100vh - var(--vp-nav-height) - 64px);
   overflow-y: auto;
+}
+
+.aside-graph {
+  margin-bottom: 24px;
 }
 </style>

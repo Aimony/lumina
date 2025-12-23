@@ -1,5 +1,6 @@
+<!-- 灵感来自 Quartz 4 -->
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
+import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import * as d3 from 'd3'
 import {
@@ -19,7 +20,9 @@ const router = useRouter()
 const { data, loading, error, loadData, getLocalGraph, getNeighbors } = useGraphData()
 
 const containerRef = ref<HTMLElement | null>(null)
+const modalContainerRef = ref<HTMLElement | null>(null)
 const isGlobalView = ref(props.global ?? false)
+const isModalOpen = ref(false)
 
 // 当前路径
 const currentPath = computed(() => route.path.replace(/\/$/, '') || '/')
@@ -31,24 +34,28 @@ const neighbors = computed(() => {
 })
 
 let simulation: d3.Simulation<GraphNode, GraphLink> | null = null
+let modalSimulation: d3.Simulation<GraphNode, GraphLink> | null = null
 let svg: d3.Selection<SVGSVGElement, unknown, null, undefined> | null = null
 
 /**
- * 初始化或更新图形
+ * 渲染图形到指定容器
  */
-function renderGraph() {
-  if (!containerRef.value || !data.value) return
+function renderGraphToContainer(
+  container: HTMLElement,
+  useGlobalView: boolean,
+  isModal: boolean = false
+): d3.Simulation<GraphNode, GraphLink> | null {
+  if (!data.value) return null
 
   // 清除旧的 SVG
-  d3.select(containerRef.value).selectAll('*').remove()
+  d3.select(container).selectAll('*').remove()
 
-  const container = containerRef.value
   const width = container.clientWidth
   const height = container.clientHeight || 200
 
   // 获取要渲染的数据
   let graphData: GraphData
-  if (isGlobalView.value) {
+  if (useGlobalView) {
     // 全局视图：深拷贝所有数据
     graphData = {
       nodes: data.value.nodes.map((n) => ({ ...n })),
@@ -78,10 +85,10 @@ function renderGraph() {
     }
   }
 
-  if (graphData.nodes.length === 0) return
+  if (graphData.nodes.length === 0) return null
 
   // 创建 SVG
-  svg = d3
+  const newSvg = d3
     .select(container)
     .append('svg')
     .attr('width', width)
@@ -89,7 +96,7 @@ function renderGraph() {
     .attr('viewBox', [0, 0, width, height])
 
   // 添加缩放和平移功能
-  const g = svg.append('g')
+  const g = newSvg.append('g')
 
   const zoom = d3
     .zoom<SVGSVGElement, unknown>()
@@ -98,21 +105,25 @@ function renderGraph() {
       g.attr('transform', event.transform)
     })
 
-  svg.call(zoom)
+  newSvg.call(zoom)
+
+  // 模态框使用更强的力参数
+  const chargeStrength = isModal ? -200 : -150
+  const linkDistance = isModal ? 80 : 60
 
   // 创建力导向布局
-  simulation = d3
+  const sim = d3
     .forceSimulation<GraphNode>(graphData.nodes)
     .force(
       'link',
       d3
         .forceLink<GraphNode, GraphLink>(graphData.links)
         .id((d) => d.id)
-        .distance(60)
+        .distance(linkDistance)
     )
-    .force('charge', d3.forceManyBody().strength(-150))
+    .force('charge', d3.forceManyBody().strength(chargeStrength))
     .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('collision', d3.forceCollide().radius(20))
+    .force('collision', d3.forceCollide().radius(isModal ? 25 : 20))
 
   // 绘制链接
   const link = g
@@ -139,12 +150,15 @@ function renderGraph() {
     .style('cursor', 'pointer')
     .on('click', (_event, d) => {
       router.push(d.path)
+      if (isModal) {
+        closeModal()
+      }
     })
     .call(
       d3
         .drag<SVGGElement, GraphNode>()
         .on('start', (event, d) => {
-          if (!event.active) simulation?.alphaTarget(0.3).restart()
+          if (!event.active) sim?.alphaTarget(0.3).restart()
           d.fx = d.x
           d.fy = d.y
         })
@@ -153,31 +167,34 @@ function renderGraph() {
           d.fy = event.y
         })
         .on('end', (event, d) => {
-          if (!event.active) simulation?.alphaTarget(0)
+          if (!event.active) sim?.alphaTarget(0)
           d.fx = null
           d.fy = null
         }) as any
     )
 
-  // 节点圆形
+  // 节点圆形 - 模态框中更大
+  const nodeRadius = isModal ? 1.8 : 1.5
   node.append('circle').attr('r', (d) => {
-    // 节点大小与链接数相关
-    return Math.max(4, Math.min(12, 4 + d.links * 1.5))
+    return Math.max(
+      isModal ? 5 : 4,
+      Math.min(isModal ? 16 : 12, (isModal ? 5 : 4) + d.links * nodeRadius)
+    )
   })
 
-  // 节点标签
+  // 节点标签 - 模态框中始终显示
   node
     .append('text')
-    .attr('class', 'node-label')
-    .attr('dy', -10)
+    .attr('class', isModal ? 'node-label modal-label' : 'node-label')
+    .attr('dy', isModal ? -14 : -10)
     .attr('text-anchor', 'middle')
     .text((d) => {
-      // 截断过长的标题
-      return d.title.length > 12 ? d.title.slice(0, 12) + '...' : d.title
+      const maxLen = isModal ? 20 : 12
+      return d.title.length > maxLen ? d.title.slice(0, maxLen) + '...' : d.title
     })
 
   // 更新位置
-  simulation.on('tick', () => {
+  sim.on('tick', () => {
     link
       .attr('x1', (d: any) => d.source.x)
       .attr('y1', (d: any) => d.source.y)
@@ -186,6 +203,28 @@ function renderGraph() {
 
     node.attr('transform', (d) => `translate(${d.x},${d.y})`)
   })
+
+  if (!isModal) {
+    svg = newSvg
+  }
+
+  return sim
+}
+
+/**
+ * 初始化或更新图形
+ */
+function renderGraph() {
+  if (!containerRef.value || !data.value) return
+  simulation = renderGraphToContainer(containerRef.value, isGlobalView.value, false)
+}
+
+/**
+ * 渲染模态框中的图形
+ */
+function renderModalGraph() {
+  if (!modalContainerRef.value || !data.value) return
+  modalSimulation = renderGraphToContainer(modalContainerRef.value, true, true)
 }
 
 /**
@@ -196,6 +235,34 @@ function toggleView() {
   renderGraph()
 }
 
+/**
+ * 打开全屏模态框
+ */
+function openModal() {
+  isModalOpen.value = true
+  nextTick(() => {
+    renderModalGraph()
+  })
+}
+
+/**
+ * 关闭模态框
+ */
+function closeModal() {
+  isModalOpen.value = false
+  modalSimulation?.stop()
+  modalSimulation = null
+}
+
+/**
+ * 处理 ESC 键关闭模态框
+ */
+function handleKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape' && isModalOpen.value) {
+    closeModal()
+  }
+}
+
 onMounted(async () => {
   try {
     await loadData()
@@ -203,10 +270,13 @@ onMounted(async () => {
   } catch (e) {
     console.error('Failed to load graph data:', e)
   }
+  window.addEventListener('keydown', handleKeydown)
 })
 
 onUnmounted(() => {
   simulation?.stop()
+  modalSimulation?.stop()
+  window.removeEventListener('keydown', handleKeydown)
 })
 
 // 路由变化时重新渲染
@@ -237,47 +307,65 @@ onUnmounted(() => {
   <div class="graph-view">
     <div class="graph-header">
       <span class="graph-title">Graph View</span>
-      <button
-        class="toggle-btn"
-        @click="toggleView"
-        :title="isGlobalView ? 'Local View' : 'Global View'"
-      >
-        <svg
-          v-if="!isGlobalView"
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+      <div class="header-actions">
+        <button
+          class="action-btn"
+          @click="toggleView"
+          :title="isGlobalView ? 'Local View' : 'Global View'"
         >
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="2" y1="12" x2="22" y2="12"></line>
-          <path
-            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-          ></path>
-        </svg>
-        <svg
-          v-else
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          <line x1="11" y1="8" x2="11" y2="14"></line>
-          <line x1="8" y1="11" x2="14" y2="11"></line>
-        </svg>
-      </button>
+          <svg
+            v-if="!isGlobalView"
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path
+              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            ></path>
+          </svg>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <button class="action-btn" @click="openModal" title="Expand">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div v-if="loading" class="graph-loading">Loading...</div>
@@ -288,6 +376,36 @@ onUnmounted(() => {
 
     <div v-else ref="containerRef" class="graph-container"></div>
   </div>
+
+  <!-- 全屏模态框 -->
+  <Teleport to="body">
+    <Transition name="modal">
+      <div v-if="isModalOpen" class="graph-modal-overlay" @click.self="closeModal">
+        <div class="graph-modal">
+          <div class="modal-header">
+            <span class="modal-title">Graph View</span>
+            <button class="modal-close" @click="closeModal" title="Close (ESC)">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <div ref="modalContainerRef" class="modal-graph-container"></div>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <style scoped>
@@ -296,6 +414,7 @@ onUnmounted(() => {
   border-radius: 8px;
   background-color: var(--vp-c-bg-alt);
   overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .graph-header {
@@ -312,7 +431,12 @@ onUnmounted(() => {
   color: var(--vp-c-text-2);
 }
 
-.toggle-btn {
+.header-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.action-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -325,7 +449,7 @@ onUnmounted(() => {
   transition: all 0.2s;
 }
 
-.toggle-btn:hover {
+.action-btn:hover {
   background-color: var(--vp-c-bg-soft);
   color: var(--vp-c-text-1);
 }
@@ -347,6 +471,87 @@ onUnmounted(() => {
 
 .graph-error {
   color: var(--vp-c-danger-1);
+}
+
+/* 模态框样式 */
+.graph-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.graph-modal {
+  width: 90vw;
+  height: 80vh;
+  max-width: 1200px;
+  background-color: var(--vp-c-bg);
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  color: var(--vp-c-text-2);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-close:hover {
+  background-color: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+}
+
+.modal-graph-container {
+  flex: 1;
+  width: 100%;
+  background-color: var(--vp-c-bg-alt);
+}
+
+/* 模态框动画 */
+.modal-enter-active,
+.modal-leave-active {
+  transition: all 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-from .graph-modal,
+.modal-leave-to .graph-modal {
+  transform: scale(0.9);
 }
 
 /* D3 样式 */
@@ -382,6 +587,11 @@ onUnmounted(() => {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s;
+}
+
+:deep(.node-label.modal-label) {
+  font-size: 11px;
+  opacity: 0.8;
 }
 
 :deep(.graph-node:hover .node-label),
