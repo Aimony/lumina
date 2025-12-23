@@ -289,14 +289,6 @@
       "links": 0
     },
     {
-      "id": "/backend/python/fastapi",
-      "title": "fastapi",
-      "path": "/backend/python/fastapi",
-      "category": "backend",
-      "tags": [],
-      "links": 0
-    },
-    {
       "id": "/backend/node/node-basic",
       "title": "node-basic",
       "path": "/backend/node/node-basic",
@@ -313,10 +305,10 @@
       "links": 0
     },
     {
-      "id": "/AIGC/MCP/mcp",
-      "title": "mcp",
-      "path": "/AIGC/MCP/mcp",
-      "category": "AIGC",
+      "id": "/backend/python/fastapi",
+      "title": "fastapi",
+      "path": "/backend/python/fastapi",
+      "category": "backend",
       "tags": [],
       "links": 0
     },
@@ -325,6 +317,22 @@
       "title": "api-design",
       "path": "/backend/lang/api-design",
       "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/AIGC/MCP/mcp",
+      "title": "mcp",
+      "path": "/AIGC/MCP/mcp",
+      "category": "AIGC",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/AIGC/Claude-Code/cc",
+      "title": "cc",
+      "path": "/AIGC/Claude-Code/cc",
+      "category": "AIGC",
       "tags": [],
       "links": 0
     },
@@ -340,22 +348,6 @@
       "id": "/backend/database/database-transactions",
       "title": "database-transactions",
       "path": "/backend/database/database-transactions",
-      "category": "backend",
-      "tags": [],
-      "links": 0
-    },
-    {
-      "id": "/AIGC/Claude-Code/cc",
-      "title": "cc",
-      "path": "/AIGC/Claude-Code/cc",
-      "category": "AIGC",
-      "tags": [],
-      "links": 0
-    },
-    {
-      "id": "/backend/lang/rust",
-      "title": "index",
-      "path": "/backend/lang/rust",
       "category": "backend",
       "tags": [],
       "links": 0
@@ -377,33 +369,17 @@
       "links": 0
     },
     {
+      "id": "/backend/lang/rust",
+      "title": "index",
+      "path": "/backend/lang/rust",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
       "id": "/backend/database/redis/redis-guide",
       "title": "redis-guide",
       "path": "/backend/database/redis/redis-guide",
-      "category": "backend",
-      "tags": [],
-      "links": 0
-    },
-    {
-      "id": "/backend/database/postgresql/postgresql-search-pl",
-      "title": "postgresql-search-pl",
-      "path": "/backend/database/postgresql/postgresql-search-pl",
-      "category": "backend",
-      "tags": [],
-      "links": 0
-    },
-    {
-      "id": "/backend/database/postgresql/postgresql-ha",
-      "title": "postgresql-ha",
-      "path": "/backend/database/postgresql/postgresql-ha",
-      "category": "backend",
-      "tags": [],
-      "links": 0
-    },
-    {
-      "id": "/backend/database/postgresql/postgresql-basics",
-      "title": "postgresql-basics",
-      "path": "/backend/database/postgresql/postgresql-basics",
       "category": "backend",
       "tags": [],
       "links": 0
@@ -436,6 +412,30 @@
       "id": "/backend/database/mysql",
       "title": "index",
       "path": "/backend/database/mysql",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/postgresql/postgresql-search-pl",
+      "title": "postgresql-search-pl",
+      "path": "/backend/database/postgresql/postgresql-search-pl",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/postgresql/postgresql-ha",
+      "title": "postgresql-ha",
+      "path": "/backend/database/postgresql/postgresql-ha",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/postgresql/postgresql-basics",
+      "title": "postgresql-basics",
+      "path": "/backend/database/postgresql/postgresql-basics",
       "category": "backend",
       "tags": [],
       "links": 0

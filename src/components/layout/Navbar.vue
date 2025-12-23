@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import ThemeToggle from '@/components/common/ThemeToggle.vue'
+import RandomWalk from '@/components/common/RandomWalk.vue'
 import YearProgress from '@/components/home/YearProgress.vue'
 import { navItems } from '@/config/nav'
 import { useDocsTree, type DocTreeNode } from '@/composables/article/useDocsTree'
@@ -186,6 +187,7 @@ const hideDropdown = () => {
             </span>
           </div>
           <div class="navbar-actions">
+            <RandomWalk />
             <ThemeToggle />
           </div>
         </div>
