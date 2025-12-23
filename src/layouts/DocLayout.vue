@@ -13,6 +13,7 @@ import ArticleTags from '@/components/article/ArticleTags.vue'
 import ArticleMeta from '@/components/article/ArticleMeta.vue'
 import GraphView from '@/components/article/GraphView.vue'
 import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
+import BacklinkSection from '@/components/article/BacklinkSection.vue' // Added import
 import { useSidebar } from '@/composables/ui/useSidebar'
 import { useTOC } from '@/composables/article/useTOC'
 import { useLinkCards } from '@/composables/ui/useLinkCards'
@@ -102,6 +103,7 @@ provide('headings', headings)
                 <ArticleTags />
                 <ArticleMeta />
                 <slot />
+                <BacklinkSection />
                 <PrevNextNav />
               </article>
             </main>

@@ -136,6 +136,16 @@ export function useSearch() {
 }
 
 /**
+ * 获取所有缓存的文章
+ */
+export async function getAllArticles(): Promise<SearchResult[]> {
+  if (!isLoaded.value) {
+    await loadIndex()
+  }
+  return Object.values(docsCache)
+}
+
+/**
  * 获取文章数据的辅助函数
  */
 export async function getArticleByPath(path: string): Promise<SearchResult | undefined> {
