@@ -1,6 +1,6 @@
 ```vue
 <script setup lang="ts">
-import { provide, ref, watch, nextTick } from 'vue'
+import { provide, ref, watch, nextTick, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import Sidebar from '@/components/layout/Sidebar.vue'
 import TOC from '@/components/article/TOC.vue'
@@ -24,6 +24,49 @@ import { useSmartHover } from '@/composables/article/useSmartHover'
 
 // 使用 Composables
 const { isOpen: sidebarOpen, toggleSidebar } = useSidebar()
+
+// 侧边栏宽度调整
+const sidebarWidth = ref(272)
+const isResizing = ref(false)
+const minWidth = 180
+const maxWidth = 400
+
+const sidebarStyle = computed(() => ({
+  width: `${sidebarWidth.value}px`
+}))
+
+const contentStyle = computed(() => ({
+  paddingLeft: sidebarOpen.value ? `${sidebarWidth.value}px` : '0'
+}))
+
+const startResize = (e: MouseEvent) => {
+  isResizing.value = true
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+  e.preventDefault()
+}
+
+const doResize = (e: MouseEvent) => {
+  if (!isResizing.value) return
+  const newWidth = e.clientX
+  sidebarWidth.value = Math.min(maxWidth, Math.max(minWidth, newWidth))
+}
+
+const stopResize = () => {
+  isResizing.value = false
+  document.body.style.cursor = ''
+  document.body.style.userSelect = ''
+}
+
+onMounted(() => {
+  document.addEventListener('mousemove', doResize)
+  document.addEventListener('mouseup', stopResize)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mousemove', doResize)
+  document.removeEventListener('mouseup', stopResize)
+})
 const { headings } = useTOC()
 
 // 处理链接卡片
@@ -87,10 +130,16 @@ provide('headings', headings)
       <!-- Optional: Breadcrumbs or local nav bar could go here -->
     </div>
 
-    <div class="VPContent" :class="{ 'has-sidebar': sidebarOpen }">
+    <div class="VPContent" :style="sidebarOpen ? contentStyle : {}">
       <!-- Sidebar -->
-      <aside v-show="sidebarOpen" class="VPSidebar">
+      <aside v-show="sidebarOpen" class="VPSidebar" :style="sidebarStyle">
         <Sidebar />
+        <!-- 拖拽调整手柄 -->
+        <div
+          class="resize-handle"
+          @mousedown="startResize"
+          :class="{ 'is-resizing': isResizing }"
+        ></div>
       </aside>
 
       <!-- Content Area -->
@@ -169,11 +218,26 @@ provide('headings', headings)
   bottom: 0;
   left: 0;
   z-index: 40;
-  width: 272px;
   background-color: var(--vp-c-bg);
   border-right: 1px solid var(--vp-c-divider);
   overflow-y: auto;
-  transition: transform 0.25s;
+}
+
+/* 拖拽调整手柄 */
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+  transition: background-color 0.2s;
+}
+
+.resize-handle:hover,
+.resize-handle.is-resizing {
+  background-color: var(--vp-c-brand-1);
 }
 
 @media (max-width: 960px) {
@@ -184,14 +248,7 @@ provide('headings', headings)
 
 /* Content Area */
 .VPContent {
-  padding-left: 0;
-  transition: padding-left 0.25s;
-}
-
-@media (min-width: 960px) {
-  .VPContent.has-sidebar {
-    padding-left: 272px;
-  }
+  transition: padding-left 0.15s;
 }
 
 .VPContent-doc {
