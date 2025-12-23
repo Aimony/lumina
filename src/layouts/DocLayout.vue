@@ -14,6 +14,7 @@ import { useTOC } from '@/composables/article/useTOC'
 import { useLinkCards } from '@/composables/ui/useLinkCards'
 import { useImageZoom } from '@/composables/article/useImageZoom'
 import { useMermaid } from '@/composables/article/useMermaid'
+import { useTabs } from '@/composables/article/useTabs'
 
 // 使用 Composables
 const { isOpen: sidebarOpen, toggleSidebar } = useSidebar()
@@ -24,6 +25,9 @@ useLinkCards()
 
 // Mermaid 图表渲染
 useMermaid()
+
+// 标签页交互
+useTabs()
 
 // 图片放大功能
 const { currentImage, hide } = useImageZoom()

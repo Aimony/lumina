@@ -20,6 +20,7 @@ import { obsidianCalloutsPlugin } from './src/plugins/markdown-it-obsidian-callo
 import { commentsPlugin } from './src/plugins/markdown-it-comments'
 import mark from 'markdown-it-mark'
 import { mermaidPlugin } from './src/plugins/markdown-it-mermaid'
+import { tabsPlugin } from './src/plugins/markdown-it-tabs'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -64,6 +65,8 @@ export default defineConfig({
         md.use(mark)
         // Mermaid 图表支持
         md.use(mermaidPlugin)
+        // 标签页组件支持
+        md.use(tabsPlugin)
       }
     }),
     Pages({

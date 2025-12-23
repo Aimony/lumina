@@ -476,3 +476,92 @@ html.dark .markdown-body .markdown-alert-caution {
   background: none;
   border: none;
 }
+
+/* ============================================
+   Tabs Container (标签页容器)
+   ============================================ */
+.tabs-container {
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-divider);
+  background-color: var(--vp-c-bg);
+  overflow: hidden;
+}
+
+.tabs-header {
+  display: flex;
+  position: relative;
+  background-color: var(--vp-c-bg-alt);
+  border-bottom: 1px solid var(--vp-c-divider);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs-header::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  flex-shrink: 0;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.25s ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--vp-c-text-1);
+}
+
+.tab-btn.active {
+  color: var(--vp-c-brand-1);
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background-color: var(--vp-c-brand-1);
+  transition:
+    left 0.25s ease,
+    width 0.25s ease;
+}
+
+.tabs-content {
+  padding: 0;
+}
+
+.tab-panel {
+  display: none;
+  padding: 1rem 1.25rem;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* 标签页内的代码块样式优化 */
+.tab-panel .code-block-wrapper {
+  margin: 0.5rem 0;
+  border-radius: 6px;
+}
+
+.tab-panel .code-block-wrapper:first-child {
+  margin-top: 0;
+}
+
+.tab-panel .code-block-wrapper:last-child {
+  margin-bottom: 0;
+}
+
+/* 标签页内只有代码块时的紧凑样式 */
+.tab-panel > .code-block-wrapper:only-child {
+  margin: -1rem -1.25rem;
+  border-radius: 0;
+  border: none;
+}

@@ -1,5 +1,7 @@
 ---
 title: GitHub Flavored Markdown 示例
+date: 2024-12-22
+tags: [示例, GFM, Markdown]
 ---
 
 # GitHub Flavored Markdown 完整示例
