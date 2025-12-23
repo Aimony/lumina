@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useMetaInfo } from '@/composables/core/useMetaInfo'
 
 interface Props {
@@ -8,6 +8,20 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+// 图片加载失败状态
+const imageError = ref(false)
+const faviconError = ref(false)
+
+// 处理图片加载失败
+const handleImageError = () => {
+  imageError.value = true
+}
+
+// 处理 favicon 加载失败
+const handleFaviconError = () => {
+  faviconError.value = true
+}
 
 // 获取元信息
 const { metadata, loading } = useMetaInfo(props.url)
@@ -63,13 +77,13 @@ const displayImage = computed(() => {
       <div class="link-card-info">
         <div class="link-card-header">
           <img
-            v-if="displayFavicon"
+            v-if="displayFavicon && !faviconError"
             :src="displayFavicon"
             :alt="domain"
             class="link-card-favicon"
             loading="lazy"
-          />
-          <span class="link-card-domain">{{ domain }}</span>
+            @error="handleFaviconError"
+          /><span class="link-card-domain">{{ domain }}</span>
         </div>
         <h4 class="link-card-title">{{ displayTitle }}</h4>
         <p v-if="displayDescription" class="link-card-description">
@@ -78,8 +92,14 @@ const displayImage = computed(() => {
       </div>
 
       <!-- 右侧：预览图 -->
-      <div v-if="displayImage" class="link-card-image-wrapper">
-        <img :src="displayImage" :alt="displayTitle" class="link-card-image" loading="lazy" />
+      <div v-if="displayImage && !imageError" class="link-card-image-wrapper">
+        <img
+          :src="displayImage"
+          :alt="displayTitle"
+          class="link-card-image"
+          loading="lazy"
+          @error="handleImageError"
+        />
       </div>
     </div>
   </a>
