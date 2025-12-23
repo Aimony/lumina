@@ -31,6 +31,24 @@ const router = createRouter({
   }
 })
 
+// 处理 URL 编码的中文路径
+router.beforeEach((to, _from, next) => {
+  // 如果路由未匹配且路径包含编码字符
+  if (to.matched.length === 0 && to.path.includes('%')) {
+    try {
+      const decodedPath = decodeURIComponent(to.path)
+      // 只有解码后路径不同时才重定向
+      if (decodedPath !== to.path) {
+        next({ path: decodedPath, query: to.query, hash: to.hash, replace: true })
+        return
+      }
+    } catch {
+      // 解码失败，继续正常路由
+    }
+  }
+  next()
+})
+
 const app = createApp(App)
 app.use(router)
 
