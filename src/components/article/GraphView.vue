@@ -154,6 +154,41 @@ function renderGraphToContainer(
         closeModal()
       }
     })
+    .on('mouseenter', (_event, d) => {
+      // 获取与当前节点相连的节点 ID
+      const connectedIds = new Set<string>()
+      connectedIds.add(d.id)
+
+      graphData.links.forEach((l) => {
+        const sourceId = typeof l.source === 'string' ? l.source : (l.source as GraphNode).id
+        const targetId = typeof l.target === 'string' ? l.target : (l.target as GraphNode).id
+        if (sourceId === d.id) connectedIds.add(targetId)
+        if (targetId === d.id) connectedIds.add(sourceId)
+      })
+
+      // 高亮相关连线
+      link
+        .classed('highlighted', (l: any) => {
+          const sourceId = typeof l.source === 'string' ? l.source : l.source.id
+          const targetId = typeof l.target === 'string' ? l.target : l.target.id
+          return sourceId === d.id || targetId === d.id
+        })
+        .classed('dimmed', (l: any) => {
+          const sourceId = typeof l.source === 'string' ? l.source : l.source.id
+          const targetId = typeof l.target === 'string' ? l.target : l.target.id
+          return sourceId !== d.id && targetId !== d.id
+        })
+
+      // 高亮相关节点，降低其他节点透明度
+      node
+        .classed('highlighted', (n) => connectedIds.has(n.id))
+        .classed('dimmed', (n) => !connectedIds.has(n.id))
+    })
+    .on('mouseleave', () => {
+      // 恢复所有元素状态
+      link.classed('highlighted', false).classed('dimmed', false)
+      node.classed('highlighted', false).classed('dimmed', false)
+    })
     .call(
       d3
         .drag<SVGGElement, GraphNode>()
@@ -559,17 +594,34 @@ onUnmounted(() => {
   stroke: var(--vp-c-divider);
   stroke-opacity: 0.6;
   stroke-width: 1px;
+  transition: all 0.25s ease;
+}
+
+:deep(.graph-link.highlighted) {
+  stroke: var(--vp-c-brand-1);
+  stroke-opacity: 1;
+  stroke-width: 2px;
+}
+
+:deep(.graph-link.dimmed) {
+  stroke-opacity: 0.15;
 }
 
 :deep(.graph-node circle) {
   fill: var(--vp-c-text-3);
   stroke: var(--vp-c-bg);
   stroke-width: 1.5px;
-  transition: all 0.2s;
+  transition: all 0.25s ease;
 }
 
-:deep(.graph-node:hover circle) {
+:deep(.graph-node:hover circle),
+:deep(.graph-node.highlighted circle) {
   fill: var(--vp-c-brand-1);
+  transform: scale(1.2);
+}
+
+:deep(.graph-node.dimmed circle) {
+  opacity: 0.3;
 }
 
 :deep(.graph-node.current circle) {
@@ -586,7 +638,7 @@ onUnmounted(() => {
   fill: var(--vp-c-text-2);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.25s ease;
 }
 
 :deep(.node-label.modal-label) {
@@ -595,7 +647,12 @@ onUnmounted(() => {
 }
 
 :deep(.graph-node:hover .node-label),
-:deep(.graph-node.current .node-label) {
+:deep(.graph-node.current .node-label),
+:deep(.graph-node.highlighted .node-label) {
   opacity: 1;
+}
+
+:deep(.graph-node.dimmed .node-label) {
+  opacity: 0;
 }
 </style>
