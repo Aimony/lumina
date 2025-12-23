@@ -21,6 +21,7 @@ import { commentsPlugin } from './src/plugins/markdown-it-comments'
 import mark from 'markdown-it-mark'
 import { mermaidPlugin } from './src/plugins/markdown-it-mermaid'
 import { tabsPlugin } from './src/plugins/markdown-it-tabs'
+import { officePreviewPlugin } from './src/plugins/markdown-it-office-preview'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -67,6 +68,8 @@ export default defineConfig({
         md.use(mermaidPlugin)
         // 标签页组件支持
         md.use(tabsPlugin)
+        // Office 文件预览支持
+        md.use(officePreviewPlugin)
       }
     }),
     Pages({

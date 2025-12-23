@@ -1,6 +1,14 @@
 {
   "nodes": [
     {
+      "id": "/frontend",
+      "title": "index",
+      "path": "/frontend",
+      "category": "frontend",
+      "tags": [],
+      "links": 0
+    },
+    {
       "id": "/guide/structure",
       "title": "structure",
       "path": "/guide/structure",
@@ -33,14 +41,6 @@
       "links": 0
     },
     {
-      "id": "/frontend",
-      "title": "index",
-      "path": "/frontend",
-      "category": "frontend",
-      "tags": [],
-      "links": 0
-    },
-    {
       "id": "/example/tabs-example",
       "title": "标签页组件示例",
       "path": "/example/tabs-example",
@@ -54,6 +54,14 @@
       "path": "/example/smart-connections",
       "category": "example",
       "tags": ["功能", "交互", "用户体验"],
+      "links": 0
+    },
+    {
+      "id": "/example/office-preview",
+      "title": "Office 文件预览示例",
+      "path": "/example/office-preview",
+      "category": "example",
+      "tags": ["功能演示", "Office"],
       "links": 0
     },
     {
@@ -321,30 +329,6 @@
       "links": 0
     },
     {
-      "id": "/AIGC/MCP/mcp",
-      "title": "mcp",
-      "path": "/AIGC/MCP/mcp",
-      "category": "AIGC",
-      "tags": [],
-      "links": 0
-    },
-    {
-      "id": "/backend/database/mongodb-guide",
-      "title": "mongodb-guide",
-      "path": "/backend/database/mongodb-guide",
-      "category": "backend",
-      "tags": [],
-      "links": 0
-    },
-    {
-      "id": "/backend/database/database-transactions",
-      "title": "database-transactions",
-      "path": "/backend/database/database-transactions",
-      "category": "backend",
-      "tags": [],
-      "links": 0
-    },
-    {
       "id": "/backend/java/README",
       "title": "README",
       "path": "/backend/java/README",
@@ -389,6 +373,30 @@
       "title": "java-advanced-features-performance",
       "path": "/backend/java/java-advanced-features-performance",
       "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/mongodb-guide",
+      "title": "mongodb-guide",
+      "path": "/backend/database/mongodb-guide",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/backend/database/database-transactions",
+      "title": "database-transactions",
+      "path": "/backend/database/database-transactions",
+      "category": "backend",
+      "tags": [],
+      "links": 0
+    },
+    {
+      "id": "/AIGC/MCP/mcp",
+      "title": "mcp",
+      "path": "/AIGC/MCP/mcp",
+      "category": "AIGC",
       "tags": [],
       "links": 0
     },

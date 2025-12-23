@@ -14,6 +14,7 @@ import ArticleMeta from '@/components/article/ArticleMeta.vue'
 import GraphView from '@/components/article/GraphView.vue'
 import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
 import BacklinkSection from '@/components/article/BacklinkSection.vue' // Added import
+import OfficePreviewModal from '@/components/OfficePreviewModal.vue'
 import { useSidebar } from '@/composables/ui/useSidebar'
 import { useTOC } from '@/composables/article/useTOC'
 import { useLinkCards } from '@/composables/ui/useLinkCards'
@@ -105,6 +106,13 @@ const { currentImage, hide } = useImageZoom()
 // 提供 headings 给子组件 (保持兼容性，虽然 TOC 组件可以直接传参，但 Sidebar 可能也需要?)
 // 实际上 TOC 组件是直接传参的 :headings="headings"
 provide('headings', headings)
+
+// Office 文件预览状态管理
+const officePreviewFile = ref<{ src: string; name: string; type: string } | null>(null)
+const setOfficePreviewFile = (file: { src: string; name: string; type: string } | null) => {
+  officePreviewFile.value = file
+}
+provide('setOfficePreviewFile', setOfficePreviewFile)
 </script>
 
 <template>
@@ -182,6 +190,9 @@ provide('headings', headings)
 
     <!-- 小猫回到顶部 -->
     <BackToTopCat />
+
+    <!-- Office 文件预览模态框 -->
+    <OfficePreviewModal :file="officePreviewFile" @close="officePreviewFile = null" />
   </div>
 </template>
 
