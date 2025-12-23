@@ -12,6 +12,16 @@ const { docsTree } = useDocsTree()
 
 // 当前悬停的菜单项
 const activeDropdown = ref<string | null>(null)
+// Mobile menu state
+const isMobileMenuOpen = ref(false)
+
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
+
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false
+}
 
 // 递归查找目录下第一个有效的非目录路径
 const getValidPath = (node: DocTreeNode): string => {
@@ -63,7 +73,37 @@ const hideDropdown = () => {
       <div class="navbar-container">
         <!-- Left: Slot for Toggle & Logo -->
         <div class="navbar-title">
-          <slot name="toggle-bar" />
+          <slot name="toggle-bar">
+            <!-- Default mobile menu toggle if not provided by slot -->
+            <button
+              class="hamburger-btn md:hidden"
+              @click="toggleMobileMenu"
+              aria-label="Toggle Menu"
+            >
+              <svg
+                v-if="!isMobileMenuOpen"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <svg
+                v-else
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </slot>
 
           <router-link to="/" class="title-link">
             <span class="logo">📚</span>
@@ -151,6 +191,29 @@ const hideDropdown = () => {
         </div>
       </div>
     </div>
+
+    <!-- Mobile Menu -->
+    <Teleport to="body">
+      <Transition name="fade">
+        <div v-if="isMobileMenuOpen" class="mobile-menu-backdrop" @click="closeMobileMenu"></div>
+      </Transition>
+      <Transition name="mobile-menu">
+        <div v-if="isMobileMenuOpen" class="navbar-mobile-menu md:hidden">
+          <div class="mobile-nav-items">
+            <template v-for="item in processedNavItems" :key="item.text">
+              <router-link
+                :to="item.basePath || item.to || '#'"
+                class="mobile-nav-link"
+                @click="closeMobileMenu"
+                active-class="active"
+              >
+                {{ item.text }}
+              </router-link>
+            </template>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </header>
 </template>
 
@@ -211,7 +274,6 @@ const hideDropdown = () => {
 }
 
 .navbar-menu {
-  display: flex;
   gap: 24px;
 }
 
@@ -331,5 +393,81 @@ const hideDropdown = () => {
   border: 1px solid var(--vp-c-divider);
   border-radius: 4px;
   background-color: var(--vp-c-bg-alt);
+}
+
+/* Mobile Menu */
+.navbar-mobile-menu {
+  position: fixed;
+  top: var(--vp-nav-height);
+  left: 0;
+  right: 0;
+  height: 50vh;
+  z-index: 45;
+  background-color: var(--vp-c-bg);
+  padding: 24px;
+  overflow-y: auto;
+  border-top: 1px solid var(--vp-c-divider);
+  border-bottom: 1px solid var(--vp-c-divider);
+  box-shadow: var(--vp-shadow-3);
+}
+
+.mobile-nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mobile-nav-link {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--vp-c-text-1);
+  padding: 8px 0;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  color: var(--vp-c-brand-1);
+}
+
+.mobile-menu-enter-active,
+.mobile-menu-leave-active {
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-enter-from,
+.mobile-menu-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.mobile-menu-enter-to,
+.mobile-menu-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hamburger-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--vp-c-text-1);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: -8px;
+}
+
+.mobile-menu-backdrop {
+  position: fixed;
+  top: var(--vp-nav-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
 }
 </style>

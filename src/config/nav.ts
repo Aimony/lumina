@@ -20,5 +20,6 @@ export const navItems: NavItemConfig[] = [
   { text: '前端', basePath: '/frontend' },
   { text: '后端', basePath: '/backend' },
   { text: 'AIGC', basePath: '/AIGC' },
-  { text: '示例', basePath: '/example' }
+  { text: '示例', basePath: '/example' },
+  { text: '标签', to: '/tags' }
 ]
