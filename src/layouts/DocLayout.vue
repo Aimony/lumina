@@ -14,6 +14,7 @@ import ArticleMeta from '@/components/article/ArticleMeta.vue'
 import GraphView from '@/components/article/GraphView.vue'
 import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
 import BacklinkSection from '@/components/article/BacklinkSection.vue' // Added import
+import ShareLinks from '@/components/article/ShareLinks.vue'
 import Breadcrumb from '@/components/article/Breadcrumb.vue'
 import OfficePreviewModal from '@/components/OfficePreviewModal.vue'
 import ArchiveViewer from '@/components/common/ArchiveViewer.vue'
@@ -171,6 +172,7 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
                 <ArticleMeta />
                 <slot />
                 <BacklinkSection />
+                <ShareLinks />
                 <PrevNextNav />
               </article>
             </main>

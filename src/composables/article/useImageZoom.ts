@@ -30,8 +30,8 @@ export function useImageZoom() {
     const target = e.target as HTMLElement
     if (target.tagName === 'IMG' && target.closest('.markdown-body')) {
       const img = target as HTMLImageElement
-      // 排除已经在链接卡片中的图片
-      if (!img.closest('.link-card')) {
+      // 排除已经在链接卡片中的图片和标记为不缩放的图片
+      if (!img.closest('.link-card') && !img.hasAttribute('data-no-zoom')) {
         show(img.src)
       }
     }
