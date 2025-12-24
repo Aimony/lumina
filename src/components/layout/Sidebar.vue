@@ -2,9 +2,15 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useDocsTree, type DocTreeNode } from '@/composables/article/useDocsTree'
+import { useViewMode } from '@/composables/ui/useViewMode'
+import ViewModeSwitch from './ViewModeSwitch.vue'
+import CardView from './views/CardView.vue'
+import TimelineView from './views/TimelineView.vue'
+import TreeView from './views/TreeView.vue'
 
 const route = useRoute()
 const { docsTree } = useDocsTree()
+const { currentMode } = useViewMode()
 
 // 追踪展开状态的分组 (使用 path 作为 key)
 const expandedGroups = ref<Set<string>>(new Set())
@@ -72,111 +78,122 @@ const isActive = (path: string) => {
 </script>
 
 <template>
-  <nav class="sidebar-nav">
-    <!-- 使用递归组件渲染树 -->
-    <template v-for="item in filteredNavItems" :key="item.path">
-      <!-- 如果是目录，显示分组标题 -->
-      <div v-if="item.isDirectory" class="nav-group">
-        <div
-          class="nav-group-title collapsible"
-          :class="{ expanded: isExpanded(item.path) }"
-          @click="toggleGroup(item.path)"
-        >
-          <span class="nav-group-title-text">{{ item.title }}</span>
-          <svg
-            class="collapse-icon"
-            :class="{ rotated: isExpanded(item.path) }"
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
+  <div class="sidebar-container">
+    <!-- 视图模式切换器 -->
+    <ViewModeSwitch />
+
+    <!-- 根据当前模式渲染不同视图 -->
+    <CardView v-if="currentMode === 'card'" />
+    <TimelineView v-else-if="currentMode === 'timeline'" />
+    <TreeView v-else-if="currentMode === 'tree'" />
+
+    <!-- 标准视图 (默认) -->
+    <nav v-else class="sidebar-nav">
+      <!-- 使用递归组件渲染树 -->
+      <template v-for="item in filteredNavItems" :key="item.path">
+        <!-- 如果是目录，显示分组标题 -->
+        <div v-if="item.isDirectory" class="nav-group">
+          <div
+            class="nav-group-title collapsible"
+            :class="{ expanded: isExpanded(item.path) }"
+            @click="toggleGroup(item.path)"
           >
-            <path
-              d="M4.5 2.5L8 6L4.5 9.5"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+            <span class="nav-group-title-text">{{ item.title }}</span>
+            <svg
+              class="collapse-icon"
+              :class="{ rotated: isExpanded(item.path) }"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+            >
+              <path
+                d="M4.5 2.5L8 6L4.5 9.5"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+
+          <Transition name="collapse">
+            <div
+              v-show="isExpanded(item.path)"
+              v-if="item.children?.length"
+              class="nav-group-children"
+            >
+              <!-- 递归渲染子节点 -->
+              <template v-for="child in item.children" :key="child.path">
+                <div v-if="child.isDirectory" class="nav-subgroup">
+                  <div
+                    class="nav-subgroup-title collapsible"
+                    :class="{ expanded: isExpanded(child.path) }"
+                    @click="toggleGroup(child.path)"
+                  >
+                    <span class="nav-subgroup-title-text">{{ child.title }}</span>
+                    <svg
+                      class="collapse-icon"
+                      :class="{ rotated: isExpanded(child.path) }"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                    >
+                      <path
+                        d="M4.5 2.5L8 6L4.5 9.5"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <Transition name="collapse">
+                    <ul
+                      v-show="isExpanded(child.path)"
+                      v-if="child.children?.length"
+                      class="nav-group-items"
+                    >
+                      <li v-for="subItem in child.children" :key="subItem.path">
+                        <router-link
+                          :to="subItem.path"
+                          class="nav-link"
+                          :class="{ active: isActive(subItem.path) }"
+                        >
+                          {{ subItem.title }}
+                        </router-link>
+                      </li>
+                    </ul>
+                  </Transition>
+                </div>
+
+                <!-- 如果是文件，直接显示链接 -->
+                <router-link
+                  v-else
+                  :to="child.path"
+                  class="nav-link direct-link"
+                  :class="{ active: isActive(child.path) }"
+                >
+                  {{ child.title }}
+                </router-link>
+              </template>
+            </div>
+          </Transition>
         </div>
 
-        <Transition name="collapse">
-          <div
-            v-show="isExpanded(item.path)"
-            v-if="item.children?.length"
-            class="nav-group-children"
-          >
-            <!-- 递归渲染子节点 -->
-            <template v-for="child in item.children" :key="child.path">
-              <div v-if="child.isDirectory" class="nav-subgroup">
-                <div
-                  class="nav-subgroup-title collapsible"
-                  :class="{ expanded: isExpanded(child.path) }"
-                  @click="toggleGroup(child.path)"
-                >
-                  <span class="nav-subgroup-title-text">{{ child.title }}</span>
-                  <svg
-                    class="collapse-icon"
-                    :class="{ rotated: isExpanded(child.path) }"
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                  >
-                    <path
-                      d="M4.5 2.5L8 6L4.5 9.5"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-                <Transition name="collapse">
-                  <ul
-                    v-show="isExpanded(child.path)"
-                    v-if="child.children?.length"
-                    class="nav-group-items"
-                  >
-                    <li v-for="subItem in child.children" :key="subItem.path">
-                      <router-link
-                        :to="subItem.path"
-                        class="nav-link"
-                        :class="{ active: isActive(subItem.path) }"
-                      >
-                        {{ subItem.title }}
-                      </router-link>
-                    </li>
-                  </ul>
-                </Transition>
-              </div>
-
-              <!-- 如果是文件，直接显示链接 -->
-              <router-link
-                v-else
-                :to="child.path"
-                class="nav-link direct-link"
-                :class="{ active: isActive(child.path) }"
-              >
-                {{ child.title }}
-              </router-link>
-            </template>
-          </div>
-        </Transition>
-      </div>
-
-      <!-- 如果是文件（顶级），直接显示链接 -->
-      <router-link
-        v-else
-        :to="item.path"
-        class="nav-link top-level"
-        :class="{ active: isActive(item.path) }"
-      >
-        {{ item.title }}
-      </router-link>
-    </template>
-  </nav>
+        <!-- 如果是文件（顶级），直接显示链接 -->
+        <router-link
+          v-else
+          :to="item.path"
+          class="nav-link top-level"
+          :class="{ active: isActive(item.path) }"
+        >
+          {{ item.title }}
+        </router-link>
+      </template>
+    </nav>
+  </div>
 </template>
 
 <style scoped>
