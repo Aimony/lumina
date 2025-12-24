@@ -154,7 +154,8 @@ onMounted(() => {
   border-radius: 50%;
   box-shadow: 0 0 0 200vmax var(--vp-c-bg);
   z-index: 1;
-  transition: transform 3s cubic-bezier(0.7, 0, 0.3, 1);
+  /* TODO: Adjust transition duration in production */
+  transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
   will-change: transform;
   /* Allow stickers to be visible outside the box */
   overflow: visible;

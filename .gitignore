@@ -28,3 +28,4 @@ scripts/deploy.js
 .spec-workflow
 public/graph-data.json
 public/search-index.json
+.agent/*
