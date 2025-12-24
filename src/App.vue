@@ -6,12 +6,14 @@ import DocLayout from '@/layouts/DocLayout.vue'
 import { useThemeProvider } from '@/composables/core/useTheme'
 import { useCodeCopy } from '@/composables/ui/useCodeCopy'
 import { useCodeFold } from '@/composables/ui/useCodeFold'
+import { useCodeResize } from '@/composables/ui/useCodeResize'
 import SearchModal from '@/components/common/SearchModal.vue'
 
 const route = useRoute()
 useThemeProvider()
 useCodeCopy()
 useCodeFold()
+useCodeResize()
 
 // 根据路由 meta 选择布局
 const layout = computed(() => {

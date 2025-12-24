@@ -198,14 +198,23 @@ html.dark .code-block-header {
 
 /* Content Area & Animation */
 .code-block-content {
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* 当设置了自定义高度时 */
+.code-block-content[style*='height'] {
+  overflow-y: auto;
+}
+
+/* 拖拽时禁用过渡动画，确保跟手性 */
+.code-block-wrapper.resizing .code-block-content {
+  transition: none !important;
+}
+
+/* 折叠状态 */
 .code-block-wrapper.collapsed .code-block-content {
-  grid-template-rows: 0fr;
+  overflow: hidden;
 }
 
 .markdown-body pre {
@@ -228,6 +237,56 @@ html.dark .code-block-header {
   opacity: 0;
   padding-top: 0;
   padding-bottom: 0;
+}
+
+/* 拖拽调整高度手柄 */
+.code-resize-handle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10px;
+  cursor: ns-resize;
+  background-color: transparent;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.code-resize-handle:hover {
+  background-color: var(--vp-c-brand-soft);
+}
+
+.resize-handle-bar {
+  width: 40px;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--vp-c-divider);
+  transition:
+    background-color 0.15s ease,
+    width 0.15s ease;
+}
+
+.code-resize-handle:hover .resize-handle-bar {
+  background-color: var(--vp-c-brand-1);
+  width: 60px;
+}
+
+/* 拖拽时的状态 */
+.code-block-wrapper.resizing {
+  user-select: none;
+}
+
+.code-block-wrapper.resizing .code-resize-handle {
+  background-color: var(--vp-c-brand-soft);
+}
+
+.code-block-wrapper.resizing .resize-handle-bar {
+  background-color: var(--vp-c-brand-1);
+  width: 60px;
+}
+
+/* 折叠时隐藏拖拽手柄 */
+.code-block-wrapper.collapsed .code-resize-handle {
+  display: none;
 }
 
 /* ============================================

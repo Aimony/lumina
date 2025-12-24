@@ -31,6 +31,9 @@ export const codeEnhancementsPlugin = (md: MarkdownIt) => {
   <div class="code-block-content">
     ${rawCode}
   </div>
+  <div class="code-resize-handle" title="拖拽调整高度">
+    <div class="resize-handle-bar"></div>
+  </div>
 </div>
 `
   }
