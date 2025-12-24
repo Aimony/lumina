@@ -14,6 +14,7 @@ import ArticleMeta from '@/components/article/ArticleMeta.vue'
 import GraphView from '@/components/article/GraphView.vue'
 import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
 import BacklinkSection from '@/components/article/BacklinkSection.vue' // Added import
+import Breadcrumb from '@/components/article/Breadcrumb.vue'
 import OfficePreviewModal from '@/components/OfficePreviewModal.vue'
 import ArchiveViewer from '@/components/common/ArchiveViewer.vue'
 import { useSidebar } from '@/composables/ui/useSidebar'
@@ -165,6 +166,7 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
           <div class="content">
             <main class="main">
               <article ref="articleRef" class="markdown-body">
+                <Breadcrumb />
                 <ArticleTags />
                 <ArticleMeta />
                 <slot />
