@@ -6,7 +6,7 @@ import { glob } from 'glob'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT_DIR = path.resolve(__dirname, '..')
-const DOCS_DIR = path.join(ROOT_DIR, 'src/docs')
+const DOCS_DIR = path.join(ROOT_DIR, 'docs')
 const OUTPUT_FILE = path.join(ROOT_DIR, 'public/search-index.json')
 
 async function generateSearchIndex() {

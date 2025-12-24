@@ -83,13 +83,13 @@ async function scanAndBuildTree(): Promise<DocTreeNode[]> {
   if (buildPromise) return buildPromise
 
   buildPromise = (async () => {
-    const pages = import.meta.glob('/src/docs/**/*.{md,vue}')
+    const pages = import.meta.glob('/docs/**/*.{md,vue}')
     const filePaths: string[] = []
 
     for (const path of Object.keys(pages)) {
       let routePath =
         path
-          .replace('/src/docs', '')
+          .replace('/docs', '')
           .replace(/\.(md|vue)$/, '')
           .replace(/\/index$/, '') || '/'
 

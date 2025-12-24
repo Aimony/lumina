@@ -75,7 +75,7 @@ function filePathToRoutePath(filePath, baseDir) {
 async function generateGraphData() {
   console.log('📊 Generating graph data...')
 
-  const docsDir = path.join(rootDir, 'src/docs')
+  const docsDir = path.join(rootDir, 'docs')
   const pagesDir = path.join(rootDir, 'src/pages')
 
   // 查找所有 markdown 文件
