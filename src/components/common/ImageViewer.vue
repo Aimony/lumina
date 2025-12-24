@@ -15,12 +15,19 @@ const MIN_SCALE = 0.5
 const MAX_SCALE = 5
 const SCALE_STEP = 0.1
 
-// 重置缩放
+// 拖动相关状态
+const position = ref({ x: 0, y: 0 })
+const isDragging = ref(false)
+const dragStart = ref({ x: 0, y: 0 })
+const dragOffset = ref({ x: 0, y: 0 })
+
+// 重置缩放和位置
 const resetScale = () => {
   scale.value = 1
+  position.value = { x: 0, y: 0 }
 }
 
-// 监听图片变化时重置缩放
+// 监听图片变化时重置缩放和位置
 watch(
   () => props.image,
   () => {
@@ -46,18 +53,60 @@ const handleWheel = (e: WheelEvent) => {
   // 限制缩放范围
   scale.value = Math.max(MIN_SCALE, Math.min(MAX_SCALE, newScale))
 }
+
+// 处理鼠标按下开始拖动
+const handleMouseDown = (e: MouseEvent) => {
+  // 只在图片上启用拖动
+  if (e.target instanceof HTMLImageElement) {
+    e.preventDefault()
+    isDragging.value = true
+    dragStart.value = { x: e.clientX, y: e.clientY }
+    dragOffset.value = { ...position.value }
+  }
+}
+
+// 处理鼠标移动进行拖动
+const handleMouseMove = (e: MouseEvent) => {
+  if (isDragging.value) {
+    e.preventDefault()
+    const deltaX = e.clientX - dragStart.value.x
+    const deltaY = e.clientY - dragStart.value.y
+    position.value = {
+      x: dragOffset.value.x + deltaX,
+      y: dragOffset.value.y + deltaY
+    }
+  }
+}
+
+// 处理鼠标松开结束拖动
+const handleMouseUp = () => {
+  isDragging.value = false
+}
 </script>
 
 <template>
   <Teleport to="body">
     <Transition name="image-viewer">
-      <div v-if="image" class="image-viewer" @click="handleBackdropClick" @wheel="handleWheel">
+      <div
+        v-if="image"
+        class="image-viewer"
+        @click="handleBackdropClick"
+        @wheel="handleWheel"
+        @mousemove="handleMouseMove"
+        @mouseup="handleMouseUp"
+        @mouseleave="handleMouseUp"
+      >
         <div class="image-container">
           <img
             :src="image"
             alt="Preview"
             class="preview-image"
-            :style="{ transform: `scale(${scale})` }"
+            :class="{ 'is-dragging': isDragging }"
+            :style="{
+              transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+              cursor: isDragging ? 'grabbing' : scale > 1 ? 'grab' : 'default'
+            }"
+            @mousedown="handleMouseDown"
           />
         </div>
         <div class="toolbar">
@@ -116,11 +165,14 @@ const handleWheel = (e: WheelEvent) => {
   max-height: 90vh;
   object-fit: contain;
   user-select: none;
-  cursor: default;
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   transition: transform 0.2s ease-out;
   transform-origin: center center;
+}
+
+.preview-image.is-dragging {
+  transition: none;
 }
 
 .toolbar {
