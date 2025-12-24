@@ -1,7 +1,26 @@
 {
   "name": "lumina",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "A modern, beautiful Vue 3 personal knowledge base system.",
+  "author": "Aimony",
+  "license": "MIT",
+  "homepage": "https://github.com/Aimony/lumina#readme",
+  "bugs": {
+    "url": "https://github.com/Aimony/lumina/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aimony/lumina.git"
+  },
+  "keywords": [
+    "vue3",
+    "vite",
+    "markdown",
+    "knowledge-base",
+    "documentation",
+    "tailwindcss"
+  ],
   "type": "module",
   "scripts": {
     "predev": "npm run data && set \"BROWSER=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"",
