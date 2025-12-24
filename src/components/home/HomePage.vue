@@ -2,6 +2,7 @@
 import HomeHero from '@/components/home/HomeHero.vue'
 import { ref } from 'vue'
 import HomeFeatures from '@/components/home/HomeFeatures.vue'
+import HomeStats from '@/components/home/HomeStats.vue'
 import DoorAnimation from '@/components/common/DoorAnimation.vue'
 
 const showAnimation = ref(true)
@@ -12,6 +13,7 @@ const showAnimation = ref(true)
   <div class="home">
     <DoorAnimation v-if="showAnimation" @animation-end="showAnimation = false" />
     <HomeHero />
+    <HomeStats />
     <HomeFeatures />
   </div>
 </template>
