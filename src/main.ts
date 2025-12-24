@@ -4,6 +4,7 @@ import routes from '~pages'
 import App from './App.vue'
 import LinkCard from './components/common/LinkCard.vue'
 import OfficeFileCard from './components/OfficeFileCard.vue'
+import ArchiveFileCard from './components/ArchiveFileCard.vue'
 import './styles/index.css'
 import './styles/theme-transition.css'
 
@@ -57,5 +58,6 @@ app.component('LinkCard', LinkCard)
 
 // 全局注册 OfficeFileCard 组件（用于 markdown-it 插件渲染）
 app.component('OfficeFileCard', OfficeFileCard)
+app.component('ArchiveFileCard', ArchiveFileCard)
 
 app.mount('#app')

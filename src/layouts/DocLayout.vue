@@ -15,6 +15,7 @@ import GraphView from '@/components/article/GraphView.vue'
 import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
 import BacklinkSection from '@/components/article/BacklinkSection.vue' // Added import
 import OfficePreviewModal from '@/components/OfficePreviewModal.vue'
+import ArchiveViewer from '@/components/common/ArchiveViewer.vue'
 import { useSidebar } from '@/composables/ui/useSidebar'
 import { useTOC } from '@/composables/article/useTOC'
 import { useLinkCards } from '@/composables/ui/useLinkCards'
@@ -113,6 +114,13 @@ const setOfficePreviewFile = (file: { src: string; name: string; type: string } 
   officePreviewFile.value = file
 }
 provide('setOfficePreviewFile', setOfficePreviewFile)
+
+// 压缩包预览状态管理
+const archivePreviewFile = ref<File | null>(null)
+const setArchivePreviewFile = (file: File | null) => {
+  archivePreviewFile.value = file
+}
+provide('setArchivePreviewFile', setArchivePreviewFile)
 </script>
 
 <template>
@@ -193,6 +201,9 @@ provide('setOfficePreviewFile', setOfficePreviewFile)
 
     <!-- Office 文件预览模态框 -->
     <OfficePreviewModal :file="officePreviewFile" @close="officePreviewFile = null" />
+
+    <!-- 压缩包预览组件 -->
+    <ArchiveViewer :file="archivePreviewFile" @close="archivePreviewFile = null" />
   </div>
 </template>
 

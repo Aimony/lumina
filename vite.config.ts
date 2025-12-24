@@ -22,6 +22,7 @@ import mark from 'markdown-it-mark'
 import { mermaidPlugin } from './src/plugins/markdown-it-mermaid'
 import { tabsPlugin } from './src/plugins/markdown-it-tabs'
 import { officePreviewPlugin } from './src/plugins/markdown-it-office-preview'
+import { archivePreviewPlugin } from './src/plugins/markdown-it-archive-preview'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -70,6 +71,8 @@ export default defineConfig({
         md.use(tabsPlugin)
         // Office 文件预览支持
         md.use(officePreviewPlugin)
+        // 压缩包文件预览支持
+        md.use(archivePreviewPlugin)
       }
     }),
     Pages({
