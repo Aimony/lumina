@@ -1,0 +1,30 @@
+# https://www.robotstxt.org/robotstxt.html
+
+# 允许所有搜索引擎爬取公开内容
+User-agent: *
+Allow: /
+
+# 禁止爬取可能包含敏感内容的路径
+Disallow: /api/
+Disallow: /admin/
+Disallow: /*.json$
+
+# 禁止爬取搜索索引和图谱数据
+Disallow: /search-index.json
+Disallow: /graph-data.json
+
+# 禁止特定恶意爬虫
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# 指向站点地图
+Sitemap: https://lumina.site/sitemap.xml

@@ -24,6 +24,12 @@ async function generateSearchIndex() {
       const content = await fs.readFile(file, 'utf-8')
       const { data, content: body } = matter(content)
 
+      // 跳过密码保护的文档，不加入搜索索引
+      if (data.password) {
+        console.log(`  ⏭️ Skipping protected document: ${path.basename(file)}`)
+        continue
+      }
+
       // 生成相对路径路由
       let route = path.relative(DOCS_DIR, file)
       route = route.replace(/\\/g, '/') // Windows fix
