@@ -23,6 +23,12 @@ import { mermaidPlugin } from './src/plugins/markdown-it-mermaid'
 import { tabsPlugin } from './src/plugins/markdown-it-tabs'
 import { officePreviewPlugin } from './src/plugins/markdown-it-office-preview'
 import { archivePreviewPlugin } from './src/plugins/markdown-it-archive-preview'
+import { createHash } from 'crypto'
+
+// 密码哈希函数（构建时使用）
+function hashPassword(password: string): string {
+  return createHash('sha256').update(password).digest('hex')
+}
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -94,10 +100,13 @@ export default defineConfig({
             meta: {
               layout: 'doc',
               ...data,
+              password: undefined, // 不暴露原始密码
               readingTime: stats.text,
               wordCount: stats.words,
               // 确保 tags 是数组
-              tags: Array.isArray(data.tags) ? data.tags : data.tags ? [data.tags] : []
+              tags: Array.isArray(data.tags) ? data.tags : data.tags ? [data.tags] : [],
+              // 密码保护：构建时哈希密码
+              passwordHash: data.password ? hashPassword(data.password) : null
             }
           }
         }

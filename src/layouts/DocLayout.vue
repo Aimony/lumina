@@ -16,6 +16,7 @@ import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
 import BacklinkSection from '@/components/article/BacklinkSection.vue' // Added import
 import ShareLinks from '@/components/article/ShareLinks.vue'
 import Breadcrumb from '@/components/article/Breadcrumb.vue'
+import PasswordProtect from '@/components/article/PasswordProtect.vue'
 import OfficePreviewModal from '@/components/OfficePreviewModal.vue'
 import ArchiveViewer from '@/components/common/ArchiveViewer.vue'
 import { useSidebar } from '@/composables/ui/useSidebar'
@@ -25,9 +26,13 @@ import { useImageZoom } from '@/composables/article/useImageZoom'
 import { useMermaid } from '@/composables/article/useMermaid'
 import { useTabs } from '@/composables/article/useTabs'
 import { useSmartHover } from '@/composables/article/useSmartHover'
+import { usePasswordProtect } from '@/composables/article/usePasswordProtect'
 
 // 使用 Composables
 const { isOpen: sidebarOpen, toggleSidebar } = useSidebar()
+
+// 密码保护
+const { isProtected, isUnlocked } = usePasswordProtect()
 
 // 侧边栏宽度调整
 const sidebarWidth = ref(272)
@@ -167,13 +172,17 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
           <div class="content">
             <main class="main">
               <article ref="articleRef" class="markdown-body">
-                <Breadcrumb />
-                <ArticleTags />
-                <ArticleMeta />
-                <slot />
-                <BacklinkSection />
-                <ShareLinks />
-                <PrevNextNav />
+                <!-- 密码保护遮罩 -->
+                <PasswordProtect v-if="isProtected && !isUnlocked" />
+                <template v-else>
+                  <Breadcrumb />
+                  <ArticleTags />
+                  <ArticleMeta />
+                  <slot />
+                  <BacklinkSection />
+                  <ShareLinks />
+                  <PrevNextNav />
+                </template>
               </article>
             </main>
           </div>
