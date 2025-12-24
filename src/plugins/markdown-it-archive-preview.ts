@@ -8,13 +8,16 @@ export function archivePreviewPlugin(md: MarkdownIt) {
   // 保存原始的 html_inline 渲染规则
   const defaultHtmlInlineRender =
     md.renderer.rules.html_inline ||
-    function (tokens, idx, options, env, self) {
+    function (tokens, idx, options, _env, self) {
       return self.renderToken(tokens, idx, options)
     }
 
   // 重写 html_inline 渲染规则
   md.renderer.rules.html_inline = function (tokens, idx, options, env, self) {
     const token = tokens[idx]
+    if (!token) {
+      return defaultHtmlInlineRender(tokens, idx, options, env, self)
+    }
     const content = token.content
 
     // 匹配 <ArchiveFileCard src="..." name="..." />

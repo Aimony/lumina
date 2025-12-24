@@ -43,7 +43,7 @@ let simulationNodes: GraphNode[] = []
 
 // 获取分类颜色
 function getCategoryColor(category: string): string {
-  return categoryColors[category] || categoryColors.root
+  return categoryColors[category] ?? categoryColors.root ?? '#a0aec0'
 }
 
 // 获取所有分类
@@ -343,8 +343,6 @@ function stopCruise() {
 
   // 重置视图
   if (svg && zoomBehavior && containerRef.value) {
-    const width = containerRef.value.clientWidth
-    const height = containerRef.value.clientHeight
     const transform = d3.zoomIdentity.translate(0, 0).scale(1)
     svg.transition().duration(1000).call(zoomBehavior.transform, transform)
   }

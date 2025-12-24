@@ -7,9 +7,6 @@ const props = defineProps<{
 }>()
 
 // 状态
-const containerRef = ref<HTMLElement | null>(null)
-const contentRef = ref<HTMLElement | null>(null)
-const diagramRef = ref<HTMLElement | null>(null)
 const scale = ref(1)
 const isFullscreen = ref(false)
 const isRendered = ref(false)

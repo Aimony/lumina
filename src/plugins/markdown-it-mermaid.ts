@@ -24,6 +24,9 @@ export const mermaidPlugin = (md: MarkdownIt) => {
   md.renderer.rules.fence = (...args) => {
     const [tokens, idx] = args
     const token = tokens[idx]
+    if (!token) {
+      return fence(...args)
+    }
     const lang = token.info.trim().split(/\s+/)[0] || ''
 
     // 只处理 mermaid 代码块

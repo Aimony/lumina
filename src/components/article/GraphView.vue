@@ -35,7 +35,6 @@ const neighbors = computed(() => {
 
 let simulation: d3.Simulation<GraphNode, GraphLink> | null = null
 let modalSimulation: d3.Simulation<GraphNode, GraphLink> | null = null
-let svg: d3.Selection<SVGSVGElement, unknown, null, undefined> | null = null
 
 /**
  * 渲染图形到指定容器
@@ -238,10 +237,6 @@ function renderGraphToContainer(
 
     node.attr('transform', (d) => `translate(${d.x},${d.y})`)
   })
-
-  if (!isModal) {
-    svg = newSvg
-  }
 
   return sim
 }

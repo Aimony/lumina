@@ -71,6 +71,8 @@ const buildFileTree = (zip: JSZip): FileNode[] => {
   // 先创建所有节点
   Object.keys(zip.files).forEach((path) => {
     const zipFile = zip.files[path]
+    if (!zipFile) return
+
     const parts = path.split('/')
     let currentPath = ''
 
@@ -83,11 +85,14 @@ const buildFileTree = (zip: JSZip): FileNode[] => {
       const isDirectory = zipFile.dir || !isLast
 
       if (!pathMap.has(currentPath)) {
+        // 获取解压后的大小 (JSZip 的内部属性)
+        const fileSize = isDirectory ? 0 : (zipFile as any)._data?.uncompressedSize || 0
+
         const node: FileNode = {
           name: part,
           path: currentPath,
           isDirectory,
-          size: isDirectory ? 0 : zipFile._data?.uncompressedSize || 0,
+          size: fileSize,
           date: zipFile.date,
           file: isDirectory ? undefined : zipFile,
           children: isDirectory ? [] : undefined,
@@ -187,21 +192,22 @@ const filterTree = (nodes: FileNode[], query: string): FileNode[] => {
 
   const lowerQuery = query.toLowerCase()
 
-  return nodes
-    .map((node) => {
-      const matchesName = node.name.toLowerCase().includes(lowerQuery)
-      const filteredChildren = node.children ? filterTree(node.children, query) : undefined
+  const result: FileNode[] = []
 
-      if (matchesName || (filteredChildren && filteredChildren.length > 0)) {
-        return {
-          ...node,
-          children: filteredChildren,
-          expanded: filteredChildren && filteredChildren.length > 0 ? true : node.expanded
-        }
-      }
-      return null
-    })
-    .filter((node): node is FileNode => node !== null)
+  for (const node of nodes) {
+    const matchesName = node.name.toLowerCase().includes(lowerQuery)
+    const filteredChildren = node.children ? filterTree(node.children, query) : undefined
+
+    if (matchesName || (filteredChildren && filteredChildren.length > 0)) {
+      result.push({
+        ...node,
+        children: filteredChildren,
+        expanded: filteredChildren && filteredChildren.length > 0 ? true : node.expanded
+      })
+    }
+  }
+
+  return result
 }
 
 const filteredFileTree = computed(() => {
