@@ -4,6 +4,9 @@ import { useRoute } from 'vue-router'
 // 存储已解锁文档的 key 前缀
 const STORAGE_KEY_PREFIX = 'lumina_unlocked_'
 
+// 密码过期时间（1小时 = 3600000 毫秒）
+const EXPIRY_DURATION = 60 * 60 * 1000
+
 // 模块级共享状态（确保所有组件使用同一份状态）
 const error = ref('')
 const isUnlocked = ref(false)
@@ -47,9 +50,10 @@ export function usePasswordProtect() {
     if (isValid) {
       isUnlocked.value = true
       error.value = ''
-      // 保存解锁状态到 sessionStorage
+      // 保存解锁时间戳到 sessionStorage
       try {
-        sessionStorage.setItem(documentKey.value, 'true')
+        const unlockData = { unlockedAt: Date.now() }
+        sessionStorage.setItem(documentKey.value, JSON.stringify(unlockData))
       } catch {
         // sessionStorage 不可用时静默失败
       }
@@ -61,7 +65,7 @@ export function usePasswordProtect() {
   }
 
   /**
-   * 检查是否已解锁（从 sessionStorage 恢复状态）
+   * 检查是否已解锁（从 sessionStorage 恢复状态，并检查是否过期）
    */
   function checkUnlocked(): boolean {
     if (!isProtected.value) {
@@ -71,7 +75,22 @@ export function usePasswordProtect() {
 
     try {
       const stored = sessionStorage.getItem(documentKey.value)
-      isUnlocked.value = stored === 'true'
+      if (stored) {
+        const data = JSON.parse(stored)
+        const unlockedAt = data.unlockedAt || 0
+        const now = Date.now()
+
+        // 检查是否过期（1小时）
+        if (now - unlockedAt < EXPIRY_DURATION) {
+          isUnlocked.value = true
+        } else {
+          // 已过期，清除存储
+          sessionStorage.removeItem(documentKey.value)
+          isUnlocked.value = false
+        }
+      } else {
+        isUnlocked.value = false
+      }
     } catch {
       isUnlocked.value = false
     }
