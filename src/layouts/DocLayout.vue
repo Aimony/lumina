@@ -311,40 +311,86 @@ const onMouseMove = (e: MouseEvent) => {
   const oneThirdWidth = screenWidth / 3
   const oneThirdHeight = screenHeight / 3
 
-  // 检测上边缘（仅左侧1/3区域）或在导航栏区域内 - 显示导航栏
-  const inNavbarTriggerZone = e.clientY <= EDGE_THRESHOLD && e.clientX <= oneThirdWidth
-  const inNavbarArea = e.clientY <= NAVBAR_HEIGHT && showNavbarOnHover.value
-  if (inNavbarTriggerZone || inNavbarArea) {
+  // 状态检查
+  const isNavbarActive = showNavbarOnHover.value || navbarHiding.value
+  const isSidebarActive = showSidebarOnHover.value || sidebarHiding.value
+
+  // 触发区域定义
+  const inTopEdge = e.clientY <= EDGE_THRESHOLD && e.clientX <= oneThirdWidth
+  const inLeftEdge = e.clientX <= EDGE_THRESHOLD && e.clientY <= oneThirdHeight
+
+  // 保持显示区域定义 (Keep Alive)
+  const inNavbarArea = e.clientY <= NAVBAR_HEIGHT
+  const inSidebarArea = e.clientX <= SIDEBAR_WIDTH
+
+  // 互斥逻辑 Case 1: 导航栏处于激活状态（显示中或正在隐藏）
+  if (isNavbarActive) {
+    // 如果鼠标在导航栏区域内或在触发区，保持显示
+    if (inNavbarArea || inTopEdge) {
+      clearNavbarTimeout()
+      navbarHiding.value = false
+      showNavbarOnHover.value = true
+    } else {
+      // 离开区域，准备隐藏
+      if (showNavbarOnHover.value && !hideNavbarTimeout) {
+        hideNavbarTimeout = setTimeout(() => {
+          navbarHiding.value = true
+          setTimeout(() => {
+            showNavbarOnHover.value = false
+            navbarHiding.value = false
+            hideNavbarTimeout = null
+          }, 300) // 等待淡出动画完成
+        }, 500) // 延迟隐藏时间
+      }
+    }
+    return // 关键：导航栏激活时，阻止侧边栏触发
+  }
+
+  // 互斥逻辑 Case 2: 侧边栏处于激活状态（显示中或正在隐藏）
+  if (isSidebarActive) {
+    // 如果鼠标在侧边栏区域内或在触发区，保持显示
+    if (inSidebarArea || inLeftEdge) {
+      clearSidebarTimeout()
+      sidebarHiding.value = false
+      showSidebarOnHover.value = true
+    } else {
+      // 离开区域，准备隐藏
+      if (showSidebarOnHover.value && !hideSidebarTimeout) {
+        hideSidebarTimeout = setTimeout(() => {
+          sidebarHiding.value = true
+          setTimeout(() => {
+            showSidebarOnHover.value = false
+            sidebarHiding.value = false
+            hideSidebarTimeout = null
+          }, 300) // 等待淡出动画完成
+        }, 500) // 延迟隐藏时间
+      }
+    }
+    return // 关键：侧边栏激活时，阻止导航栏触发
+  }
+
+  // 互斥逻辑 Case 3: 两者都未激活，检测新的触发
+  if (inTopEdge && inLeftEdge) {
+    // 角落冲突：优先触发距离最近的边缘
+    if (e.clientX < e.clientY) {
+      // 离左边更近 -> 侧边栏
+      clearSidebarTimeout()
+      sidebarHiding.value = false
+      showSidebarOnHover.value = true
+    } else {
+      // 离上边更近 -> 导航栏
+      clearNavbarTimeout()
+      navbarHiding.value = false
+      showNavbarOnHover.value = true
+    }
+  } else if (inTopEdge) {
     clearNavbarTimeout()
     navbarHiding.value = false
     showNavbarOnHover.value = true
-  } else if (showNavbarOnHover.value && !hideNavbarTimeout) {
-    hideNavbarTimeout = setTimeout(() => {
-      navbarHiding.value = true
-      setTimeout(() => {
-        showNavbarOnHover.value = false
-        navbarHiding.value = false
-        hideNavbarTimeout = null
-      }, 300) // 等待淡出动画完成
-    }, 500) // 延迟隐藏时间
-  }
-
-  // 检测左边缘（仅上方1/3区域）或在侧边栏区域内 - 显示侧边栏
-  const inSidebarTriggerZone = e.clientX <= EDGE_THRESHOLD && e.clientY <= oneThirdHeight
-  const inSidebarArea = e.clientX <= SIDEBAR_WIDTH && showSidebarOnHover.value
-  if (inSidebarTriggerZone || inSidebarArea) {
+  } else if (inLeftEdge) {
     clearSidebarTimeout()
     sidebarHiding.value = false
     showSidebarOnHover.value = true
-  } else if (showSidebarOnHover.value && !hideSidebarTimeout) {
-    hideSidebarTimeout = setTimeout(() => {
-      sidebarHiding.value = true
-      setTimeout(() => {
-        showSidebarOnHover.value = false
-        sidebarHiding.value = false
-        hideSidebarTimeout = null
-      }, 300) // 等待淡出动画完成
-    }, 500) // 延迟隐藏时间
   }
 }
 
