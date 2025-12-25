@@ -582,18 +582,44 @@ onUnmounted(() => {
   position: sticky;
   top: calc(var(--vp-nav-height) + 32px);
   max-height: calc(100vh - var(--vp-nav-height) - 64px);
-  overflow-y: auto;
+  /* overflow-y: auto;  <-- Removed */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Prevent container scroll */
 
-  /* 隐藏滚动条但保留滚动功能 */
+  /* 隐藏滚动条但保留滚动功能 - moved to TOC */
   scrollbar-width: none;
-  /* Firefox */
   -ms-overflow-style: none;
-  /* IE and Edge */
+}
+
+.aside-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Fix GraphView at top */
+:deep(.graph-view) {
+  flex-shrink: 0;
+}
+
+/* Make TOC scrollable */
+:deep(.toc-container) {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+:deep(.toc-container::-webkit-scrollbar) {
+  display: none;
 }
 
 .aside-container::-webkit-scrollbar {
   display: none;
-  /* Chrome, Safari, Opera */
 }
 
 /* 沉浸式阅读模式样式 */
