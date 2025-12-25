@@ -22,5 +22,7 @@ export const navItems: NavItemConfig[] = [
   { text: 'AIGC', basePath: '/AIGC' },
   { text: '示例', basePath: '/example' },
   { text: '标签', to: '/tags' },
-  { text: 'Cosmos', to: '/cosmos' }
+  { text: 'Cosmos', to: '/cosmos' },
+  { text: '归档', to: '/archives' },
+  { text: '时间线', to: '/timeline' }
 ]
