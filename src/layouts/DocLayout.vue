@@ -243,6 +243,7 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
 const immersiveMode = ref(false)
 const toggleImmersive = () => {
   immersiveMode.value = !immersiveMode.value
+  localStorage.setItem('lumina-immersive-mode', immersiveMode.value ? 'true' : 'false')
 }
 provide('immersiveMode', immersiveMode)
 provide('toggleImmersive', toggleImmersive)
@@ -260,6 +261,12 @@ const contentBgColor = ref('')
 
 // 初始化时从 localStorage 读取
 onMounted(() => {
+  // 读取沉浸模式状态
+  const savedImmersive = localStorage.getItem('lumina-immersive-mode')
+  if (savedImmersive === 'true') {
+    immersiveMode.value = true
+  }
+
   const savedColor = localStorage.getItem('lumina-bg-color')
   if (savedColor) {
     contentBgColor.value = savedColor
