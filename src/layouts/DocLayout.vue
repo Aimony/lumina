@@ -127,6 +127,63 @@ const { attachToContent } = useSmartHover()
 const articleRef = ref<HTMLElement | null>(null)
 const route = useRoute()
 
+// 处理 URL hash 锚点定位（解决新标签打开时锚点不生效问题）
+const scrollToHashOnLoad = () => {
+  const hash = route.hash
+  if (!hash) return
+
+  // 获取原始 hash（不包含 #）
+  const rawHash = hash.startsWith('#') ? hash.slice(1) : hash
+
+  // 准备多种可能的 ID 形式
+  // markdown-it-anchor 生成的 ID 是 URL 编码的，但浏览器可能已经解码了 hash
+  const possibleIds = [
+    rawHash, // 原始形式（可能是编码的）
+    decodeURIComponent(rawHash), // 解码形式
+    encodeURIComponent(decodeURIComponent(rawHash)) // 重新编码形式
+  ]
+
+  // 去重
+  const uniqueIds = [...new Set(possibleIds)]
+
+  const scrollToTarget = () => {
+    // 尝试所有可能的 ID
+    for (const id of uniqueIds) {
+      const targetElement = document.getElementById(id)
+      if (targetElement) {
+        // 使用 requestAnimationFrame 确保布局稳定
+        requestAnimationFrame(() => {
+          const navHeight = 80
+          const elementTop = targetElement.getBoundingClientRect().top + window.scrollY - navHeight
+          window.scrollTo({ top: elementTop, behavior: 'smooth' })
+        })
+        return true
+      }
+    }
+    return false
+  }
+
+  // 尝试立即滚动
+  if (scrollToTarget()) return
+
+  // 如果元素不存在，使用轮询等待 DOM 渲染完成
+  let attempts = 0
+  const maxAttempts = 50 // 最多等待 5 秒
+
+  const pollForElement = () => {
+    attempts++
+
+    if (scrollToTarget()) return
+
+    if (attempts < maxAttempts) {
+      setTimeout(pollForElement, 100)
+    }
+  }
+
+  // 延迟开始轮询，等待组件初始化
+  setTimeout(pollForElement, 200)
+}
+
 // 监听路由变化，重新绑定悬浮卡事件
 watch(
   () => route.path,
@@ -141,6 +198,23 @@ watch(
     })
   },
   { immediate: true }
+)
+
+// 在组件挂载后处理锚点定位
+onMounted(() => {
+  // 延迟执行，确保内容开始渲染
+  setTimeout(scrollToHashOnLoad, 300)
+})
+
+// 监听 hash 变化（用于页面内锚点跳转）
+watch(
+  () => route.hash,
+  (newHash, oldHash) => {
+    // 只在 hash 变化时触发（非首次加载）
+    if (newHash && oldHash !== undefined) {
+      setTimeout(scrollToHashOnLoad, 100)
+    }
+  }
 )
 
 // 图片放大功能

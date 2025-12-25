@@ -17,13 +17,11 @@ const router = createRouter({
       return
     }
 
-    // 如果有锚点（hash），滚动到锚点位置
+    // 如果有锚点（hash），不在这里处理
+    // 由 DocLayout 组件的 scrollToHashOnLoad 函数处理锚点滚动
+    // 因为 markdown-it-anchor 生成的 ID 是 URL 编码的，需要特殊处理
     if (to.hash) {
-      return {
-        el: to.hash,
-        behavior: 'smooth',
-        top: 80 // 导航栏高度偏移
-      }
+      return false // 返回 false 表示不滚动
     }
 
     // 如果是同一页面刷新（路径相同），且没有锚点，滚动到顶部
