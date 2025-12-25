@@ -19,6 +19,7 @@ import Breadcrumb from '@/components/article/Breadcrumb.vue'
 import PasswordProtect from '@/components/article/PasswordProtect.vue'
 import OfficePreviewModal from '@/components/OfficePreviewModal.vue'
 import ArchiveViewer from '@/components/common/ArchiveViewer.vue'
+import Footer from '@/components/layout/Footer.vue'
 import { useSidebar } from '@/composables/ui/useSidebar'
 import { useTOC } from '@/composables/article/useTOC'
 import { useLinkCards } from '@/composables/ui/useLinkCards'
@@ -326,15 +327,24 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
 
     <!-- 压缩包预览组件 -->
     <ArchiveViewer :file="archivePreviewFile" @close="archivePreviewFile = null" />
+
+    <!-- 全局 Footer -->
+    <Footer />
   </div>
 </template>
 
 <style scoped>
 .layout-container {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: var(--vp-c-bg);
   transition: background-color 0.25s;
   padding-top: calc(var(--vp-nav-height) + var(--announcement-height, 0px));
+}
+
+.VPContent {
+  flex: 1;
 }
 
 /* Navbar (Reused from Standard, verify consistency) */
