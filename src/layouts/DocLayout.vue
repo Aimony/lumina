@@ -254,12 +254,125 @@ const setContentWidth = (width: number) => {
 }
 provide('contentWidth', contentWidth)
 provide('setContentWidth', setContentWidth)
+
+// 内容背景颜色
+const contentBgColor = ref('')
+
+// 初始化时从 localStorage 读取
+onMounted(() => {
+  const savedColor = localStorage.getItem('lumina-bg-color')
+  if (savedColor) {
+    contentBgColor.value = savedColor
+  }
+})
+
+const setContentBgColor = (color: string) => {
+  contentBgColor.value = color
+  if (color) {
+    localStorage.setItem('lumina-bg-color', color)
+  } else {
+    localStorage.removeItem('lumina-bg-color')
+  }
+}
+provide('contentBgColor', contentBgColor)
+provide('setContentBgColor', setContentBgColor)
+
+// 沉浸模式下边缘触发显示
+const showNavbarOnHover = ref(false)
+const showSidebarOnHover = ref(false)
+const navbarHiding = ref(false) // 用于控制淡出动画
+const sidebarHiding = ref(false) // 用于控制淡出动画
+const EDGE_THRESHOLD = 50 // 触发距离（像素）
+const NAVBAR_HEIGHT = 64 // 导航栏高度
+const SIDEBAR_WIDTH = 280 // 侧边栏宽度
+
+let hideNavbarTimeout: ReturnType<typeof setTimeout> | null = null
+let hideSidebarTimeout: ReturnType<typeof setTimeout> | null = null
+
+const clearNavbarTimeout = () => {
+  if (hideNavbarTimeout) {
+    clearTimeout(hideNavbarTimeout)
+    hideNavbarTimeout = null
+  }
+}
+
+const clearSidebarTimeout = () => {
+  if (hideSidebarTimeout) {
+    clearTimeout(hideSidebarTimeout)
+    hideSidebarTimeout = null
+  }
+}
+
+const onMouseMove = (e: MouseEvent) => {
+  if (!immersiveMode.value) return
+
+  const screenWidth = window.innerWidth
+  const screenHeight = window.innerHeight
+  const oneThirdWidth = screenWidth / 3
+  const oneThirdHeight = screenHeight / 3
+
+  // 检测上边缘（仅左侧1/3区域）或在导航栏区域内 - 显示导航栏
+  const inNavbarTriggerZone = e.clientY <= EDGE_THRESHOLD && e.clientX <= oneThirdWidth
+  const inNavbarArea = e.clientY <= NAVBAR_HEIGHT && showNavbarOnHover.value
+  if (inNavbarTriggerZone || inNavbarArea) {
+    clearNavbarTimeout()
+    navbarHiding.value = false
+    showNavbarOnHover.value = true
+  } else if (showNavbarOnHover.value && !hideNavbarTimeout) {
+    hideNavbarTimeout = setTimeout(() => {
+      navbarHiding.value = true
+      setTimeout(() => {
+        showNavbarOnHover.value = false
+        navbarHiding.value = false
+        hideNavbarTimeout = null
+      }, 300) // 等待淡出动画完成
+    }, 500) // 延迟隐藏时间
+  }
+
+  // 检测左边缘（仅上方1/3区域）或在侧边栏区域内 - 显示侧边栏
+  const inSidebarTriggerZone = e.clientX <= EDGE_THRESHOLD && e.clientY <= oneThirdHeight
+  const inSidebarArea = e.clientX <= SIDEBAR_WIDTH && showSidebarOnHover.value
+  if (inSidebarTriggerZone || inSidebarArea) {
+    clearSidebarTimeout()
+    sidebarHiding.value = false
+    showSidebarOnHover.value = true
+  } else if (showSidebarOnHover.value && !hideSidebarTimeout) {
+    hideSidebarTimeout = setTimeout(() => {
+      sidebarHiding.value = true
+      setTimeout(() => {
+        showSidebarOnHover.value = false
+        sidebarHiding.value = false
+        hideSidebarTimeout = null
+      }, 300) // 等待淡出动画完成
+    }, 500) // 延迟隐藏时间
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('mousemove', onMouseMove)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', onMouseMove)
+  clearNavbarTimeout()
+  clearSidebarTimeout()
+})
 </script>
 
 <template>
-  <div class="layout-container" :class="{ 'immersive-mode': immersiveMode }">
+  <div
+    class="layout-container"
+    :class="{ 'immersive-mode': immersiveMode }"
+    :style="contentBgColor ? { backgroundColor: contentBgColor } : {}"
+  >
     <!-- Header (Consistent with DefaultLayout) -->
-    <Navbar v-if="!immersiveMode">
+    <Navbar
+      v-if="!immersiveMode || showNavbarOnHover"
+      :class="{
+        'immersive-navbar': immersiveMode && showNavbarOnHover,
+        'immersive-navbar-hiding': navbarHiding
+      }"
+    >
       <template #toggle-bar>
         <button @click="toggleSidebar" class="menu-toggle lg:hidden">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -281,7 +394,15 @@ provide('setContentWidth', setContentWidth)
 
     <div class="VPContent" :style="sidebarOpen && !immersiveMode ? contentStyle : {}">
       <!-- Sidebar -->
-      <aside v-show="sidebarOpen && !immersiveMode" class="VPSidebar" :style="sidebarStyle">
+      <aside
+        v-show="(sidebarOpen && !immersiveMode) || (immersiveMode && showSidebarOnHover)"
+        class="VPSidebar"
+        :class="{
+          'immersive-sidebar': immersiveMode && showSidebarOnHover,
+          'immersive-sidebar-hiding': sidebarHiding
+        }"
+        :style="sidebarStyle"
+      >
         <Sidebar />
         <!-- 拖拽调整手柄 -->
         <div
@@ -506,6 +627,86 @@ provide('setContentWidth', setContentWidth)
     padding-right: 288px;
     /* 224px (TOC) + 32px (right) + 32px (gap) */
     box-sizing: border-box;
+  }
+}
+
+/* 沉浸模式下边缘触发的导航栏 */
+.immersive-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  animation: slideInFromTop 0.3s ease-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 沉浸模式下边缘触发的侧边栏 */
+.immersive-sidebar {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 999;
+  animation: slideInFromLeft 0.3s ease-out;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  background: var(--vp-c-bg);
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 淡出动画 */
+.immersive-navbar-hiding {
+  animation: slideOutToTop 0.3s ease-in forwards;
+}
+
+.immersive-sidebar-hiding {
+  animation: slideOutToLeft 0.3s ease-in forwards;
+}
+
+@keyframes slideOutToTop {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
   }
 }
 </style>
