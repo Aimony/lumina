@@ -67,14 +67,49 @@ const stopResize = () => {
   document.body.style.userSelect = ''
 }
 
+// 处理全局预览事件
+const handleArchivePreviewEnv = async (e: Event) => {
+  const customEvent = e as CustomEvent
+  const { src, name } = customEvent.detail
+  if (src && setArchivePreviewFile) {
+    // 这里需要 fetch archive blob，类似 ArchiveFileCard 的逻辑
+    // 为了复用和简化，建议 ArchiveFileCard 和这里都使用同一个 fetch 逻辑
+    // 但现在为了快速支持，我们在这里复制 fetch 逻辑
+    try {
+      // 显示 loading 状态可能比较难，因为不在 Card 组件内
+      // 可以考虑使用全局 loading
+      const response = await fetch(src)
+      if (!response.ok) throw new Error('Network response was not ok')
+      const blob = await response.blob()
+      const file = new File([blob], name, { type: 'application/zip' })
+      setArchivePreviewFile(file)
+    } catch (error) {
+      console.error('Failed to fetch archive:', error)
+      alert('无法加载压缩包文件')
+    }
+  }
+}
+
+const handleOfficePreviewEnv = (e: Event) => {
+  const customEvent = e as CustomEvent
+  const { src, name, type } = customEvent.detail
+  if (src && setOfficePreviewFile) {
+    setOfficePreviewFile({ src, name, type })
+  }
+}
+
 onMounted(() => {
   document.addEventListener('mousemove', doResize)
   document.addEventListener('mouseup', stopResize)
+  window.addEventListener('preview-archive', handleArchivePreviewEnv)
+  window.addEventListener('preview-office', handleOfficePreviewEnv)
 })
 
 onUnmounted(() => {
   document.removeEventListener('mousemove', doResize)
   document.removeEventListener('mouseup', stopResize)
+  window.removeEventListener('preview-archive', handleArchivePreviewEnv)
+  window.removeEventListener('preview-office', handleOfficePreviewEnv)
 })
 const { headings } = useTOC()
 

@@ -64,6 +64,9 @@ const navigateTo = (path: string) => {
           :key="article.path"
           class="timeline-item"
           @click="navigateTo(article.path)"
+          data-context-type="article"
+          :data-context-path="article.path"
+          :data-context-title="article.title"
         >
           <div class="item-line"></div>
           <div class="item-content">

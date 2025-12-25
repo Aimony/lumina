@@ -39,6 +39,9 @@ const handleClick = async () => {
     :class="{ 'is-loading': loading }"
     @click="handleClick"
     :disabled="loading"
+    data-context-type="archive"
+    :data-context-src="src"
+    :data-context-name="name"
   >
     <div class="archive-icon-wrapper">
       <img :src="BandizipLogo" class="archive-icon" alt="Archive" />

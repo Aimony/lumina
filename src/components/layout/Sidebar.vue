@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useDocsTree, type DocTreeNode } from '@/composables/article/useDocsTree'
 import { useViewMode } from '@/composables/ui/useViewMode'
@@ -75,6 +75,78 @@ watch(docsTree, () => {
 const isActive = (path: string) => {
   return route.path === path
 }
+
+// 递归获取所有子路径
+const getAllChildPaths = (node: DocTreeNode): string[] => {
+  const paths: string[] = [node.path]
+  if (node.children) {
+    for (const child of node.children) {
+      paths.push(...getAllChildPaths(child))
+    }
+  }
+  return paths
+}
+
+// 根据路径查找节点
+const findNodeByPath = (
+  path: string,
+  nodes: DocTreeNode[] = docsTree.value
+): DocTreeNode | null => {
+  for (const node of nodes) {
+    if (node.path === path) return node
+    if (node.children) {
+      const found = findNodeByPath(path, node.children)
+      if (found) return found
+    }
+  }
+  return null
+}
+
+// 展开目录下所有子目录
+const expandAll = (path: string) => {
+  const node = findNodeByPath(path)
+  if (node) {
+    const allPaths = getAllChildPaths(node)
+    allPaths.forEach((p) => expandedGroups.value.add(p))
+    expandedGroups.value = new Set(expandedGroups.value)
+  }
+}
+
+// 折叠目录下所有子目录
+const collapseAll = (path: string) => {
+  const node = findNodeByPath(path)
+  if (node) {
+    const allPaths = getAllChildPaths(node)
+    allPaths.forEach((p) => expandedGroups.value.delete(p))
+    expandedGroups.value = new Set(expandedGroups.value)
+  }
+}
+
+// 右键菜单相关事件监听
+const handleExpandAllEnv = (e: Event) => {
+  const customEvent = e as CustomEvent
+  if (customEvent.detail && customEvent.detail.path) {
+    expandAll(customEvent.detail.path)
+  }
+}
+
+const handleCollapseAllEnv = (e: Event) => {
+  const customEvent = e as CustomEvent
+  if (customEvent.detail && customEvent.detail.path) {
+    collapseAll(customEvent.detail.path)
+  }
+}
+
+// 设置展开/折叠监听
+onMounted(() => {
+  window.addEventListener('sidebar-expand-all', handleExpandAllEnv)
+  window.addEventListener('sidebar-collapse-all', handleCollapseAllEnv)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('sidebar-expand-all', handleExpandAllEnv)
+  window.removeEventListener('sidebar-collapse-all', handleCollapseAllEnv)
+})
 </script>
 
 <template>
@@ -97,6 +169,9 @@ const isActive = (path: string) => {
             class="nav-group-title collapsible"
             :class="{ expanded: isExpanded(item.path) }"
             @click="toggleGroup(item.path)"
+            data-context-type="directory"
+            :data-context-path="item.path"
+            :data-context-title="item.title"
           >
             <span class="nav-group-title-text">{{ item.title }}</span>
             <svg
@@ -130,6 +205,9 @@ const isActive = (path: string) => {
                     class="nav-subgroup-title collapsible"
                     :class="{ expanded: isExpanded(child.path) }"
                     @click="toggleGroup(child.path)"
+                    data-context-type="directory"
+                    :data-context-path="child.path"
+                    :data-context-title="child.title"
                   >
                     <span class="nav-subgroup-title-text">{{ child.title }}</span>
                     <svg
@@ -160,6 +238,9 @@ const isActive = (path: string) => {
                           :to="subItem.path"
                           class="nav-link"
                           :class="{ active: isActive(subItem.path) }"
+                          :data-context-type="subItem.isDirectory ? 'directory' : 'article'"
+                          :data-context-path="subItem.path"
+                          :data-context-title="subItem.title"
                         >
                           {{ subItem.title }}
                         </router-link>
@@ -174,6 +255,9 @@ const isActive = (path: string) => {
                   :to="child.path"
                   class="nav-link direct-link"
                   :class="{ active: isActive(child.path) }"
+                  :data-context-type="child.isDirectory ? 'directory' : 'article'"
+                  :data-context-path="child.path"
+                  :data-context-title="child.title"
                 >
                   {{ child.title }}
                 </router-link>
@@ -188,6 +272,9 @@ const isActive = (path: string) => {
           :to="item.path"
           class="nav-link top-level"
           :class="{ active: isActive(item.path) }"
+          :data-context-type="item.isDirectory ? 'directory' : 'article'"
+          :data-context-path="item.path"
+          :data-context-title="item.title"
         >
           {{ item.title }}
         </router-link>

@@ -7,13 +7,16 @@ import { useThemeProvider } from '@/composables/core/useTheme'
 import { useCodeCopy } from '@/composables/ui/useCodeCopy'
 import { useCodeFold } from '@/composables/ui/useCodeFold'
 import { useCodeResize } from '@/composables/ui/useCodeResize'
+import { useGlobalContextMenu } from '@/composables/ui/useContextMenu'
 import SearchModal from '@/components/common/SearchModal.vue'
+import ContextMenu from '@/components/common/ContextMenu.vue'
 
 const route = useRoute()
 useThemeProvider()
 useCodeCopy()
 useCodeFold()
 useCodeResize()
+useGlobalContextMenu()
 
 // 根据路由 meta 选择布局
 const layout = computed(() => {
@@ -37,7 +40,7 @@ const layout = computed(() => {
     </Transition>
   </RouterView>
   <SearchModal />
-  <SearchModal />
+  <ContextMenu />
 </template>
 
 <style>

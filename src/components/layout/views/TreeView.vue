@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useDocsTree } from '@/composables/article/useDocsTree'
+import { useDocsTree, type DocTreeNode } from '@/composables/article/useDocsTree'
 
 const route = useRoute()
 const router = useRouter()
@@ -9,6 +9,8 @@ const { docsTree } = useDocsTree()
 
 // 展开状态
 const expandedNodes = ref<Set<string>>(new Set())
+
+// ... (keep currentKnowledgeBasePath, filteredTree, expandToPath, watch, toggleNode, isExpanded, isActive, navigateTo) ...
 
 // 当前知识库路径
 const currentKnowledgeBasePath = computed(() => {
@@ -54,6 +56,69 @@ const isActive = (path: string) => route.path === path
 const navigateTo = (path: string) => {
   router.push(path)
 }
+
+// 递归获取所有子节点路径
+const getAllChildPaths = (node: DocTreeNode): string[] => {
+  const paths: string[] = [node.path]
+  if (node.children) {
+    for (const child of node.children) {
+      paths.push(...getAllChildPaths(child))
+    }
+  }
+  return paths
+}
+
+const findNodeByPath = (
+  path: string,
+  nodes: DocTreeNode[] = docsTree.value
+): DocTreeNode | null => {
+  for (const node of nodes) {
+    if (node.path === path) return node
+    if (node.children) {
+      const found = findNodeByPath(path, node.children)
+      if (found) return found
+    }
+  }
+  return null
+}
+
+const handleExpandAll = (e: Event) => {
+  const customEvent = e as CustomEvent
+  const path = customEvent.detail.path
+  if (!path) return
+
+  // 这里的 path 来自 context menu，可能是某个子目录的 path
+  // 我们需要找到这个节点，然后展开它所有的子节点
+  const node = findNodeByPath(path)
+  if (node) {
+    const allPaths = getAllChildPaths(node)
+    allPaths.forEach((p) => expandedNodes.value.add(p))
+    expandedNodes.value = new Set(expandedNodes.value)
+  }
+}
+
+const handleCollapseAll = (e: Event) => {
+  const customEvent = e as CustomEvent
+  const path = customEvent.detail.path
+  if (!path) return
+
+  const node = findNodeByPath(path)
+  if (node) {
+    const allPaths = getAllChildPaths(node)
+    allPaths.forEach((p) => expandedNodes.value.delete(p))
+    expandedNodes.value = new Set(expandedNodes.value)
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('sidebar-expand-all', handleExpandAll)
+  window.addEventListener('sidebar-collapse-all', handleCollapseAll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('sidebar-expand-all', handleExpandAll)
+  window.removeEventListener('sidebar-collapse-all', handleCollapseAll)
+})
 </script>
 
 <template>
@@ -65,6 +130,9 @@ const navigateTo = (path: string) => {
         class="node-header directory"
         :class="{ expanded: isExpanded(node.path) }"
         @click="toggleNode(node.path)"
+        data-context-type="directory"
+        :data-context-path="node.path"
+        :data-context-title="node.title"
       >
         <svg class="node-icon folder" viewBox="0 0 24 24" fill="none">
           <path
@@ -98,6 +166,9 @@ const navigateTo = (path: string) => {
         class="node-header file"
         :class="{ active: isActive(node.path) }"
         @click="navigateTo(node.path)"
+        data-context-type="article"
+        :data-context-path="node.path"
+        :data-context-title="node.title"
       >
         <svg class="node-icon file" viewBox="0 0 24 24" fill="none">
           <path
@@ -123,6 +194,9 @@ const navigateTo = (path: string) => {
               class="node-header directory"
               :class="{ expanded: isExpanded(child.path) }"
               @click="toggleNode(child.path)"
+              data-context-type="directory"
+              :data-context-path="child.path"
+              :data-context-title="child.title"
             >
               <svg class="node-icon folder" viewBox="0 0 24 24" fill="none">
                 <path
@@ -155,6 +229,9 @@ const navigateTo = (path: string) => {
               class="node-header file"
               :class="{ active: isActive(child.path) }"
               @click="navigateTo(child.path)"
+              data-context-type="article"
+              :data-context-path="child.path"
+              :data-context-title="child.title"
             >
               <svg class="node-icon file" viewBox="0 0 24 24" fill="none">
                 <path
@@ -179,6 +256,9 @@ const navigateTo = (path: string) => {
                   class="node-header file"
                   :class="{ active: isActive(subChild.path) }"
                   @click="navigateTo(subChild.path)"
+                  data-context-type="article"
+                  :data-context-path="subChild.path"
+                  :data-context-title="subChild.title"
                 >
                   <svg class="node-icon file" viewBox="0 0 24 24" fill="none">
                     <path

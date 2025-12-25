@@ -41,6 +41,9 @@ const getCategory = (path: string) => {
         :key="article.path"
         class="article-card"
         @click="navigateTo(article.path)"
+        data-context-type="article"
+        :data-context-path="article.path"
+        :data-context-title="article.title"
       >
         <div class="card-category">{{ getCategory(article.path) }}</div>
         <h3 class="card-title">{{ article.title }}</h3>

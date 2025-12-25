@@ -73,6 +73,10 @@ function openPreview() {
       '--card-bg': fileTypeConfig.bgColor
     }"
     @click="openPreview"
+    data-context-type="office"
+    :data-context-src="src"
+    :data-context-name="name"
+    :data-context-file-type="type"
   >
     <img :src="fileTypeConfig.icon" alt="" class="office-file-icon" />
     <span class="office-file-info">
