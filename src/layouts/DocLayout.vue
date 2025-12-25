@@ -1,4 +1,3 @@
-```vue
 <script setup lang="ts">
 import { provide, ref, watch, nextTick, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
