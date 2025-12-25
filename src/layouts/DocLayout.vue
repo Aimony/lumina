@@ -238,12 +238,28 @@ const setArchivePreviewFile = (file: File | null) => {
   archivePreviewFile.value = file
 }
 provide('setArchivePreviewFile', setArchivePreviewFile)
+
+// 沉浸式阅读模式
+const immersiveMode = ref(false)
+const toggleImmersive = () => {
+  immersiveMode.value = !immersiveMode.value
+}
+provide('immersiveMode', immersiveMode)
+provide('toggleImmersive', toggleImmersive)
+
+// 沉浸模式下的文章宽度（百分比）
+const contentWidth = ref(60)
+const setContentWidth = (width: number) => {
+  contentWidth.value = width
+}
+provide('contentWidth', contentWidth)
+provide('setContentWidth', setContentWidth)
 </script>
 
 <template>
-  <div class="layout-container">
+  <div class="layout-container" :class="{ 'immersive-mode': immersiveMode }">
     <!-- Header (Consistent with DefaultLayout) -->
-    <Navbar>
+    <Navbar v-if="!immersiveMode">
       <template #toggle-bar>
         <button @click="toggleSidebar" class="menu-toggle lg:hidden">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,9 +279,9 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
       <!-- Optional: Breadcrumbs or local nav bar could go here -->
     </div>
 
-    <div class="VPContent" :style="sidebarOpen ? contentStyle : {}">
+    <div class="VPContent" :style="sidebarOpen && !immersiveMode ? contentStyle : {}">
       <!-- Sidebar -->
-      <aside v-show="sidebarOpen" class="VPSidebar" :style="sidebarStyle">
+      <aside v-show="sidebarOpen && !immersiveMode" class="VPSidebar" :style="sidebarStyle">
         <Sidebar />
         <!-- 拖拽调整手柄 -->
         <div
@@ -277,7 +293,7 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
 
       <!-- Content Area -->
       <div class="VPContent-doc">
-        <div class="container">
+        <div class="container" :style="immersiveMode ? { maxWidth: contentWidth + 'vw' } : {}">
           <!-- Main Content -->
           <div class="content">
             <main class="main">
@@ -285,13 +301,13 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
                 <!-- 密码保护遮罩 -->
                 <PasswordProtect v-if="isProtected && !isUnlocked" />
                 <template v-else>
-                  <Breadcrumb />
-                  <ArticleTags />
-                  <ArticleMeta />
+                  <Breadcrumb v-if="!immersiveMode" />
+                  <ArticleTags v-if="!immersiveMode" />
+                  <ArticleMeta v-if="!immersiveMode" />
                   <slot />
-                  <BacklinkSection />
-                  <ShareLinks />
-                  <PrevNextNav />
+                  <BacklinkSection v-if="!immersiveMode" />
+                  <ShareLinks v-if="!immersiveMode" />
+                  <PrevNextNav v-if="!immersiveMode" />
                 </template>
               </article>
             </main>
@@ -301,7 +317,7 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
           <aside class="VPDocAside hidden xl:block">
             <div class="aside-container">
               <div class="aside-content">
-                <GraphView />
+                <GraphView v-if="!immersiveMode" />
                 <TOC :headings="headings" />
               </div>
             </div>
@@ -314,13 +330,13 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
     <ImageViewer :image="currentImage" @close="hide" />
 
     <!-- 阅读进度悬浮球 -->
-    <ReadingProgress />
+    <ReadingProgress v-if="!immersiveMode" />
 
     <!-- 智能悬浮卡 -->
     <SmartHoverCard />
 
     <!-- 小猫回到顶部 -->
-    <BackToTopCat />
+    <BackToTopCat v-if="!immersiveMode" />
 
     <!-- Office 文件预览模态框 -->
     <OfficePreviewModal :file="officePreviewFile" @close="officePreviewFile = null" />
@@ -329,7 +345,7 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
     <ArchiveViewer :file="archivePreviewFile" @close="archivePreviewFile = null" />
 
     <!-- 全局 Footer -->
-    <Footer />
+    <Footer v-if="!immersiveMode" />
   </div>
 </template>
 
@@ -457,5 +473,39 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
 .aside-container::-webkit-scrollbar {
   display: none;
   /* Chrome, Safari, Opera */
+}
+
+/* 沉浸式阅读模式样式 */
+.layout-container.immersive-mode {
+  padding-top: 0;
+}
+
+.layout-container.immersive-mode .VPContent-doc {
+  padding-top: 32px;
+}
+
+.layout-container.immersive-mode .aside-container {
+  top: 32px;
+  max-height: calc(100vh - 64px);
+}
+
+.layout-container.immersive-mode .container {
+  transition: max-width 0.3s ease;
+}
+
+/* 沉浸模式下 TOC 固定在右侧 */
+.layout-container.immersive-mode .VPDocAside {
+  position: fixed;
+  right: 32px;
+  top: 32px;
+  width: 224px;
+}
+
+@media (min-width: 1280px) {
+  .layout-container.immersive-mode .container {
+    padding-right: 288px;
+    /* 224px (TOC) + 32px (right) + 32px (gap) */
+    box-sizing: border-box;
+  }
 }
 </style>
