@@ -2,13 +2,23 @@
 import { ref, computed, watchEffect } from 'vue'
 import { announcement } from '@/config/announcement'
 
-const STORAGE_KEY = `announcement-closed-${announcement.id}`
+const STORAGE_KEY = `lumina-announcement-closed-${announcement.id}`
 const ANNOUNCEMENT_HEIGHT = 36 // px
+const EXPIRATION_MS = 24 * 60 * 60 * 1000 // 1天的毫秒数
 
 // 同步读取 localStorage，避免闪烁
 const getInitialClosedState = (): boolean => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem(STORAGE_KEY) === 'true'
+    const closedTime = localStorage.getItem(STORAGE_KEY)
+    if (closedTime) {
+      const elapsed = Date.now() - parseInt(closedTime, 10)
+      // 如果超过1天，清除存储并返回 false（显示公告）
+      if (elapsed >= EXPIRATION_MS) {
+        localStorage.removeItem(STORAGE_KEY)
+        return false
+      }
+      return true
+    }
   }
   return false
 }
@@ -37,7 +47,7 @@ watchEffect(() => {
 
 const closeAnnouncement = () => {
   isClosed.value = true
-  localStorage.setItem(STORAGE_KEY, 'true')
+  localStorage.setItem(STORAGE_KEY, Date.now().toString())
 }
 </script>
 
