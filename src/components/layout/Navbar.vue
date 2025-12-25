@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import ThemeToggle from '@/components/common/ThemeToggle.vue'
 import RandomWalk from '@/components/common/RandomWalk.vue'
 import YearProgress from '@/components/home/YearProgress.vue'
+import AnnouncementBar from '@/components/layout/AnnouncementBar.vue'
 import { navItems } from '@/config/nav'
 import { useDocsTree, type DocTreeNode } from '@/composables/article/useDocsTree'
 import { useSearch } from '@/composables/core/useSearch'
@@ -69,8 +70,9 @@ const hideDropdown = () => {
 
 <template>
   <header class="navbar">
-    <YearProgress />
-    <div class="navbar-wrapper">
+    <AnnouncementBar />
+    <div class="navbar-main-wrapper">
+      <YearProgress />
       <div class="navbar-container">
         <!-- Left: Slot for Toggle & Logo -->
         <div class="navbar-title">
@@ -227,18 +229,22 @@ const hideDropdown = () => {
   left: 0;
   right: 0;
   z-index: 50;
-  height: var(--vp-nav-height);
+  /* height: var(--vp-nav-height); */
   background-color: var(--vp-nav-bg);
   backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid var(--vp-c-divider);
   transition:
     background-color 0.25s,
     border-color 0.25s;
+
+  display: flex;
+  flex-direction: column;
 }
 
-.navbar-wrapper {
-  margin: 0 auto;
-  height: 100%;
+.navbar-main-wrapper {
+  position: relative;
+  width: 100%;
+  height: var(--vp-nav-height);
 }
 
 .navbar-container {
@@ -248,6 +254,7 @@ const hideDropdown = () => {
   height: 100%;
   padding: 0 24px;
   padding-right: 65px;
+  margin: 0 auto;
 }
 
 .navbar-title {
@@ -400,7 +407,7 @@ const hideDropdown = () => {
 /* Mobile Menu */
 .navbar-mobile-menu {
   position: fixed;
-  top: var(--vp-nav-height);
+  top: calc(var(--vp-nav-height) + var(--announcement-height, 0px));
   left: 0;
   right: 0;
   height: 50vh;
@@ -464,7 +471,7 @@ const hideDropdown = () => {
 
 .mobile-menu-backdrop {
   position: fixed;
-  top: var(--vp-nav-height);
+  top: calc(var(--vp-nav-height) + var(--announcement-height, 0px));
   left: 0;
   right: 0;
   bottom: 0;

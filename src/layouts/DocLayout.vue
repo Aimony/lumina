@@ -334,7 +334,7 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
   min-height: 100vh;
   background-color: var(--vp-c-bg);
   transition: background-color 0.25s;
-  padding-top: var(--vp-nav-height);
+  padding-top: calc(var(--vp-nav-height) + var(--announcement-height, 0px));
 }
 
 /* Navbar (Reused from Standard, verify consistency) */
@@ -358,7 +358,7 @@ provide('setArchivePreviewFile', setArchivePreviewFile)
 /* Sidebar */
 .VPSidebar {
   position: fixed;
-  top: var(--vp-nav-height);
+  top: calc(var(--vp-nav-height) + var(--announcement-height, 0px));
   bottom: 0;
   left: 0;
   z-index: 40;
