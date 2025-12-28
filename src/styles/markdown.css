@@ -2,6 +2,7 @@
 .markdown-body {
   max-width: 100%;
   color: var(--vp-c-text-1);
+  overflow-wrap: anywhere;
 }
 
 .markdown-body h1,
@@ -72,6 +73,7 @@
   background-color: var(--vp-c-bg-alt);
   padding: 0.2em 0.4em;
   border-radius: 4px;
+  word-break: break-all;
 }
 
 /* Code Blocks (Shiki) */
