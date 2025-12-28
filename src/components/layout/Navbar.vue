@@ -59,12 +59,20 @@ const processedNavItems = computed(() => {
   })
 })
 
+const closeTimeout = ref<any>(null)
+
 const showDropdown = (text: string) => {
+  if (closeTimeout.value) {
+    clearTimeout(closeTimeout.value)
+    closeTimeout.value = null
+  }
   activeDropdown.value = text
 }
 
 const hideDropdown = () => {
-  activeDropdown.value = null
+  closeTimeout.value = setTimeout(() => {
+    activeDropdown.value = null
+  }, 100)
 }
 </script>
 
@@ -348,9 +356,12 @@ const hideDropdown = () => {
 }
 
 /* Dropdown Animation */
-.dropdown-enter-active,
-.dropdown-leave-active {
+.dropdown-enter-active {
   transition: all 0.2s ease;
+}
+
+.dropdown-leave-active {
+  transition-duration: 0s;
 }
 
 .dropdown-enter-from,
