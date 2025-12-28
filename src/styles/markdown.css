@@ -46,6 +46,13 @@
   line-height: 1.6;
 }
 
+.markdown-body img {
+  margin: 1.5rem auto;
+  border-radius: 8px;
+  max-width: 100%;
+  display: block;
+}
+
 .markdown-body a {
   font-weight: 500;
   text-decoration: underline;
