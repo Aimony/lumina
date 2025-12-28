@@ -105,8 +105,7 @@ function openPreview() {
   gap: 12px;
   width: 100%;
   max-width: 400px;
-  padding: 16px 20px;
-  margin: 16px 0;
+  padding: 0px 16px;
   background: var(--card-bg);
   border: 1px solid color-mix(in srgb, var(--card-color) 30%, transparent);
   border-radius: 12px;

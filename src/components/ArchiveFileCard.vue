@@ -77,8 +77,7 @@ const handleClick = async () => {
   gap: 12px;
   width: 100%;
   max-width: 400px;
-  padding: 16px 20px;
-  margin: 16px 0;
+  padding: 12px 16px;
   background: rgba(255, 171, 0, 0.1);
   /* Amber/Orange tint */
   border: 1px solid rgba(255, 171, 0, 0.3);

@@ -283,7 +283,7 @@ onUnmounted(() => {
   </Teleport>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .epub-preview-overlay {
   position: fixed;
   inset: 0;
@@ -305,10 +305,10 @@ onUnmounted(() => {
   flex-direction: column;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
 
-.dark .epub-preview-modal {
-  background: #1a1a1a;
+  .dark & {
+    background: #1a1a1a;
+  }
 }
 
 .epub-preview-toolbar {
@@ -319,11 +319,11 @@ onUnmounted(() => {
   background: #f5f5f5;
   border-bottom: 1px solid #e0e0e0;
   flex-shrink: 0;
-}
 
-.dark .epub-preview-toolbar {
-  background: #2a2a2a;
-  border-bottom-color: #3a3a3a;
+  .dark & {
+    background: #2a2a2a;
+    border-bottom-color: #3a3a3a;
+  }
 }
 
 .toolbar-left {
@@ -336,10 +336,10 @@ onUnmounted(() => {
   font-size: 14px;
   font-weight: 600;
   color: #333;
-}
 
-.dark .file-name {
-  color: #eee;
+  .dark & {
+    color: #eee;
+  }
 }
 
 .toolbar-right {
@@ -353,10 +353,10 @@ onUnmounted(() => {
   height: 20px;
   background: #ddd;
   margin: 0 4px;
-}
 
-.dark .toolbar-divider {
-  background: #444;
+  .dark & {
+    background: #444;
+  }
 }
 
 .toolbar-btn {
@@ -371,25 +371,25 @@ onUnmounted(() => {
   color: #666;
   cursor: pointer;
   transition: all 0.2s ease;
-}
 
-.toolbar-btn:hover {
-  background: rgba(0, 0, 0, 0.1);
-  color: #333;
-}
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
 
-.dark .toolbar-btn {
-  color: #aaa;
-}
+  .dark & {
+    color: #aaa;
 
-.dark .toolbar-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+  }
 
-.close-btn:hover {
-  background: #ff4444;
-  color: #fff;
+  &.close-btn:hover {
+    background: #ff4444;
+    color: #fff;
+  }
 }
 
 .epub-preview-content {
@@ -398,10 +398,14 @@ onUnmounted(() => {
   position: relative;
   min-height: 0;
   background: #fafafa;
-}
 
-.dark .epub-preview-content {
-  background: #1e1e1e;
+  .dark & {
+    background: #1e1e1e;
+  }
+
+  &:hover .page-nav {
+    opacity: 0.5;
+  }
 }
 
 .preview-loading,
@@ -416,12 +420,11 @@ onUnmounted(() => {
   color: #666;
   z-index: 10;
   background: #fff;
-}
 
-.dark .preview-loading,
-.dark .preview-error {
-  color: #999;
-  background: #1a1a1a;
+  .dark & {
+    color: #999;
+    background: #1a1a1a;
+  }
 }
 
 .loading-spinner {
@@ -448,22 +451,22 @@ onUnmounted(() => {
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.2s ease;
-}
 
-.retry-btn:hover {
-  background: #047857;
+  &:hover {
+    background: #047857;
+  }
 }
 
 .epub-viewer {
   width: 100%;
   height: 100%;
+
+  &.is-hidden {
+    visibility: hidden;
+  }
 }
 
-.epub-viewer.is-hidden {
-  visibility: hidden;
-}
-
-/* 翻页热区 */
+// 翻页热区
 .page-nav {
   position: absolute;
   top: 50%;
@@ -479,55 +482,49 @@ onUnmounted(() => {
   color: #666;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.05), transparent);
   border-radius: 8px;
-}
 
-.page-nav:hover {
-  opacity: 1;
-}
+  &:hover {
+    opacity: 1;
+  }
 
-.epub-preview-content:hover .page-nav {
-  opacity: 0.5;
+  .dark & {
+    color: #aaa;
+  }
 }
 
 .prev-page {
   left: 8px;
+
+  .dark & {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.05), transparent);
+  }
 }
 
 .next-page {
   right: 8px;
   background: linear-gradient(to left, rgba(0, 0, 0, 0.05), transparent);
+
+  .dark & {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.05), transparent);
+  }
 }
 
-.dark .page-nav {
-  color: #aaa;
-}
-
-.dark .prev-page {
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.05), transparent);
-}
-
-.dark .next-page {
-  background: linear-gradient(to left, rgba(255, 255, 255, 0.05), transparent);
-}
-
-/* 过渡动画 */
+// 过渡动画
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.3s ease;
-}
 
-.modal-enter-active .epub-preview-modal,
-.modal-leave-active .epub-preview-modal {
-  transition: transform 0.3s ease;
+  .epub-preview-modal {
+    transition: transform 0.3s ease;
+  }
 }
 
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
-}
 
-.modal-enter-from .epub-preview-modal,
-.modal-leave-to .epub-preview-modal {
-  transform: scale(0.95);
+  .epub-preview-modal {
+    transform: scale(0.95);
+  }
 }
 </style>

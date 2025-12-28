@@ -62,15 +62,14 @@ function openPreview() {
   </button>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .epub-file-card {
   display: flex;
   align-items: center;
   gap: 12px;
   width: 100%;
   max-width: 400px;
-  padding: 16px 20px;
-  margin: 16px 0;
+  padding: 0px 16px;
   background: var(--card-bg);
   border: 1px solid color-mix(in srgb, var(--card-color) 30%, transparent);
   border-radius: 12px;
@@ -78,12 +77,16 @@ function openPreview() {
   transition: all 0.3s ease;
   text-align: left;
   font-family: inherit;
-}
 
-.epub-file-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--card-color) 20%, transparent);
-  border-color: var(--card-color);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--card-color) 20%, transparent);
+    border-color: var(--card-color);
+
+    .epub-file-action {
+      opacity: 1;
+    }
+  }
 }
 
 .epub-file-icon {
@@ -113,10 +116,10 @@ function openPreview() {
 .epub-file-type {
   font-size: 12px;
   color: #666;
-}
 
-.dark .epub-file-type {
-  color: #999;
+  .dark & {
+    color: #999;
+  }
 }
 
 .epub-file-action {
@@ -124,9 +127,5 @@ function openPreview() {
   color: var(--card-color);
   opacity: 0.6;
   transition: opacity 0.2s ease;
-}
-
-.epub-file-card:hover .epub-file-action {
-  opacity: 1;
 }
 </style>
