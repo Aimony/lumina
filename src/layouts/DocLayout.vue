@@ -17,6 +17,7 @@ import ShareLinks from '@/components/article/ShareLinks.vue'
 import Breadcrumb from '@/components/article/Breadcrumb.vue'
 import PasswordProtect from '@/components/article/PasswordProtect.vue'
 import OfficePreviewModal from '@/components/OfficePreviewModal.vue'
+import EpubPreviewModal from '@/components/EpubPreviewModal.vue'
 import ArchiveViewer from '@/components/common/ArchiveViewer.vue'
 import Footer from '@/components/layout/Footer.vue'
 import { useSidebar } from '@/composables/ui/useSidebar'
@@ -237,6 +238,13 @@ const setArchivePreviewFile = (file: File | null) => {
   archivePreviewFile.value = file
 }
 provide('setArchivePreviewFile', setArchivePreviewFile)
+
+// EPUB 预览状态管理
+const epubPreviewFile = ref<{ src: string; name: string } | null>(null)
+const setEpubPreviewFile = (file: { src: string; name: string } | null) => {
+  epubPreviewFile.value = file
+}
+provide('setEpubPreviewFile', setEpubPreviewFile)
 
 // 沉浸式阅读模式
 const immersiveMode = ref(false)
@@ -516,6 +524,9 @@ onUnmounted(() => {
 
     <!-- 压缩包预览组件 -->
     <ArchiveViewer :file="archivePreviewFile" @close="archivePreviewFile = null" />
+
+    <!-- EPUB 预览模态框 -->
+    <EpubPreviewModal :file="epubPreviewFile" @close="epubPreviewFile = null" />
 
     <!-- 全局 Footer -->
     <Footer v-if="!immersiveMode" />

@@ -11,7 +11,8 @@ const OFFICE_EXTENSIONS: Record<string, string> = {
   '.xls': 'excel',
   '.pptx': 'ppt',
   '.ppt': 'ppt',
-  '.pdf': 'pdf'
+  '.pdf': 'pdf',
+  '.epub': 'epub'
 }
 
 /**
@@ -76,7 +77,10 @@ export function officePreviewPlugin(md: MarkdownIt) {
         name: getFileName(href),
         type: fileType
       }
-      // 返回组件开始标签
+      // 返回组件开始标签（EPUB 使用独立组件）
+      if (fileType === 'epub') {
+        return `<EpubFileCard src="${href}" name="${currentOfficeFile.name}">`
+      }
       return `<OfficeFileCard src="${href}" name="${currentOfficeFile.name}" type="${fileType}">`
     }
 
@@ -86,9 +90,10 @@ export function officePreviewPlugin(md: MarkdownIt) {
   // 重写链接结束标签的渲染规则
   md.renderer.rules.link_close = function (tokens, idx, options, env, self) {
     if (isOfficeLink) {
+      const isEpub = currentOfficeFile?.type === 'epub'
       isOfficeLink = false
       currentOfficeFile = null
-      return '</OfficeFileCard>'
+      return isEpub ? '</EpubFileCard>' : '</OfficeFileCard>'
     }
 
     return defaultLinkClose(tokens, idx, options, env, self)

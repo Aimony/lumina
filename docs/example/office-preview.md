@@ -1,29 +1,31 @@
 ---
-title: Office 文件预览示例
-description: 演示如何在文档中嵌入和预览 Office 文件
+title: 文件预览示例
+description: 演示如何在文档中嵌入和预览 Office 文件及电子书
 tags:
   - 功能演示
   - Office
+  - EPUB
 ---
 
-# Office 文件预览
+# 文件预览
 
-本文档演示如何在 Markdown 中嵌入 Office 文件（Word、Excel、PowerPoint、PDF）。
+本文档演示如何在 Markdown 中嵌入 Office 文件（Word、Excel、PowerPoint、PDF）和电子书（EPUB）。
 
 ## 使用方法
 
-只需在 Markdown 中使用标准链接语法，指向 Office 文件即可：
+只需在 Markdown 中使用标准链接语法，指向相应文件即可：
 
 ```markdown
 [文件名](path/to/file.docx)
 [报表](path/to/file.xlsx)
 [演示文稿](path/to/file.pptx)
 [PDF文档](path/to/file.pdf)
+[电子书](path/to/file.epub)
 ```
 
 ## 示例预览卡片
 
-以下是各种类型的 Office 文件卡片示例：
+以下是各种类型的文件卡片示例：
 
 ### Word 文档
 
@@ -41,6 +43,10 @@ tags:
 
 [用户手册.pdf](/files/PDF测试.pdf)
 
+### EPUB 电子书
+
+[示例电子书.epub](/files/EPUB测试.epub)
+
 ## 注意事项
 
 1. 将文件放置在 `public/files/` 目录下
@@ -56,3 +62,4 @@ tags:
 | Excel      | `.xlsx`, `.xls` | 在线渲染 |
 | PowerPoint | `.pptx`, `.ppt` | 在线渲染 |
 | PDF        | `.pdf`          | 在线渲染 |
+| EPUB       | `.epub`         | 在线渲染 |

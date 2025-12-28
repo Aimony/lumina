@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="epubGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669"/>
+      <stop offset="100%" style="stop-color:#10b981"/>
+    </linearGradient>
+  </defs>
+  <!-- Book base -->
+  <path d="M8 6h24c2.2 0 4 1.8 4 4v28c0 2.2-1.8 4-4 4H8V6z" fill="url(#epubGrad)"/>
+  <!-- Book spine -->
+  <path d="M8 6v36c-2 0-4-1.8-4-4V10c0-2.2 2-4 4-4z" fill="#047857"/>
+  <!-- Pages effect -->
+  <path d="M12 10h18v2H12zm0 6h18v2H12zm0 6h14v2H12zm0 6h16v2H12z" fill="rgba(255,255,255,0.8)"/>
+  <!-- EPUB text -->
+  <rect x="28" y="30" width="16" height="12" rx="2" fill="#fff"/>
+  <text x="36" y="39" text-anchor="middle" font-size="6" font-weight="bold" fill="#059669">EPUB</text>
+</svg>
