@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import { pinia } from './stores'
 import routes from '~pages'
 import App from './App.vue'
 import LinkCard from './components/common/LinkCard.vue'
@@ -50,6 +51,7 @@ router.beforeEach((to, _from, next) => {
 })
 
 const app = createApp(App)
+app.use(pinia)
 app.use(router)
 
 // 全局注册 LinkCard 组件

@@ -54,6 +54,7 @@
     "flexsearch": "^0.8.212",
     "jszip": "^3.10.1",
     "mermaid": "^11.12.2",
+    "pinia": "^3.0.4",
     "qrcode": "^1.5.4",
     "shiki": "^3.20.0",
     "tailwindcss": "^4.1.18",
