@@ -1,25 +1,35 @@
 <script setup lang="ts">
-import { provide, ref, watch, nextTick, computed, onMounted, onUnmounted } from 'vue'
+import { provide, ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+
+// 布局组件
 import Sidebar from '@/components/layout/Sidebar.vue'
 import TOC from '@/components/article/TOC.vue'
 import Navbar from '@/components/layout/Navbar.vue'
-import ImageViewer from '@/components/common/ImageViewer.vue'
-import BackToTopCat from '@/components/common/BackToTopCat.vue'
-import ReadingProgress from '@/components/article/ReadingProgress.vue'
-import PrevNextNav from '@/components/article/PrevNextNav.vue'
+import Footer from '@/components/layout/Footer.vue'
+
+// 文章组件
+import Breadcrumb from '@/components/article/Breadcrumb.vue'
 import ArticleTags from '@/components/article/ArticleTags.vue'
 import ArticleMeta from '@/components/article/ArticleMeta.vue'
-import GraphView from '@/components/article/GraphView.vue'
-import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
-import BacklinkSection from '@/components/article/BacklinkSection.vue' // Added import
+import PrevNextNav from '@/components/article/PrevNextNav.vue'
+import BacklinkSection from '@/components/article/BacklinkSection.vue'
 import ShareLinks from '@/components/article/ShareLinks.vue'
-import Breadcrumb from '@/components/article/Breadcrumb.vue'
+import GraphView from '@/components/article/GraphView.vue'
+import ReadingProgress from '@/components/article/ReadingProgress.vue'
 import PasswordProtect from '@/components/article/PasswordProtect.vue'
+import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
+
+// 通用组件
+import ImageViewer from '@/components/common/ImageViewer.vue'
+import BackToTopCat from '@/components/common/BackToTopCat.vue'
+import ArchiveViewer from '@/components/common/ArchiveViewer.vue'
+
+// 预览模态框
 import OfficePreviewModal from '@/components/OfficePreviewModal.vue'
 import EpubPreviewModal from '@/components/EpubPreviewModal.vue'
-import ArchiveViewer from '@/components/common/ArchiveViewer.vue'
-import Footer from '@/components/layout/Footer.vue'
+
+// Composables - 核心功能
 import { useSidebar } from '@/composables/ui/useSidebar'
 import { useTOC } from '@/composables/article/useTOC'
 import { useLinkCards } from '@/composables/ui/useLinkCards'
@@ -29,98 +39,79 @@ import { useTabs } from '@/composables/article/useTabs'
 import { useSmartHover } from '@/composables/article/useSmartHover'
 import { usePasswordProtect } from '@/composables/article/usePasswordProtect'
 
-// 使用 Composables
+// Composables - 布局功能
+import { useImmersiveMode } from '@/composables/layout/useImmersiveMode'
+import { useSidebarResize } from '@/composables/layout/useSidebarResize'
+import { useEdgeTrigger } from '@/composables/layout/useEdgeTrigger'
+import { useHashScroll } from '@/composables/layout/useHashScroll'
+import { useFilePreview } from '@/composables/layout/useFilePreview'
+
+// ============================================
+// Composables 初始化
+// ============================================
+
+// 侧边栏开关
 const { isOpen: sidebarOpen, toggleSidebar } = useSidebar()
 
 // 密码保护
 const { isProtected, isUnlocked } = usePasswordProtect()
 
-// 侧边栏宽度调整
-const sidebarWidth = ref(272)
-const isResizing = ref(false)
-const minWidth = 180
-const maxWidth = 400
+// 沉浸模式
+const {
+  immersiveMode,
+  contentWidth,
+  contentBgColor,
+  initFromStorage: initImmersiveMode,
+  provideImmersiveContext
+} = useImmersiveMode()
 
-const sidebarStyle = computed(() => ({
-  width: `${sidebarWidth.value}px`
-}))
+// 侧边栏拖拽
+const {
+  sidebarWidth,
+  isResizing,
+  sidebarStyle,
+  getContentStyle,
+  startResize,
+  setupResizeListeners,
+  cleanupResizeListeners
+} = useSidebarResize()
 
-const contentStyle = computed(() => ({
-  paddingLeft: sidebarOpen.value ? `${sidebarWidth.value}px` : '0'
-}))
+// 边缘触发（沉浸模式）
+const {
+  showNavbarOnHover,
+  showSidebarOnHover,
+  navbarHiding,
+  sidebarHiding,
+  setupEdgeTrigger,
+  cleanupEdgeTrigger
+} = useEdgeTrigger(immersiveMode)
 
-const startResize = (e: MouseEvent) => {
-  isResizing.value = true
-  document.body.style.cursor = 'col-resize'
-  document.body.style.userSelect = 'none'
-  e.preventDefault()
-}
+// URL 锚点滚动
+const { setupHashScrollWatchers, initHashScroll } = useHashScroll()
 
-const doResize = (e: MouseEvent) => {
-  if (!isResizing.value) return
-  const newWidth = e.clientX
-  sidebarWidth.value = Math.min(maxWidth, Math.max(minWidth, newWidth))
-}
+// 文件预览
+const {
+  officePreviewFile,
+  archivePreviewFile,
+  epubPreviewFile,
+  closeOfficePreview,
+  closeArchivePreview,
+  closeEpubPreview,
+  setupPreviewListeners,
+  cleanupPreviewListeners,
+  provideFilePreviewContext
+} = useFilePreview()
 
-const stopResize = () => {
-  isResizing.value = false
-  document.body.style.cursor = ''
-  document.body.style.userSelect = ''
-}
-
-// 处理全局预览事件
-const handleArchivePreviewEnv = async (e: Event) => {
-  const customEvent = e as CustomEvent
-  const { src, name } = customEvent.detail
-  if (src && setArchivePreviewFile) {
-    // 这里需要 fetch archive blob，类似 ArchiveFileCard 的逻辑
-    // 为了复用和简化，建议 ArchiveFileCard 和这里都使用同一个 fetch 逻辑
-    // 但现在为了快速支持，我们在这里复制 fetch 逻辑
-    try {
-      // 显示 loading 状态可能比较难，因为不在 Card 组件内
-      // 可以考虑使用全局 loading
-      const response = await fetch(src)
-      if (!response.ok) throw new Error('Network response was not ok')
-      const blob = await response.blob()
-      const file = new File([blob], name, { type: 'application/zip' })
-      setArchivePreviewFile(file)
-    } catch (error) {
-      console.error('Failed to fetch archive:', error)
-      alert('无法加载压缩包文件')
-    }
-  }
-}
-
-const handleOfficePreviewEnv = (e: Event) => {
-  const customEvent = e as CustomEvent
-  const { src, name, type } = customEvent.detail
-  if (src && setOfficePreviewFile) {
-    setOfficePreviewFile({ src, name, type })
-  }
-}
-
-onMounted(() => {
-  document.addEventListener('mousemove', doResize)
-  document.addEventListener('mouseup', stopResize)
-  window.addEventListener('preview-archive', handleArchivePreviewEnv)
-  window.addEventListener('preview-office', handleOfficePreviewEnv)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('mousemove', doResize)
-  document.removeEventListener('mouseup', stopResize)
-  window.removeEventListener('preview-archive', handleArchivePreviewEnv)
-  window.removeEventListener('preview-office', handleOfficePreviewEnv)
-})
+// TOC
 const { headings } = useTOC()
+provide('headings', headings)
 
-// 处理链接卡片
+// 图片放大
+const { currentImage, hide: hideImage } = useImageZoom()
+
+// 其他功能
 useLinkCards()
-
-// Mermaid 图表渲染
 useMermaid()
-
-// 标签页交互
 useTabs()
 
 // 智能悬浮卡
@@ -128,69 +119,41 @@ const { attachToContent } = useSmartHover()
 const articleRef = ref<HTMLElement | null>(null)
 const route = useRoute()
 
-// 处理 URL hash 锚点定位（解决新标签打开时锚点不生效问题）
-const scrollToHashOnLoad = () => {
-  const hash = route.hash
-  if (!hash) return
+// ============================================
+// 生命周期
+// ============================================
 
-  // 获取原始 hash（不包含 #）
-  const rawHash = hash.startsWith('#') ? hash.slice(1) : hash
+onMounted(() => {
+  // 初始化沉浸模式
+  initImmersiveMode()
 
-  // 准备多种可能的 ID 形式
-  // markdown-it-anchor 生成的 ID 是 URL 编码的，但浏览器可能已经解码了 hash
-  const possibleIds = [
-    rawHash, // 原始形式（可能是编码的）
-    decodeURIComponent(rawHash), // 解码形式
-    encodeURIComponent(decodeURIComponent(rawHash)) // 重新编码形式
-  ]
+  // 设置事件监听
+  setupResizeListeners()
+  setupEdgeTrigger()
+  setupPreviewListeners()
 
-  // 去重
-  const uniqueIds = [...new Set(possibleIds)]
+  // 锚点滚动
+  initHashScroll()
+})
 
-  const scrollToTarget = () => {
-    // 尝试所有可能的 ID
-    for (const id of uniqueIds) {
-      const targetElement = document.getElementById(id)
-      if (targetElement) {
-        // 使用 requestAnimationFrame 确保布局稳定
-        requestAnimationFrame(() => {
-          const navHeight = 80
-          const elementTop = targetElement.getBoundingClientRect().top + window.scrollY - navHeight
-          window.scrollTo({ top: elementTop, behavior: 'smooth' })
-        })
-        return true
-      }
-    }
-    return false
-  }
+onUnmounted(() => {
+  cleanupResizeListeners()
+  cleanupEdgeTrigger()
+  cleanupPreviewListeners()
+})
 
-  // 尝试立即滚动
-  if (scrollToTarget()) return
+// Provide 上下文
+provideImmersiveContext()
+provideFilePreviewContext()
 
-  // 如果元素不存在，使用轮询等待 DOM 渲染完成
-  let attempts = 0
-  const maxAttempts = 50 // 最多等待 5 秒
-
-  const pollForElement = () => {
-    attempts++
-
-    if (scrollToTarget()) return
-
-    if (attempts < maxAttempts) {
-      setTimeout(pollForElement, 100)
-    }
-  }
-
-  // 延迟开始轮询，等待组件初始化
-  setTimeout(pollForElement, 200)
-}
+// 设置 hash 滚动监听
+setupHashScrollWatchers()
 
 // 监听路由变化，重新绑定悬浮卡事件
 watch(
   () => route.path,
   () => {
     nextTick(() => {
-      // 延迟一点确保 DOM 更新
       setTimeout(() => {
         if (articleRef.value) {
           attachToContent(articleRef.value)
@@ -201,231 +164,20 @@ watch(
   { immediate: true }
 )
 
-// 在组件挂载后处理锚点定位
-onMounted(() => {
-  // 延迟执行，确保内容开始渲染
-  setTimeout(scrollToHashOnLoad, 300)
-})
+// ============================================
+// 计算属性
+// ============================================
 
-// 监听 hash 变化（用于页面内锚点跳转）
-watch(
-  () => route.hash,
-  (newHash, oldHash) => {
-    // 只在 hash 变化时触发（非首次加载）
-    if (newHash && oldHash !== undefined) {
-      setTimeout(scrollToHashOnLoad, 100)
-    }
-  }
-)
-
-// 图片放大功能
-const { currentImage, hide } = useImageZoom()
-
-// 提供 headings 给子组件 (保持兼容性，虽然 TOC 组件可以直接传参，但 Sidebar 可能也需要?)
-// 实际上 TOC 组件是直接传参的 :headings="headings"
-provide('headings', headings)
-
-// Office 文件预览状态管理
-const officePreviewFile = ref<{ src: string; name: string; type: string } | null>(null)
-const setOfficePreviewFile = (file: { src: string; name: string; type: string } | null) => {
-  officePreviewFile.value = file
-}
-provide('setOfficePreviewFile', setOfficePreviewFile)
-
-// 压缩包预览状态管理
-const archivePreviewFile = ref<File | null>(null)
-const setArchivePreviewFile = (file: File | null) => {
-  archivePreviewFile.value = file
-}
-provide('setArchivePreviewFile', setArchivePreviewFile)
-
-// EPUB 预览状态管理
-const epubPreviewFile = ref<{ src: string; name: string } | null>(null)
-const setEpubPreviewFile = (file: { src: string; name: string } | null) => {
-  epubPreviewFile.value = file
-}
-provide('setEpubPreviewFile', setEpubPreviewFile)
-
-// 沉浸式阅读模式
-const immersiveMode = ref(false)
-const toggleImmersive = () => {
-  immersiveMode.value = !immersiveMode.value
-  localStorage.setItem('lumina-immersive-mode', immersiveMode.value ? 'true' : 'false')
-}
-provide('immersiveMode', immersiveMode)
-provide('toggleImmersive', toggleImmersive)
-
-// 沉浸模式下的文章宽度（百分比）
-const contentWidth = ref(60)
-const setContentWidth = (width: number) => {
-  contentWidth.value = width
-}
-provide('contentWidth', contentWidth)
-provide('setContentWidth', setContentWidth)
-
-// 内容背景颜色
-const contentBgColor = ref('')
-
-// 初始化时从 localStorage 读取
-onMounted(() => {
-  // 读取沉浸模式状态
-  const savedImmersive = localStorage.getItem('lumina-immersive-mode')
-  if (savedImmersive === 'true') {
-    immersiveMode.value = true
-  }
-
-  const savedColor = localStorage.getItem('lumina-bg-color')
-  if (savedColor) {
-    contentBgColor.value = savedColor
-  }
-})
-
-const setContentBgColor = (color: string) => {
-  contentBgColor.value = color
-  if (color) {
-    localStorage.setItem('lumina-bg-color', color)
-  } else {
-    localStorage.removeItem('lumina-bg-color')
-  }
-}
-provide('contentBgColor', contentBgColor)
-provide('setContentBgColor', setContentBgColor)
-
-// 沉浸模式下边缘触发显示
-const showNavbarOnHover = ref(false)
-const showSidebarOnHover = ref(false)
-const navbarHiding = ref(false) // 用于控制淡出动画
-const sidebarHiding = ref(false) // 用于控制淡出动画
-const EDGE_THRESHOLD = 50 // 触发距离（像素）
-const NAVBAR_HEIGHT = 64 // 导航栏高度
-const SIDEBAR_WIDTH = 280 // 侧边栏宽度
-
-let hideNavbarTimeout: ReturnType<typeof setTimeout> | null = null
-let hideSidebarTimeout: ReturnType<typeof setTimeout> | null = null
-
-const clearNavbarTimeout = () => {
-  if (hideNavbarTimeout) {
-    clearTimeout(hideNavbarTimeout)
-    hideNavbarTimeout = null
-  }
-}
-
-const clearSidebarTimeout = () => {
-  if (hideSidebarTimeout) {
-    clearTimeout(hideSidebarTimeout)
-    hideSidebarTimeout = null
-  }
-}
-
-const onMouseMove = (e: MouseEvent) => {
-  if (!immersiveMode.value) return
-
-  const screenWidth = window.innerWidth
-  const screenHeight = window.innerHeight
-  const oneThirdWidth = screenWidth / 3
-  const oneThirdHeight = screenHeight / 3
-
-  // 状态检查
-  const isNavbarActive = showNavbarOnHover.value || navbarHiding.value
-  const isSidebarActive = showSidebarOnHover.value || sidebarHiding.value
-
-  // 触发区域定义
-  const inTopEdge = e.clientY <= EDGE_THRESHOLD && e.clientX <= oneThirdWidth
-  const inLeftEdge = e.clientX <= EDGE_THRESHOLD && e.clientY <= oneThirdHeight
-
-  // 保持显示区域定义 (Keep Alive)
-  const inNavbarArea = e.clientY <= NAVBAR_HEIGHT
-  const inSidebarArea = e.clientX <= SIDEBAR_WIDTH
-
-  // 互斥逻辑 Case 1: 导航栏处于激活状态（显示中或正在隐藏）
-  if (isNavbarActive) {
-    // 如果鼠标在导航栏区域内或在触发区，保持显示
-    if (inNavbarArea || inTopEdge) {
-      clearNavbarTimeout()
-      navbarHiding.value = false
-      showNavbarOnHover.value = true
-    } else {
-      // 离开区域，准备隐藏
-      if (showNavbarOnHover.value && !hideNavbarTimeout) {
-        hideNavbarTimeout = setTimeout(() => {
-          navbarHiding.value = true
-          setTimeout(() => {
-            showNavbarOnHover.value = false
-            navbarHiding.value = false
-            hideNavbarTimeout = null
-          }, 300) // 等待淡出动画完成
-        }, 500) // 延迟隐藏时间
-      }
-    }
-    return // 关键：导航栏激活时，阻止侧边栏触发
-  }
-
-  // 互斥逻辑 Case 2: 侧边栏处于激活状态（显示中或正在隐藏）
-  if (isSidebarActive) {
-    // 如果鼠标在侧边栏区域内或在触发区，保持显示
-    if (inSidebarArea || inLeftEdge) {
-      clearSidebarTimeout()
-      sidebarHiding.value = false
-      showSidebarOnHover.value = true
-    } else {
-      // 离开区域，准备隐藏
-      if (showSidebarOnHover.value && !hideSidebarTimeout) {
-        hideSidebarTimeout = setTimeout(() => {
-          sidebarHiding.value = true
-          setTimeout(() => {
-            showSidebarOnHover.value = false
-            sidebarHiding.value = false
-            hideSidebarTimeout = null
-          }, 300) // 等待淡出动画完成
-        }, 500) // 延迟隐藏时间
-      }
-    }
-    return // 关键：侧边栏激活时，阻止导航栏触发
-  }
-
-  // 互斥逻辑 Case 3: 两者都未激活，检测新的触发
-  if (inTopEdge && inLeftEdge) {
-    // 角落冲突：优先触发距离最近的边缘
-    if (e.clientX < e.clientY) {
-      // 离左边更近 -> 侧边栏
-      clearSidebarTimeout()
-      sidebarHiding.value = false
-      showSidebarOnHover.value = true
-    } else {
-      // 离上边更近 -> 导航栏
-      clearNavbarTimeout()
-      navbarHiding.value = false
-      showNavbarOnHover.value = true
-    }
-  } else if (inTopEdge) {
-    clearNavbarTimeout()
-    navbarHiding.value = false
-    showNavbarOnHover.value = true
-  } else if (inLeftEdge) {
-    clearSidebarTimeout()
-    sidebarHiding.value = false
-    showSidebarOnHover.value = true
-  }
-}
-
-onMounted(() => {
-  window.addEventListener('mousemove', onMouseMove)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('mousemove', onMouseMove)
-  clearNavbarTimeout()
-  clearSidebarTimeout()
-})
+const contentStyle = () => getContentStyle(sidebarOpen.value)
 </script>
 
 <template>
   <div
-    class="layout-container"
+    class="doc-layout"
     :class="{ 'immersive-mode': immersiveMode }"
     :style="contentBgColor ? { backgroundColor: contentBgColor } : {}"
   >
-    <!-- Header (Consistent with DefaultLayout) -->
+    <!-- Navbar -->
     <Navbar
       v-if="!immersiveMode || showNavbarOnHover"
       :class="{
@@ -448,11 +200,9 @@ onUnmounted(() => {
     </Navbar>
 
     <!-- Main Layout -->
-    <div class="VPLocalNav">
-      <!-- Optional: Breadcrumbs or local nav bar could go here -->
-    </div>
+    <div class="VPLocalNav"></div>
 
-    <div class="VPContent" :style="sidebarOpen && !immersiveMode ? contentStyle : {}">
+    <div class="VPContent" :style="sidebarOpen && !immersiveMode ? contentStyle() : {}">
       <!-- Sidebar -->
       <aside
         v-show="(sidebarOpen && !immersiveMode) || (immersiveMode && showSidebarOnHover)"
@@ -464,7 +214,6 @@ onUnmounted(() => {
         :style="sidebarStyle"
       >
         <Sidebar />
-        <!-- 拖拽调整手柄 -->
         <div
           class="resize-handle"
           @mousedown="startResize"
@@ -479,7 +228,6 @@ onUnmounted(() => {
           <div class="content">
             <main class="main">
               <article ref="articleRef" class="markdown-body">
-                <!-- 密码保护遮罩 -->
                 <PasswordProtect v-if="isProtected && !isUnlocked" />
                 <template v-else>
                   <Breadcrumb v-if="!immersiveMode" />
@@ -507,295 +255,18 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- 图片查看器 -->
-    <ImageViewer :image="currentImage" @close="hide" />
-
-    <!-- 阅读进度悬浮球 -->
+    <!-- 浮动组件 -->
+    <ImageViewer :image="currentImage" @close="hideImage" />
     <ReadingProgress v-if="!immersiveMode" />
-
-    <!-- 智能悬浮卡 -->
     <SmartHoverCard />
-
-    <!-- 小猫回到顶部 -->
     <BackToTopCat v-if="!immersiveMode" />
 
-    <!-- Office 文件预览模态框 -->
-    <OfficePreviewModal :file="officePreviewFile" @close="officePreviewFile = null" />
+    <!-- 预览模态框 -->
+    <OfficePreviewModal :file="officePreviewFile" @close="closeOfficePreview" />
+    <ArchiveViewer :file="archivePreviewFile" @close="closeArchivePreview" />
+    <EpubPreviewModal :file="epubPreviewFile" @close="closeEpubPreview" />
 
-    <!-- 压缩包预览组件 -->
-    <ArchiveViewer :file="archivePreviewFile" @close="archivePreviewFile = null" />
-
-    <!-- EPUB 预览模态框 -->
-    <EpubPreviewModal :file="epubPreviewFile" @close="epubPreviewFile = null" />
-
-    <!-- 全局 Footer -->
+    <!-- Footer -->
     <Footer v-if="!immersiveMode" />
   </div>
 </template>
-
-<style scoped>
-.layout-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--vp-c-bg);
-  transition: background-color 0.25s;
-  padding-top: calc(var(--vp-nav-height) + var(--announcement-height, 0px));
-}
-
-.VPContent {
-  flex: 1;
-}
-
-/* Navbar (Reused from Standard, verify consistency) */
-/* Moved to Navbar.vue */
-
-.menu-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--vp-c-text-2);
-  transition: color 0.25s;
-  cursor: pointer;
-  margin-right: 16px;
-  /* Added margin for spacing between toggle and logo, since previous layout had gap: 16px on navbar-title */
-}
-
-.menu-toggle:hover {
-  color: var(--vp-c-text-1);
-}
-
-/* Sidebar */
-.VPSidebar {
-  position: fixed;
-  top: calc(var(--vp-nav-height) + var(--announcement-height, 0px));
-  bottom: 0;
-  left: 0;
-  z-index: 40;
-  background-color: var(--vp-c-bg);
-  border-right: 1px solid var(--vp-c-divider);
-  overflow-y: auto;
-}
-
-/* 拖拽调整手柄 */
-.resize-handle {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 4px;
-  height: 100%;
-  cursor: col-resize;
-  background: transparent;
-  transition: background-color 0.2s;
-}
-
-.resize-handle:hover,
-.resize-handle.is-resizing {
-  background-color: var(--vp-c-brand-1);
-}
-
-@media (max-width: 960px) {
-  .VPSidebar {
-    transform: translateX(-100%);
-  }
-}
-
-/* Content Area */
-.VPContent {
-  transition: padding-left 0.15s;
-}
-
-.VPContent-doc {
-  padding: 32px 24px 96px;
-}
-
-@media (min-width: 768px) {
-  .VPContent-doc {
-    padding: 48px 32px 128px;
-  }
-}
-
-.container {
-  margin: 0 auto;
-  max-width: 1104px;
-  /* VitePress defaultish */
-  display: flex;
-  gap: 64px;
-}
-
-.content {
-  flex-grow: 1;
-  min-width: 0;
-}
-
-/* Right Aside (TOC) */
-.VPDocAside {
-  display: none;
-  flex-shrink: 0;
-  width: 224px;
-}
-
-@media (min-width: 1280px) {
-  .VPDocAside {
-    display: block;
-  }
-}
-
-.aside-container {
-  position: sticky;
-  top: calc(var(--vp-nav-height) + 32px);
-  max-height: calc(100vh - var(--vp-nav-height) - 64px);
-  /* overflow-y: auto;  <-- Removed */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  /* Prevent container scroll */
-
-  /* 隐藏滚动条但保留滚动功能 - moved to TOC */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.aside-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-  min-height: 0;
-}
-
-/* Fix GraphView at top */
-:deep(.graph-view) {
-  flex-shrink: 0;
-}
-
-/* Make TOC scrollable */
-:deep(.toc-container) {
-  flex: 1;
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-:deep(.toc-container::-webkit-scrollbar) {
-  display: none;
-}
-
-.aside-container::-webkit-scrollbar {
-  display: none;
-}
-
-/* 沉浸式阅读模式样式 */
-.layout-container.immersive-mode {
-  padding-top: 0;
-}
-
-.layout-container.immersive-mode .VPContent-doc {
-  padding-top: 32px;
-}
-
-.layout-container.immersive-mode .aside-container {
-  top: 32px;
-  max-height: calc(100vh - 64px);
-}
-
-.layout-container.immersive-mode .container {
-  transition: max-width 0.3s ease;
-}
-
-/* 沉浸模式下 TOC 固定在右侧 */
-.layout-container.immersive-mode .VPDocAside {
-  position: fixed;
-  right: 32px;
-  top: 32px;
-  width: 224px;
-}
-
-@media (min-width: 1280px) {
-  .layout-container.immersive-mode .container {
-    padding-right: 288px;
-    /* 224px (TOC) + 32px (right) + 32px (gap) */
-    box-sizing: border-box;
-  }
-}
-
-/* 沉浸模式下边缘触发的导航栏 */
-.immersive-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  animation: slideInFromTop 0.3s ease-out;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes slideInFromTop {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* 沉浸模式下边缘触发的侧边栏 */
-.immersive-sidebar {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  z-index: 999;
-  animation: slideInFromLeft 0.3s ease-out;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-  background: var(--vp-c-bg);
-}
-
-@keyframes slideInFromLeft {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* 淡出动画 */
-.immersive-navbar-hiding {
-  animation: slideOutToTop 0.3s ease-in forwards;
-}
-
-.immersive-sidebar-hiding {
-  animation: slideOutToLeft 0.3s ease-in forwards;
-}
-
-@keyframes slideOutToTop {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  to {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-}
-
-@keyframes slideOutToLeft {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  to {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-}
-</style>

@@ -1,0 +1,278 @@
+// ==========================================================
+// DocLayout 布局样式
+// ==========================================================
+
+// 变量
+$sidebar-min-width: 180px;
+$sidebar-max-width: 400px;
+$sidebar-default-width: 272px;
+$content-max-width: 1104px;
+$aside-width: 224px;
+$transition-fast: 0.15s;
+$transition-normal: 0.25s;
+$transition-slow: 0.3s;
+
+// Z-index 层级
+$z-sidebar: 40;
+$z-immersive-sidebar: 999;
+$z-immersive-navbar: 1000;
+
+// ==========================================================
+// 布局容器 - 使用 .doc-layout 类名避免与 DefaultLayout 冲突
+// ==========================================================
+.doc-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--vp-c-bg);
+  transition: background-color $transition-normal;
+  padding-top: calc(var(--vp-nav-height) + var(--announcement-height, 0px));
+
+  // 沉浸模式
+  &.immersive-mode {
+    padding-top: 0;
+
+    .VPContent-doc {
+      padding-top: 32px;
+    }
+
+    .aside-container {
+      top: 32px;
+      max-height: calc(100vh - 64px);
+    }
+
+    .container {
+      transition: max-width $transition-slow ease;
+    }
+
+    // 沉浸模式下 TOC 固定在右侧
+    .VPDocAside {
+      position: fixed;
+      right: 32px;
+      top: 32px;
+      width: $aside-width;
+    }
+
+    @media (min-width: 1280px) {
+      .container {
+        padding-right: 288px; // 224px (TOC) + 32px (right) + 32px (gap)
+        box-sizing: border-box;
+      }
+    }
+  }
+}
+
+// ==========================================================
+// 内容区域
+// ==========================================================
+.VPContent {
+  flex: 1;
+  transition: padding-left $transition-fast;
+}
+
+.VPContent-doc {
+  padding: 32px 24px 96px;
+
+  @media (min-width: 768px) {
+    padding: 48px 32px 128px;
+  }
+}
+
+.container {
+  margin: 0 auto;
+  max-width: $content-max-width;
+  display: flex;
+  gap: 64px;
+}
+
+.content {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+// ==========================================================
+// 侧边栏
+// ==========================================================
+.VPSidebar {
+  position: fixed;
+  top: calc(var(--vp-nav-height) + var(--announcement-height, 0px));
+  bottom: 0;
+  left: 0;
+  z-index: $z-sidebar;
+  background-color: var(--vp-c-bg);
+  border-right: 1px solid var(--vp-c-divider);
+  overflow-y: auto;
+
+  @media (max-width: 960px) {
+    transform: translateX(-100%);
+  }
+}
+
+// 拖拽调整手柄
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+  transition: background-color 0.2s;
+
+  &:hover,
+  &.is-resizing {
+    background-color: var(--vp-c-brand-1);
+  }
+}
+
+// 菜单切换按钮
+.menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vp-c-text-2);
+  transition: color $transition-normal;
+  cursor: pointer;
+  margin-right: 16px;
+
+  &:hover {
+    color: var(--vp-c-text-1);
+  }
+}
+
+// ==========================================================
+// 右侧边栏 (TOC)
+// ==========================================================
+.VPDocAside {
+  display: none;
+  flex-shrink: 0;
+  width: $aside-width;
+
+  @media (min-width: 1280px) {
+    display: block;
+  }
+}
+
+.aside-container {
+  position: sticky;
+  top: calc(var(--vp-nav-height) + 32px);
+  max-height: calc(100vh - var(--vp-nav-height) - 64px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  // 隐藏滚动条
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.aside-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+// 深层选择器
+:deep(.graph-view) {
+  flex-shrink: 0;
+}
+
+:deep(.toc-container) {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// ==========================================================
+// 沉浸模式动画
+// ==========================================================
+
+// 导航栏滑入
+.immersive-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-immersive-navbar;
+  animation: slideInFromTop $transition-slow ease-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+// 侧边栏滑入
+.immersive-sidebar {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: $z-immersive-sidebar;
+  animation: slideInFromLeft $transition-slow ease-out;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  background: var(--vp-c-bg);
+}
+
+// 淡出动画
+.immersive-navbar-hiding {
+  animation: slideOutToTop $transition-slow ease-in forwards;
+}
+
+.immersive-sidebar-hiding {
+  animation: slideOutToLeft $transition-slow ease-in forwards;
+}
+
+// ==========================================================
+// 关键帧动画
+// ==========================================================
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToTop {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
