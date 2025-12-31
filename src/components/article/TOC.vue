@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, inject, computed, type Ref } from 'vue'
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
+import { useImmersiveMode } from '@/composables/layout/useImmersiveMode'
 
 interface Heading {
   id: string
@@ -11,19 +12,21 @@ const props = defineProps<{
   headings: Heading[]
 }>()
 
-// 沉浸式阅读模式
-const immersiveModeRef = inject<Ref<boolean>>('immersiveMode')
-const toggleImmersive = inject<() => void>('toggleImmersive', () => {})
-const contentWidthRef = inject<Ref<number>>('contentWidth')
-const setContentWidth = inject<(width: number) => void>('setContentWidth', () => {})
-const contentBgColorRef = inject<Ref<string>>('contentBgColor')
-const setContentBgColor = inject<(color: string) => void>('setContentBgColor', () => {})
+// 沉浸式阅读模式 - 使用 Pinia store
+const {
+  immersiveMode,
+  contentWidth,
+  contentBgColor,
+  toggleImmersive,
+  setContentWidth,
+  setContentBgColor
+} = useImmersiveMode()
 
-// 安全访问 inject 的值
-const isImmersive = computed(() => immersiveModeRef?.value ?? false)
-const currentWidth = computed(() => contentWidthRef?.value ?? 60) // 默认 60%
+// 计算属性
+const isImmersive = computed(() => immersiveMode.value)
+const currentWidth = computed(() => contentWidth.value)
 // 当前选中的颜色，如果没有设置则为空（即默认）
-const currentColor = computed(() => contentBgColorRef?.value ?? '')
+const currentColor = computed(() => contentBgColor.value)
 
 // 护眼颜色预设
 const colorPresets = [
