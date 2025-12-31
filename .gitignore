@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# 环境变量本地覆盖文件（不要提交敏感信息）
+.env.local
+.env.*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -33,3 +37,4 @@ public/search-index-*.json
 public/search-index-manifest.json
 .agent/*
 docs/test/*
+nginx/*

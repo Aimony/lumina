@@ -32,7 +32,7 @@ function hashPassword(password: string): string {
 }
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(() => ({
   plugins: [
     vue({
       include: [/\.vue$/, /\.md$/], // 允许 .md 文件作为 Vue 组件
@@ -125,7 +125,7 @@ export default defineConfig({
       }
     }),
     Sitemap({
-      hostname: 'https://lumina.site', // TODO: Replace with actual hostname
+      hostname: process.env.VITE_SITE_HOSTNAME || 'https://lumina.site',
       dynamicRoutes: [
         // 动态路由如果需要生成 sitemap 可以在这里配置
       ]
@@ -214,4 +214,4 @@ export default defineConfig({
       }
     }
   }
-})
+}))
