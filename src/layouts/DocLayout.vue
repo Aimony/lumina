@@ -37,8 +37,12 @@ import BackToTopCat from '@/components/common/BackToTopCat.vue'
 // 预览组件 - 异步加载以优化首屏性能
 const ImageViewer = defineAsyncComponent(() => import('@/components/common/ImageViewer.vue'))
 const ArchiveViewer = defineAsyncComponent(() => import('@/components/common/ArchiveViewer.vue'))
-const OfficePreviewModal = defineAsyncComponent(() => import('@/components/OfficePreviewModal.vue'))
-const EpubPreviewModal = defineAsyncComponent(() => import('@/components/EpubPreviewModal.vue'))
+const OfficePreviewModal = defineAsyncComponent(
+  () => import('@/components/office/OfficePreviewModal.vue')
+)
+const EpubPreviewModal = defineAsyncComponent(
+  () => import('@/components/office/EpubPreviewModal.vue')
+)
 
 // Composables - 核心功能
 import { useSidebar } from '@/composables/ui/useSidebar'
