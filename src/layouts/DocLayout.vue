@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { provide, ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { provide, ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { useThemeStore } from '@/stores/theme'
 
 // 布局组件
 import Sidebar from '@/components/layout/Sidebar.vue'
@@ -169,13 +171,37 @@ watch(
 // ============================================
 
 const contentStyle = () => getContentStyle(sidebarOpen.value)
+
+// 主题状态
+const themeStore = useThemeStore()
+const { isDark } = storeToRefs(themeStore)
+
+// 背景颜色映射
+const darkColorMap: Record<string, string> = {
+  '#FAF9DE': '#2C2B25', // 暖光 -> 深暖色
+  '#E3EDCD': '#252C26', // 护眼 -> 深绿色
+  '#F5F5F5': '#1E1E20' // 暗灰 -> 深灰色
+}
+
+// 计算实际应用的背景颜色
+const actualContentBgColor = computed(() => {
+  if (!contentBgColor.value) return ''
+
+  // 如果是暗黑模式，映射到对应的深色背景
+  if (isDark.value) {
+    return darkColorMap[contentBgColor.value] || contentBgColor.value
+  }
+
+  // 浅色模式保持原色
+  return contentBgColor.value
+})
 </script>
 
 <template>
   <div
     class="doc-layout"
     :class="{ 'immersive-mode': immersiveMode }"
-    :style="contentBgColor ? { backgroundColor: contentBgColor } : {}"
+    :style="actualContentBgColor ? { backgroundColor: actualContentBgColor } : {}"
   >
     <!-- Navbar -->
     <Navbar
