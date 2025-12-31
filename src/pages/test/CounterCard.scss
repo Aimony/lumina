@@ -1,0 +1,177 @@
+.counter-card {
+  --transition-duration: 0.3s;
+
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 2px solid;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transition: all var(--transition-duration) ease;
+  max-width: 320px;
+  margin: 0 auto;
+
+  &--disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &--animating {
+    transform: scale(1.02);
+  }
+
+  &__header {
+    margin-bottom: 1rem;
+    text-align: center;
+
+    h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__progress {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  &__progress-bar {
+    height: 100%;
+    transition: width var(--transition-duration) ease;
+    border-radius: 4px;
+  }
+
+  &__value {
+    font-size: 3rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid;
+    background-color: transparent;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      transform: scale(1.1);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.95);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &--reset {
+      width: 60px;
+      border-radius: 20px;
+      font-size: 0.875rem;
+    }
+  }
+
+  &__range {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.5);
+    padding-top: 0.5rem;
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  }
+
+  &__history {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    width: 100%;
+
+    h4 {
+      margin: 0 0 0.5rem;
+      font-size: 0.875rem;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  &__history-label {
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__history-value {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__footer,
+  &__extra {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    width: 100%;
+    text-align: center;
+  }
+}
+
+// Vue Transition 动画
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s ease;
+}
+
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}

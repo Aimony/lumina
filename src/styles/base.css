@@ -2,8 +2,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  user-select: none;
-  -webkit-user-select: none;
+  /* user-select: none; */
+  /* -webkit-user-select: none; */
 }
 
 html {
@@ -20,6 +20,11 @@ body {
   transition:
     background-color 0.25s,
     color 0.25s;
+}
+
+::selection {
+  background-color: pink;
+  color: #333; /* 确保在粉色背景下文本依然清晰可见 */
 }
 
 a {

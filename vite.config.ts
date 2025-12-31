@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import Markdown from 'unplugin-vue-markdown/vite'
 import Pages from 'vite-plugin-pages'
 import { resolve } from 'path'
@@ -47,6 +48,9 @@ export default defineConfig(() => ({
         }
       }
     }),
+
+    // Vue JSX/TSX 支持
+    vueJsx(),
 
     Markdown({
       headEnabled: false, // 禁用 @unhead/vue 集成（暂时）
@@ -97,7 +101,7 @@ export default defineConfig(() => ({
         { dir: 'src/pages', baseRoute: '' },
         { dir: 'docs', baseRoute: '' }
       ],
-      extensions: ['vue', 'md'],
+      extensions: ['vue', 'md', 'tsx'],
       extendRoute(route) {
         // 为 Markdown 页面添加元数据
         if (route.component.endsWith('.md')) {
