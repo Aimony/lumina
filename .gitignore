@@ -29,5 +29,7 @@ scripts/deploy.js
 .claude
 public/graph-data.json
 public/search-index.json
+public/search-index-*.json
+public/search-index-manifest.json
 .agent/*
 docs/test/*

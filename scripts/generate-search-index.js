@@ -1,13 +1,17 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { createHash } from 'node:crypto'
 import matter from 'gray-matter'
 import { glob } from 'glob'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT_DIR = path.resolve(__dirname, '..')
 const DOCS_DIR = path.join(ROOT_DIR, 'docs')
-const OUTPUT_FILE = path.join(ROOT_DIR, 'public/search-index.json')
+const OUTPUT_DIR = path.join(ROOT_DIR, 'public')
+
+// 每个分块包含的文档数量
+const CHUNK_SIZE = 50
 
 async function generateSearchIndex() {
   console.log('🔍 Generating search index...')
@@ -31,28 +35,14 @@ async function generateSearchIndex() {
       }
 
       // 生成相对路径路由
-      let route = path.relative(DOCS_DIR, file)
-      route = route.replace(/\\/g, '/') // Windows fix
-      route = route.replace(/\.md$/, '')
-      if (route.endsWith('/index')) {
-        route = route.replace(/\/index$/, '')
-      }
-      route = '/docs/' + route // 假设 docs 都在 /docs/ 路由下，需根据 Pages 配置调整
-      // 实际上 vite-plugin-pages 的默认行为是文件路径即路由
-      // 如果 src/docs 是 pages 的dirs之一，那么 route 就是 relative path
-      // 修正: vite.config.ts 中 baseRoute: '' for src/docs
-      // 所以 src/docs/guide/index.md -> /guide/
-
       let clientRoute = path.relative(DOCS_DIR, file).replace(/\\/g, '/').replace(/\.md$/, '')
       if (clientRoute.endsWith('index')) clientRoute = clientRoute.slice(0, -5)
-      if (clientRoute.length > 0 && !clientRoute.endsWith('/')) clientRoute
-      // 保持简单，不用太纠结末尾斜杠，Vue Router 会处理
 
       // 简易去除 Markdown 语法
       const plainText = body
         .replace(/!\[.*?\]\(.*?\)/g, '') // 图片
         .replace(/\[.*?\]\(.*?\)/g, '$1') // 链接
-        .replace(/`{3}[\s\S]*?`{3}/g, '') // 代码块内容通常不索引，或者只索引部分？保留代码块内容可能干扰搜索
+        .replace(/`{3}[\s\S]*?`{3}/g, '') // 代码块内容通常不索引
         .replace(/`(.+?)`/g, '$1') // 行内代码
         .replace(/#+\s/g, '') // 标题
         .replace(/>\s/g, '') // 引用
@@ -70,8 +60,49 @@ async function generateSearchIndex() {
       })
     }
 
-    await fs.writeFile(OUTPUT_FILE, JSON.stringify(indexData, null, 2))
-    console.log(`✅ Search index generated with ${indexData.length} documents.`)
+    // 生成版本哈希（基于所有文档内容）
+    const contentHash = createHash('md5')
+      .update(JSON.stringify(indexData))
+      .digest('hex')
+      .slice(0, 8)
+
+    // 计算分块数量
+    const totalChunks = Math.ceil(indexData.length / CHUNK_SIZE)
+
+    // 写入分块文件
+    for (let i = 0; i < totalChunks; i++) {
+      const start = i * CHUNK_SIZE
+      const end = Math.min(start + CHUNK_SIZE, indexData.length)
+      const chunk = indexData.slice(start, end)
+
+      const chunkPath = path.join(OUTPUT_DIR, `search-index-${i}.json`)
+      await fs.writeFile(chunkPath, JSON.stringify(chunk))
+      console.log(`  📦 Chunk ${i}: ${chunk.length} documents`)
+    }
+
+    // 写入清单文件
+    const manifest = {
+      version: contentHash,
+      totalDocs: indexData.length,
+      chunks: totalChunks,
+      chunkSize: CHUNK_SIZE,
+      generatedAt: new Date().toISOString()
+    }
+    await fs.writeFile(
+      path.join(OUTPUT_DIR, 'search-index-manifest.json'),
+      JSON.stringify(manifest, null, 2)
+    )
+
+    // 同时保留完整索引文件（向后兼容）
+    await fs.writeFile(
+      path.join(OUTPUT_DIR, 'search-index.json'),
+      JSON.stringify(indexData, null, 2)
+    )
+
+    console.log(`✅ Search index generated:`)
+    console.log(`   - Version: ${contentHash}`)
+    console.log(`   - Documents: ${indexData.length}`)
+    console.log(`   - Chunks: ${totalChunks}`)
   } catch (error) {
     console.error('❌ Failed to generate search index:', error)
     process.exit(1)

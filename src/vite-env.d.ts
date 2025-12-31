@@ -22,3 +22,9 @@ declare module '~pages' {
 declare module 'markdown-it-task-lists'
 declare module 'markdown-it-footnote'
 declare module 'markdown-it-github-alerts'
+
+// Vite Worker import syntax
+declare module '*?worker' {
+  const workerConstructor: new () => Worker
+  export default workerConstructor
+}
