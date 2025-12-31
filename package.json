@@ -92,6 +92,7 @@
     "prettier": "^3.7.4",
     "reading-time": "^1.5.0",
     "sass": "^1.97.1",
+    "terser": "^5.44.1",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
     "vite-plugin-pages": "^0.33.2",

@@ -124,5 +124,74 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src')
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        // 手动分包策略
+        manualChunks: {
+          // 核心框架（变更频率低，适合长期缓存）
+          'vendor-vue': ['vue', 'vue-router', 'pinia'],
+
+          // 可视化库（按功能独立打包）
+          'vendor-echarts': ['echarts', 'echarts-wordcloud'],
+          'vendor-d3': ['d3'],
+          'vendor-mermaid': ['mermaid'],
+
+          // Office 预览组件（大型依赖，集中打包）
+          'vendor-office': [
+            '@vue-office/docx',
+            '@vue-office/excel',
+            '@vue-office/pdf',
+            '@vue-office/pptx'
+          ],
+
+          // 文档处理（Markdown 相关）
+          'vendor-markdown': [
+            'markdown-it',
+            'markdown-it-anchor',
+            'markdown-it-footnote',
+            'markdown-it-task-lists',
+            'markdown-it-github-alerts',
+            'markdown-it-mark'
+          ],
+          'vendor-shiki': ['shiki', '@shikijs/markdown-it'],
+          'vendor-vue-reader': ['vue-reader'],
+
+          // 工具库
+          'vendor-utils': ['jszip', 'qrcode', 'flexsearch']
+        },
+
+        // 输出文件命名规则
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: (assetInfo) => {
+          // 根据文件类型分类存放资源
+          const info = assetInfo.name.split('.')
+          const ext = info[info.length - 1]
+
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
+            return 'assets/images/[name]-[hash][extname]'
+          }
+          if (/woff2?|eot|ttf|otf/i.test(ext)) {
+            return 'assets/fonts/[name]-[hash][extname]'
+          }
+          return 'assets/[ext]/[name]-[hash][extname]'
+        }
+      }
+    },
+
+    // 构建优化配置
+    sourcemap: false, // 生产环境禁用 sourcemap 以减小体积
+    minify: 'terser', // 使用 terser 进行代码压缩
+    chunkSizeWarningLimit: 1000, // 调整 chunk 大小警告阈值为 1000KB
+
+    // Terser 压缩选项
+    terserOptions: {
+      compress: {
+        drop_console: true, // 移除 console 语句
+        drop_debugger: true // 移除 debugger 语句
+      }
+    }
   }
 })
