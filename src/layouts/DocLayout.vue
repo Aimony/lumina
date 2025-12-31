@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { provide, ref, watch, nextTick, onMounted, onUnmounted, computed } from 'vue'
+import {
+  provide,
+  ref,
+  watch,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  computed,
+  defineAsyncComponent
+} from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useThemeStore } from '@/stores/theme'
@@ -23,13 +32,13 @@ import PasswordProtect from '@/components/article/PasswordProtect.vue'
 import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
 
 // 通用组件
-import ImageViewer from '@/components/common/ImageViewer.vue'
 import BackToTopCat from '@/components/common/BackToTopCat.vue'
-import ArchiveViewer from '@/components/common/ArchiveViewer.vue'
 
-// 预览模态框
-import OfficePreviewModal from '@/components/OfficePreviewModal.vue'
-import EpubPreviewModal from '@/components/EpubPreviewModal.vue'
+// 预览组件 - 异步加载以优化首屏性能
+const ImageViewer = defineAsyncComponent(() => import('@/components/common/ImageViewer.vue'))
+const ArchiveViewer = defineAsyncComponent(() => import('@/components/common/ArchiveViewer.vue'))
+const OfficePreviewModal = defineAsyncComponent(() => import('@/components/OfficePreviewModal.vue'))
+const EpubPreviewModal = defineAsyncComponent(() => import('@/components/EpubPreviewModal.vue'))
 
 // Composables - 核心功能
 import { useSidebar } from '@/composables/ui/useSidebar'

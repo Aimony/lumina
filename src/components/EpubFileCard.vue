@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
+import { useFilePreviewStore } from '@/stores/filePreview'
 import EpubIcon from '@/assets/office/Epub.svg'
 
 const props = defineProps<{
@@ -7,9 +8,9 @@ const props = defineProps<{
   name: string
 }>()
 
-// 注入预览状态
-const setPreviewFile =
-  inject<(file: { src: string; name: string } | null) => void>('setEpubPreviewFile')
+// 使用 Pinia store
+const filePreviewStore = useFilePreviewStore()
+const setPreviewFile = filePreviewStore.setEpubPreviewFile
 
 // 文件类型配置
 const fileTypeConfig = computed(() => ({
@@ -21,12 +22,10 @@ const fileTypeConfig = computed(() => ({
 
 // 打开预览
 function openPreview() {
-  if (setPreviewFile) {
-    setPreviewFile({
-      src: props.src,
-      name: props.name
-    })
-  }
+  setPreviewFile({
+    src: props.src,
+    name: props.name
+  })
 }
 </script>
 

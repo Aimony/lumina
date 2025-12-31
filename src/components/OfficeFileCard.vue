@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
+import { useFilePreviewStore } from '@/stores/filePreview'
 import WordIcon from '@/assets/office/Word.svg'
 import ExcelIcon from '@/assets/office/Excel.svg'
 import PptIcon from '@/assets/office/PPT.svg'
@@ -11,9 +12,9 @@ const props = defineProps<{
   type: 'word' | 'excel' | 'ppt' | 'pdf'
 }>()
 
-// 注入预览状态
-const setPreviewFile =
-  inject<(file: { src: string; name: string; type: string } | null) => void>('setOfficePreviewFile')
+// 使用 Pinia store
+const filePreviewStore = useFilePreviewStore()
+const setPreviewFile = filePreviewStore.setOfficePreviewFile
 
 // 文件类型配置
 interface FileTypeConfig {
@@ -55,13 +56,11 @@ const fileTypeConfig = computed((): FileTypeConfig => {
 
 // 打开预览
 function openPreview() {
-  if (setPreviewFile) {
-    setPreviewFile({
-      src: props.src,
-      name: props.name,
-      type: props.type
-    })
-  }
+  setPreviewFile({
+    src: props.src,
+    name: props.name,
+    type: props.type
+  })
 }
 </script>
 
