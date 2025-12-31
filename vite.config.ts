@@ -99,7 +99,9 @@ export default defineConfig(() => ({
     Pages({
       dirs: [
         { dir: 'src/pages', baseRoute: '' },
-        { dir: 'docs', baseRoute: '' }
+        { dir: 'docs', baseRoute: '' },
+        // 测试组件目录：自动生成 /test/xxx 路由
+        { dir: 'src/components/test', baseRoute: 'test' }
       ],
       extensions: ['vue', 'md', 'tsx'],
       extendRoute(route) {
