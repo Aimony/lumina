@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, inject } from 'vue'
+import { ref } from 'vue'
+import { useFilePreviewStore } from '@/stores/filePreview'
 import BandizipLogo from '@/assets/office/Bandizip_logo.png'
 
 const props = defineProps<{
@@ -7,13 +8,13 @@ const props = defineProps<{
   name: string
 }>()
 
-// 注入压缩包预览状态
-const setArchivePreviewFile = inject<(file: File | null) => void>('setArchivePreviewFile')
+// 使用 Pinia store 获取预览方法
+const filePreviewStore = useFilePreviewStore()
 
 const loading = ref(false)
 
 const handleClick = async () => {
-  if (!setArchivePreviewFile || loading.value) return
+  if (loading.value) return
 
   loading.value = true
   try {
@@ -23,7 +24,7 @@ const handleClick = async () => {
     const blob = await response.blob()
     const file = new File([blob], props.name, { type: 'application/zip' })
 
-    setArchivePreviewFile(file)
+    filePreviewStore.setArchivePreviewFile(file)
   } catch (error) {
     console.error('Failed to fetch archive:', error)
     alert('无法加载压缩包文件')
@@ -70,7 +71,7 @@ const handleClick = async () => {
   </button>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .archive-file-card {
   display: flex;
   align-items: center;
@@ -78,6 +79,7 @@ const handleClick = async () => {
   width: 100%;
   max-width: 400px;
   padding: 12px 16px;
+  margin-top: 12px;
   background: rgba(255, 171, 0, 0.1);
   /* Amber/Orange tint */
   border: 1px solid rgba(255, 171, 0, 0.3);
@@ -88,17 +90,21 @@ const handleClick = async () => {
   font-family: inherit;
   position: relative;
   overflow: hidden;
-}
 
-.archive-file-card:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 171, 0, 0.15);
-  border-color: #ffab00;
-}
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 171, 0, 0.15);
+    border-color: #ffab00;
 
-.archive-file-card:disabled {
-  opacity: 0.7;
-  cursor: wait;
+    .archive-action {
+      opacity: 1;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
 }
 
 .archive-icon-wrapper {
@@ -125,10 +131,10 @@ const handleClick = async () => {
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-}
 
-.dark .loading-overlay {
-  background: rgba(0, 0, 0, 0.6);
+  .dark & {
+    background: rgba(0, 0, 0, 0.6);
+  }
 }
 
 .spinner {
@@ -162,19 +168,19 @@ const handleClick = async () => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
 
-.dark .archive-name {
-  color: #ffc107;
+  .dark & {
+    color: #ffc107;
+  }
 }
 
 .archive-type {
   font-size: 12px;
   color: #666;
-}
 
-.dark .archive-type {
-  color: #999;
+  .dark & {
+    color: #999;
+  }
 }
 
 .archive-action {
@@ -182,9 +188,5 @@ const handleClick = async () => {
   color: #ffab00;
   opacity: 0.6;
   transition: opacity 0.2s ease;
-}
-
-.archive-file-card:hover .archive-action {
-  opacity: 1;
 }
 </style>
