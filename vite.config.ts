@@ -24,6 +24,7 @@ import { tabsPlugin } from './src/plugins/markdown-it-tabs'
 import { officePreviewPlugin } from './src/plugins/markdown-it-office-preview'
 import { archivePreviewPlugin } from './src/plugins/markdown-it-archive-preview'
 import { createHash } from 'crypto'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // 密码哈希函数（构建时使用）
 function hashPassword(password: string): string {
@@ -34,7 +35,17 @@ function hashPassword(password: string): string {
 export default defineConfig({
   plugins: [
     vue({
-      include: [/\.vue$/, /\.md$/] // 允许 .md 文件作为 Vue 组件
+      include: [/\.vue$/, /\.md$/], // 允许 .md 文件作为 Vue 组件
+      // Vue DevTools 相关配置
+      script: {
+        defineModel: true,
+        propsDestructure: true
+      },
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('mermaid-')
+        }
+      }
     }),
 
     Markdown({
@@ -119,6 +130,15 @@ export default defineConfig({
         // 动态路由如果需要生成 sitemap 可以在这里配置
       ]
     })
+
+    // Bundle 分析工具（仅在构建时生成报告）
+    // visualizer({
+    //   open: true, // 构建完成后自动打开分析报告
+    //   filename: 'dist/stats.html', // 输出文件路径
+    //   gzipSize: true, // 显示 gzip 压缩后的大小
+    //   brotliSize: true, // 显示 brotli 压缩后的大小
+    //   template: 'treemap' // 可选: 'sunburst' | 'treemap' | 'network'
+    // })
   ],
   resolve: {
     alias: {
