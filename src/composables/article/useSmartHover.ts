@@ -2,6 +2,15 @@ import { ref, reactive, watch } from 'vue'
 import { getArticleByPath, type SearchResult } from '@/composables/core/useSearch'
 import { useRouter } from 'vue-router'
 
+// Constants
+const HOVER_CARD_WIDTH = 320
+const HOVER_CARD_HEIGHT = 180
+const HOVER_CARD_GAP = 12
+const HOVER_CARD_MARGIN_SCREEN_EDGE = 16
+
+const HOVER_SHOW_DELAY = 500
+const HOVER_HIDE_DELAY = 100
+
 // Global state to ensure singleton behavior
 const visible = ref(false)
 const isHoveringCard = ref(false)
@@ -36,9 +45,9 @@ export function useSmartHover() {
     visible.value = true
 
     // --- Smart Positioning ---
-    const cardWidth = 320 // approx width + padding
-    const cardHeight = 180 // approx height
-    const gap = 12
+    const cardWidth = HOVER_CARD_WIDTH
+    const cardHeight = HOVER_CARD_HEIGHT
+    const gap = HOVER_CARD_GAP
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
 
@@ -46,8 +55,9 @@ export function useSmartHover() {
     let left = rect.left + rect.width / 2 - cardWidth / 2
 
     // Boundary check X
-    if (left < 16) left = 16
-    if (left + cardWidth > viewportWidth - 16) left = viewportWidth - cardWidth - 16
+    if (left < HOVER_CARD_MARGIN_SCREEN_EDGE) left = HOVER_CARD_MARGIN_SCREEN_EDGE
+    if (left + cardWidth > viewportWidth - HOVER_CARD_MARGIN_SCREEN_EDGE)
+      left = viewportWidth - cardWidth - HOVER_CARD_MARGIN_SCREEN_EDGE
 
     // Y Axis: Default bottom
     let top = rect.bottom + gap
@@ -97,7 +107,7 @@ export function useSmartHover() {
     }
   }
 
-  const hide = (delay = 100) => {
+  const hide = (delay = HOVER_HIDE_DELAY) => {
     clearTimeout(leaveTimeout)
     leaveTimeout = setTimeout(() => {
       if (!isHoveringCard.value) {
@@ -125,7 +135,7 @@ export function useSmartHover() {
         clearTimeout(leaveTimeout)
         hoverTimeout = setTimeout(() => {
           show(href, link.getBoundingClientRect())
-        }, 500) // 500ms delay to prevent accidental triggers
+        }, HOVER_SHOW_DELAY) // delay to prevent accidental triggers
       })
 
       link.addEventListener('mouseleave', () => {

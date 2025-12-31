@@ -1,5 +1,8 @@
 import { onMounted, onUnmounted } from 'vue'
 
+const DEVTOOLS_DETECT_INTERVAL = 1000
+const DEVTOOLS_DEBUGGER_THRESHOLD = 160
+
 /**
  * 反爬虫/反调试保护 Composable
  * 提供基础的客户端保护措施
@@ -38,7 +41,7 @@ export function useAntiCrawl(
   let devToolsInterval: ReturnType<typeof setInterval> | null = null
 
   const detectDevToolsOpen = () => {
-    const threshold = 160
+    const threshold = DEVTOOLS_DEBUGGER_THRESHOLD
     const start = performance.now()
     // eslint-disable-next-line no-debugger
     debugger
@@ -56,7 +59,7 @@ export function useAntiCrawl(
     }
 
     if (detectDevTools) {
-      devToolsInterval = setInterval(detectDevToolsOpen, 1000)
+      devToolsInterval = setInterval(detectDevToolsOpen, DEVTOOLS_DETECT_INTERVAL)
     }
   })
 

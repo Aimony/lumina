@@ -1,16 +1,16 @@
 import { ref, computed } from 'vue'
 
-// 常量
-const DEFAULT_WIDTH = 272
-const MIN_WIDTH = 180
-const MAX_WIDTH = 400
+// Constants
+const SIDEBAR_WIDTH_DEFAULT = 272
+const SIDEBAR_WIDTH_MIN = 180
+const SIDEBAR_WIDTH_MAX = 400
 
 /**
  * 侧边栏拖拽调整 Composable
  * 管理侧边栏宽度的拖拽调整功能
  */
 export function useSidebarResize() {
-  const sidebarWidth = ref(DEFAULT_WIDTH)
+  const sidebarWidth = ref(SIDEBAR_WIDTH_DEFAULT)
   const isResizing = ref(false)
 
   // 计算属性：侧边栏样式
@@ -35,7 +35,7 @@ export function useSidebarResize() {
   const doResize = (e: MouseEvent) => {
     if (!isResizing.value) return
     const newWidth = e.clientX
-    sidebarWidth.value = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, newWidth))
+    sidebarWidth.value = Math.min(SIDEBAR_WIDTH_MAX, Math.max(SIDEBAR_WIDTH_MIN, newWidth))
   }
 
   // 结束拖拽

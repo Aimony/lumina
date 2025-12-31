@@ -78,7 +78,7 @@ const {
 
 // 侧边栏拖拽
 const {
-  sidebarWidth,
+  // sidebarWidth, // unused
   isResizing,
   sidebarStyle,
   getContentStyle,
