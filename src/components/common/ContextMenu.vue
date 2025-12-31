@@ -322,15 +322,12 @@ const handleItemClick = (item: unknown) => {
   min-width: 180px;
   max-width: 280px;
   padding: 6px;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--vp-nav-dropdown-bg);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.08),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: var(--vp-shadow-3);
   transform-origin: top left;
 }
 
@@ -486,15 +483,6 @@ const handleItemClick = (item: unknown) => {
 
 /* 暗色模式 */
 :global(.dark) {
-  .context-menu {
-    background: rgba(30, 30, 32, 0.9);
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.4),
-      0 2px 8px rgba(0, 0, 0, 0.3),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  }
-
   .item-shortcut {
     background: rgba(255, 255, 255, 0.08);
   }
