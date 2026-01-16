@@ -27,6 +27,7 @@
     "dev": "vite --host --open",
     "data": "node scripts/generate-search-index.js && node scripts/generate-graph-data.js",
     "build": "npm run data && vite build",
+    "prod": "npm run build && vite preview --host",
     "tsc": "vue-tsc -b",
     "preview": "vite preview",
     "commit": "git-cz",

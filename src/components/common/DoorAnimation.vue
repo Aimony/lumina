@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { splashConfig } from '@/config/app'
 
 const emit = defineEmits<{
   (e: 'animation-end'): void
 }>()
 
 const isOpen = ref(false)
+
+// 动画时间配置
+const animationDuration = splashConfig.animationDuration
+const animationBuffer = splashConfig.animationBuffer
+const totalAnimationTime = animationDuration + animationBuffer
 
 // Dynamic sticker loading
 const stickersGlob = import.meta.glob('@/assets/home-icons/*.svg', {
@@ -90,16 +96,20 @@ onMounted(() => {
   // Delay slightly to ensure render, then open
   setTimeout(() => {
     isOpen.value = true
-    // Cleanup after animation
+    // Cleanup after animation (使用环境配置的动画时间)
     setTimeout(() => {
       emit('animation-end')
-    }, 3500) // 3s animation + 0.5s buffer
+    }, totalAnimationTime)
   }, 100)
 })
 </script>
 
 <template>
-  <div class="door-container" :class="{ 'pointer-events-none': isOpen }">
+  <div
+    class="door-container"
+    :class="{ 'pointer-events-none': isOpen }"
+    :style="{ '--animation-duration': `${animationDuration}ms` }"
+  >
     <div class="spotlight-wrapper">
       <div class="spotlight-hole" :class="{ open: isOpen }">
         <!-- Stickers attached to the "door" (shadow area) -->
@@ -154,8 +164,8 @@ onMounted(() => {
   border-radius: 50%;
   box-shadow: 0 0 0 200vmax var(--vp-c-bg);
   z-index: 1;
-  /* TODO: Adjust transition duration in production */
-  transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
+  /* 动画时长从环境变量配置读取 */
+  transition: transform var(--animation-duration, 1000ms) cubic-bezier(0.7, 0, 0.3, 1);
   will-change: transform;
   /* Allow stickers to be visible outside the box */
   overflow: visible;
