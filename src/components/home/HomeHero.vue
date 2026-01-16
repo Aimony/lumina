@@ -223,8 +223,9 @@ const handleAvatarDblClick = () => {
 
 .name {
   line-height: 1;
+  font-family: 'Righteous', cursive;
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 400;
   white-space: pre-wrap;
 }
 
@@ -250,8 +251,9 @@ const handleAvatarDblClick = () => {
 .text {
   padding-top: 8px;
   line-height: 1.5;
+  font-family: 'Righteous', cursive;
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 400;
   color: var(--vp-c-text-1);
 }
 
@@ -270,7 +272,8 @@ const handleAvatarDblClick = () => {
 .tagline {
   padding-top: 24px;
   line-height: 1.6;
-  font-size: 18px;
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 24px;
   color: var(--vp-c-text-2);
 }
 

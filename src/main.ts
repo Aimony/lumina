@@ -9,6 +9,7 @@ import EpubFileCard from './components/office/EpubFileCard.vue'
 import MusicPlayerModal from './components/home/MusicPlayerModal.vue'
 import './styles/index.css'
 import './styles/theme-transition.css'
+import './assets/fonts/fonts.css'
 import 'katex/dist/katex.min.css'
 import { printConsoleBanner } from './utils/consoleBanner'
 
