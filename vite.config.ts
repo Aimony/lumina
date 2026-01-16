@@ -34,6 +34,7 @@ function hashPassword(password: string): string {
 
 // https://vite.dev/config/
 export default defineConfig(() => ({
+  base: process.env.VITE_BASE_URL || '/',
   plugins: [
     vue({
       include: [/\.vue$/, /\.md$/], // 允许 .md 文件作为 Vue 组件
