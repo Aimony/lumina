@@ -18,10 +18,12 @@ const {
   volume,
   isMuted,
   isDragging,
+  isLoading,
   currentTrack,
   progressPercent,
   playlist,
   formatTime,
+  init,
   togglePlay,
   playTrack,
   nextTrack,
@@ -31,6 +33,9 @@ const {
   toggleMute,
   setDragging
 } = useMusicPlayer()
+
+// 组件挂载时预加载歌单
+init()
 
 const showPlaylist = ref(false)
 const progressBarRef = ref<HTMLElement | null>(null)
@@ -141,7 +146,7 @@ const adjustVolume = (event: WheelEvent) => {
             <div class="album-section">
               <div class="vinyl-record" :class="{ spinning: isPlaying }">
                 <div class="disk-cover">
-                  <img src="/img/avatar.png" alt="Album Art" />
+                  <img :src="currentTrack?.pic || '/img/avatar.png'" alt="Album Art" />
                 </div>
                 <div class="disk-center"></div>
                 <div class="disk-sheen"></div>

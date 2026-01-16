@@ -1,15 +1,23 @@
 import { ref, computed } from 'vue'
 
-// 播放列表 - 基于 public/music 目录下的文件
-const playlist = [
-  { name: '艾搓', file: 'ac.mp3', artist: 'Unknown' },
-  { name: 'ong 来', file: 'ao.mp3', artist: 'Unknown' },
-  { name: '艾青勋熙', file: 'aqxx.mp3', artist: 'Unknown' },
-  { name: '朵原豆瑶再伊琪', file: 'dydyzyq.mp3', artist: 'Unknown' },
-  { name: '霍画', file: 'hh.mp3', artist: 'Unknown' },
-  { name: '姜楠', file: 'jn.mp3', artist: 'Unknown' },
-  { name: '位移', file: 'wy.mp3', artist: 'Unknown' }
-]
+// Meting API 配置（从环境变量读取）
+const METING_API = import.meta.env.VITE_METING_API || 'https://api.injahow.cn/meting/'
+const MUSIC_SERVER = import.meta.env.VITE_MUSIC_SERVER || 'netease'
+const PLAYLIST_ID = import.meta.env.VITE_PLAYLIST_ID || '3778678'
+
+// 曲目类型定义 - 匹配 Meting API 返回的数据结构
+export interface MetingTrack {
+  name: string
+  artist: string
+  url: string
+  pic: string // 注意：Meting API 返回的是 pic 不是 cover
+  lrc?: string
+}
+
+// 播放列表 - 从 Meting API 动态获取
+const playlist = ref<MetingTrack[]>([])
+const isLoading = ref(false)
+const loadError = ref<string | null>(null)
 
 // 全局共享状态 - 确保所有组件使用同一个 audio 实例
 let audio: HTMLAudioElement | null = null
@@ -25,7 +33,7 @@ const isInitialized = ref(false)
 const isDragging = ref(false)
 
 // 计算属性
-const currentTrack = computed(() => playlist[currentTrackIndex.value])
+const currentTrack = computed(() => playlist.value[currentTrackIndex.value])
 const progressPercent = computed(() => {
   return duration.value ? (currentTime.value / duration.value) * 100 : 0
 })
@@ -38,16 +46,43 @@ const formatTime = (seconds: number) => {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
+// 获取网易云歌单
+const fetchPlaylist = async () => {
+  if (isLoading.value || playlist.value.length > 0) return
+
+  isLoading.value = true
+  loadError.value = null
+
+  try {
+    const url = `${METING_API}?server=${MUSIC_SERVER}&type=playlist&id=${PLAYLIST_ID}`
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data: MetingTrack[] = await response.json()
+    playlist.value = data
+    console.log(`[MusicPlayer] 加载到 ${data.length} 首歌曲`)
+  } catch (error) {
+    loadError.value = error instanceof Error ? error.message : '加载歌单失败'
+    console.error('[MusicPlayer] 加载歌单失败:', error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
 // 初始化音频
-const init = () => {
+const init = async () => {
   if (isInitialized.value && audio) return
+
+  // 先加载歌单
+  await fetchPlaylist()
 
   audio = new Audio()
   audio.volume = volume.value
 
-  const firstTrack = playlist[0]
+  const firstTrack = playlist.value[0]
   if (firstTrack) {
-    audio.src = `/music/${firstTrack.file}`
+    audio.src = firstTrack.url
   }
 
   // 事件监听
@@ -73,6 +108,10 @@ const init = () => {
     isPlaying.value = false
   })
 
+  audio.addEventListener('error', (e) => {
+    console.error('[MusicPlayer] 音频加载错误:', e)
+  })
+
   isInitialized.value = true
 }
 
@@ -89,13 +128,13 @@ const destroy = () => {
 
 // 加载曲目
 const loadTrack = (index: number) => {
-  if (index < 0 || index >= playlist.length) return
-  const track = playlist[index]
+  if (index < 0 || index >= playlist.value.length) return
+  const track = playlist.value[index]
   if (!track) return
 
   currentTrackIndex.value = index
   if (audio) {
-    audio.src = `/music/${track.file}`
+    audio.src = track.url
     audio.load()
     if (isPlaying.value) {
       audio.play()
@@ -104,9 +143,9 @@ const loadTrack = (index: number) => {
 }
 
 // 播放/暂停
-const togglePlay = () => {
+const togglePlay = async () => {
   if (!audio) {
-    init()
+    await init()
   }
   if (!audio) return
 
@@ -118,8 +157,8 @@ const togglePlay = () => {
 }
 
 // 播放指定曲目
-const playTrack = (index: number) => {
-  if (!audio) init()
+const playTrack = async (index: number) => {
+  if (!audio) await init()
 
   if (index === currentTrackIndex.value) {
     togglePlay()
@@ -133,14 +172,14 @@ const playTrack = (index: number) => {
 // 下一曲
 const nextTrack = () => {
   let nextIndex = currentTrackIndex.value + 1
-  if (nextIndex >= playlist.length) nextIndex = 0
+  if (nextIndex >= playlist.value.length) nextIndex = 0
   playTrack(nextIndex)
 }
 
 // 上一曲
 const prevTrack = () => {
   let prevIndex = currentTrackIndex.value - 1
-  if (prevIndex < 0) prevIndex = playlist.length - 1
+  if (prevIndex < 0) prevIndex = playlist.value.length - 1
   playTrack(prevIndex)
 }
 
@@ -196,6 +235,8 @@ export function useMusicPlayer() {
     isMuted,
     isInitialized,
     isDragging,
+    isLoading,
+    loadError,
     // 计算属性
     currentTrack,
     progressPercent,
@@ -213,6 +254,7 @@ export function useMusicPlayer() {
     seekByPercent,
     setVolume,
     toggleMute,
-    setDragging
+    setDragging,
+    fetchPlaylist
   }
 }
