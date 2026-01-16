@@ -10,6 +10,7 @@ import { useCodeResize } from '@/composables/ui/useCodeResize'
 import { useGlobalContextMenu } from '@/composables/ui/useContextMenu'
 import SearchModal from '@/components/common/SearchModal.vue'
 import ContextMenu from '@/components/common/ContextMenu.vue'
+import CursorEffect from '@/components/common/CursorEffect.vue'
 
 const route = useRoute()
 const themeStore = useThemeStore()
@@ -42,6 +43,7 @@ const layout = computed(() => {
   </RouterView>
   <SearchModal />
   <ContextMenu />
+  <CursorEffect />
 </template>
 
 <style>
