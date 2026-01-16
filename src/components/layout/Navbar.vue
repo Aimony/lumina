@@ -6,6 +6,7 @@ import MusicPlayerButton from '@/components/common/MusicPlayerButton.vue'
 import YearProgress from '@/components/home/YearProgress.vue'
 import AnnouncementBar from '@/components/layout/AnnouncementBar.vue'
 import TerminalIcon from '@/assets/MaterialSymbolsTerminal.svg'
+import AppLauncher from '@/components/common/AppLauncher.vue'
 import { navItems } from '@/config/nav'
 import { useDocsTree, type DocTreeNode } from '@/composables/article/useDocsTree'
 import { useSearch } from '@/composables/core/useSearch'
@@ -199,6 +200,7 @@ const hideDropdown = () => {
             </span>
           </div>
           <div class="navbar-actions">
+            <AppLauncher />
             <router-link to="/terminal" class="action-btn terminal-btn" title="Terminal">
               <img :src="TerminalIcon" alt="Terminal" class="icon" />
             </router-link>

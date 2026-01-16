@@ -38,3 +38,4 @@ public/search-index-manifest.json
 .agent/*
 docs/test/*
 nginx/*
+PRD/*

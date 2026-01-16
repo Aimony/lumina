@@ -16,14 +16,14 @@ export interface NavItemConfig {
 
 export const navItems: NavItemConfig[] = [
   { text: '指南', to: '/guide/intro' },
-  { text: '贪吃蛇', to: '/games/snake' },
+  // { text: '贪吃蛇', to: '/games/snake' },
   { text: '前端', basePath: '/frontend' },
   { text: '后端', basePath: '/backend' },
   { text: 'AIGC', basePath: '/AIGC' },
   { text: '示例', basePath: '/example' },
   { text: 'TEST', basePath: '/test' },
   { text: '标签', to: '/tags' },
-  { text: 'Cosmos', to: '/cosmos' },
+  // { text: 'Cosmos', to: '/cosmos' },
   { text: '归档', to: '/archives' },
   { text: '时间线', to: '/timeline' }
 ]
