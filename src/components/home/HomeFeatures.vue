@@ -43,13 +43,13 @@ const features: Feature[] = [
   <div class="features-section">
     <div class="container">
       <div class="items">
-        <div v-for="feature in features" :key="feature.title" class="item">
+        <!-- <div v-for="feature in features" :key="feature.title" class="item">
           <div class="VPFeature">
             <div class="icon">{{ feature.icon }}</div>
             <h2 class="title">{{ feature.title }}</h2>
             <p class="details">{{ feature.details }}</p>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

@@ -47,7 +47,7 @@ meta:
     <div class="about-container">
       <!-- Hero Section -->
       <section class="hero-section">
-        <h1 class="hero-title">关于我们</h1>
+        <h1 class="hero-title">关于我</h1>
         <p class="hero-subtitle">{{ siteName }} —— {{ siteDescription }}</p>
       </section>
 

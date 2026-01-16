@@ -56,6 +56,6 @@ export const footerConfig: FooterConfig = {
   links: [
     { text: '隐私政策', url: '/privacy', external: false },
     { text: '使用条款', url: '/terms', external: false },
-    { text: '关于我们', url: '/about', external: false }
+    { text: '关于我', url: '/about', external: false }
   ]
 }
