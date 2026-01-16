@@ -87,7 +87,7 @@ async function scanAndBuildTree(): Promise<DocTreeNode[]> {
     const filePaths: string[] = []
 
     for (const path of Object.keys(pages)) {
-      let routePath =
+      const routePath =
         path
           .replace('/docs', '')
           .replace(/\.(md|vue)$/, '')

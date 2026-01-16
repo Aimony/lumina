@@ -18,7 +18,7 @@ interface SearchIndexManifest {
 // Worker 实例（单例）
 let worker: Worker | null = null
 let workerReady = false
-let pendingSearchCallbacks: Map<string, (results: SearchResult[]) => void> = new Map()
+const pendingSearchCallbacks: Map<string, (results: SearchResult[]) => void> = new Map()
 
 // 全局缓存文档数据（用于 getAllArticles 等同步访问）
 let docsCache: Record<string, SearchResult> = {}
