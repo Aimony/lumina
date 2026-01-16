@@ -14,6 +14,44 @@ export interface MetingTrack {
   lrc?: string
 }
 
+// localStorage 持久化 keys
+const STORAGE_KEY_TRACK_INDEX = 'lumina_music_track_index'
+const STORAGE_KEY_CURRENT_TIME = 'lumina_music_current_time'
+const STORAGE_KEY_VOLUME = 'lumina_music_volume'
+const STORAGE_KEY_WAS_PLAYING = 'lumina_music_was_playing'
+
+// 保存播放状态到 localStorage
+const savePlayerState = () => {
+  try {
+    localStorage.setItem(STORAGE_KEY_TRACK_INDEX, String(currentTrackIndex.value))
+    localStorage.setItem(STORAGE_KEY_CURRENT_TIME, String(currentTime.value))
+    localStorage.setItem(STORAGE_KEY_VOLUME, String(volume.value))
+    localStorage.setItem(STORAGE_KEY_WAS_PLAYING, String(isPlaying.value))
+  } catch (e) {
+    console.warn('[MusicPlayer] 保存状态失败:', e)
+  }
+}
+
+// 从 localStorage 恢复播放状态
+const loadPlayerState = () => {
+  try {
+    const savedIndex = localStorage.getItem(STORAGE_KEY_TRACK_INDEX)
+    const savedTime = localStorage.getItem(STORAGE_KEY_CURRENT_TIME)
+    const savedVolume = localStorage.getItem(STORAGE_KEY_VOLUME)
+    const savedWasPlaying = localStorage.getItem(STORAGE_KEY_WAS_PLAYING)
+
+    return {
+      trackIndex: savedIndex !== null ? parseInt(savedIndex, 10) : 0,
+      currentTime: savedTime !== null ? parseFloat(savedTime) : 0,
+      volume: savedVolume !== null ? parseFloat(savedVolume) : 0.2,
+      wasPlaying: savedWasPlaying === 'true'
+    }
+  } catch (e) {
+    console.warn('[MusicPlayer] 加载状态失败:', e)
+    return { trackIndex: 0, currentTime: 0, volume: 0.2, wasPlaying: false }
+  }
+}
+
 // 播放列表 - 从 Meting API 动态获取
 const playlist = ref<MetingTrack[]>([])
 const isLoading = ref(false)
@@ -77,12 +115,20 @@ const init = async () => {
   // 先加载歌单
   await fetchPlaylist()
 
-  audio = new Audio()
-  audio.volume = volume.value
+  // 从 localStorage 恢复状态
+  const savedState = loadPlayerState()
 
-  const firstTrack = playlist.value[0]
-  if (firstTrack) {
-    audio.src = firstTrack.url
+  audio = new Audio()
+  volume.value = savedState.volume
+  audio.volume = savedState.volume
+
+  // 恢复曲目索引
+  const trackIndex = savedState.trackIndex < playlist.value.length ? savedState.trackIndex : 0
+  currentTrackIndex.value = trackIndex
+
+  const track = playlist.value[trackIndex]
+  if (track) {
+    audio.src = track.url
   }
 
   // 事件监听
@@ -93,7 +139,21 @@ const init = async () => {
   })
 
   audio.addEventListener('loadedmetadata', () => {
-    if (audio) duration.value = audio.duration
+    if (audio) {
+      duration.value = audio.duration
+      // 恢复播放进度（在 metadata 加载后设置）
+      if (savedState.currentTime > 0 && savedState.currentTime < audio.duration) {
+        audio.currentTime = savedState.currentTime
+        currentTime.value = savedState.currentTime
+      }
+      // 如果之前正在播放，则自动恢复播放
+      // 由于浏览器的自动播放策略，如果用户在刷新前没有与页面进行过交互，自动恢复播放可能会被浏览器阻止
+      if (savedState.wasPlaying) {
+        audio.play().catch((e) => {
+          console.warn('[MusicPlayer] 自动恢复播放失败（可能需要用户交互）:', e)
+        })
+      }
+    }
   })
 
   audio.addEventListener('ended', () => {
@@ -111,6 +171,9 @@ const init = async () => {
   audio.addEventListener('error', (e) => {
     console.error('[MusicPlayer] 音频加载错误:', e)
   })
+
+  // 页面刷新/关闭前保存状态
+  window.addEventListener('beforeunload', savePlayerState)
 
   isInitialized.value = true
 }

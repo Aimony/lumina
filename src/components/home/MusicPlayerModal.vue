@@ -271,6 +271,13 @@ const adjustVolume = (event: WheelEvent) => {
               </div>
             </div>
 
+            <!-- 播放列表遮罩层(点击空白处关闭) -->
+            <div
+              v-if="showPlaylist"
+              class="playlist-overlay-mask"
+              @click="showPlaylist = false"
+            ></div>
+
             <!-- 播放列表抽屉 -->
             <div class="playlist-drawer" :class="{ open: showPlaylist }">
               <div class="playlist-header">
@@ -687,6 +694,14 @@ const adjustVolume = (event: WheelEvent) => {
       background: var(--player-text);
     }
   }
+}
+
+/* 播放列表遮罩层 */
+.playlist-overlay-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: transparent;
 }
 
 /* 播放列表抽屉 */
