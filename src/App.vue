@@ -25,6 +25,7 @@ useGlobalContextMenu()
 const layout = computed(() => {
   if (route.meta.layout === 'doc') return DocLayout
   if (route.meta.layout === 'blank') return BlankLayout
+  if (route.meta.layout === 'none') return null // 不使用任何布局
   // 默认为 DefaultLayout，除非明确指定其他
   return DefaultLayout
 })

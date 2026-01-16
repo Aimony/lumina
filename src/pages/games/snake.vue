@@ -1,3 +1,9 @@
+<route lang="yaml">
+meta:
+  layout: none
+  title: Retro Snake
+</route>
+
 <script setup lang="ts">
 import SnakeGame from '@/pages/games/components/SnakeGame.vue'
 import FloatingMenu from '@/components/layout/FloatingMenu.vue'
