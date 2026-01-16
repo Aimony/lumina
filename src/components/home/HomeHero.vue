@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useMusicPlayer } from '@/composables/useMusicPlayer'
+import MusicPlayerModal from '@/components/home/MusicPlayerModal.vue'
 
 interface TechItem {
   name: string
@@ -62,6 +65,40 @@ const techStack: TechItem[] = [
   },
   { name: 'Vite', icon: 'https://vitejs.dev/logo.svg' }
 ]
+
+// 音乐播放器
+const { isPlaying, togglePlay, init } = useMusicPlayer()
+const showPlayerModal = ref(false)
+
+// 防止单击和双击冲突
+let clickTimer: ReturnType<typeof setTimeout> | null = null
+const CLICK_DELAY = 250
+
+// 单击：播放/暂停
+const handleAvatarClick = () => {
+  if (clickTimer) {
+    // 如果已有定时器，说明是双击，取消单击操作
+    clearTimeout(clickTimer)
+    clickTimer = null
+    return
+  }
+
+  clickTimer = setTimeout(() => {
+    clickTimer = null
+    init()
+    togglePlay()
+  }, CLICK_DELAY)
+}
+
+// 双击：打开播放器弹窗
+const handleAvatarDblClick = () => {
+  if (clickTimer) {
+    clearTimeout(clickTimer)
+    clickTimer = null
+  }
+  init()
+  showPlayerModal.value = true
+}
 </script>
 
 <template>
@@ -87,8 +124,28 @@ const techStack: TechItem[] = [
       </div>
       <div class="image-bg">
         <div class="image-container">
-          <div class="avatar-circle">
+          <div
+            class="avatar-circle"
+            :class="{ 'vinyl-spinning': isPlaying }"
+            @click="handleAvatarClick"
+            @dblclick="handleAvatarDblClick"
+            title="单击播放/暂停，双击打开播放器"
+          >
+            <!-- 黑胶唱片纹理 -->
+            <div class="vinyl-groove"></div>
             <img src="/img/avatar.png" alt="Avatar" class="avatar-img" />
+            <!-- 播放状态指示器 -->
+            <div class="play-indicator" v-if="!isPlaying">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="32"
+                height="32"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
             <!-- 环绕技术栈图标 -->
             <div class="tech-icons">
               <div
@@ -109,6 +166,9 @@ const techStack: TechItem[] = [
         </div>
       </div>
     </div>
+
+    <!-- 音乐播放器弹窗 -->
+    <MusicPlayerModal v-model="showPlayerModal" />
   </div>
 </template>
 
@@ -420,5 +480,91 @@ const techStack: TechItem[] = [
     height: 28px;
     padding: 3px;
   }
+}
+
+/* ========== 黑胶唱片播放动画 ========== */
+
+/* 头像可点击提示 */
+.avatar-circle {
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.avatar-circle:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 40px rgba(var(--vp-c-brand-1-rgb, 100, 108, 255), 0.4);
+}
+
+.avatar-circle:active {
+  transform: scale(0.98);
+}
+
+/* 黑胶旋转动画 */
+.avatar-circle.vinyl-spinning {
+  animation: vinyl-rotate 3s linear infinite;
+}
+
+.avatar-circle.vinyl-spinning:hover {
+  animation-play-state: running;
+  /* 悬停时继续旋转 */
+}
+
+@keyframes vinyl-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 黑胶纹理效果 */
+.vinyl-groove {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at center,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 播放/暂停指示器 */
+.play-indicator {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.avatar-circle:hover .play-indicator {
+  opacity: 1;
+}
+
+/* 播放中时隐藏播放按钮提示 */
+.avatar-circle.vinyl-spinning .play-indicator {
+  display: none;
+}
+
+/* 头像图片层级调整 */
+.avatar-img {
+  position: relative;
+  z-index: 0;
 }
 </style>
