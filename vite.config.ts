@@ -26,6 +26,7 @@ import { officePreviewPlugin } from './src/plugins/markdown-it-office-preview'
 import { archivePreviewPlugin } from './src/plugins/markdown-it-archive-preview'
 import { createHash } from 'crypto'
 import { visualizer } from 'rollup-plugin-visualizer'
+import { katex } from '@mdit/plugin-katex'
 
 // 密码哈希函数（构建时使用）
 function hashPassword(password: string): string {
@@ -95,6 +96,11 @@ export default defineConfig(() => ({
         md.use(officePreviewPlugin)
         // 压缩包文件预览支持
         md.use(archivePreviewPlugin)
+        // LaTeX 公式支持 (使用 KaTeX)
+        md.use(katex, {
+          allowInlineWithSpace: true,
+          mathFence: true
+        })
       }
     }),
     Pages({

@@ -8,6 +8,7 @@ import ArchiveFileCard from './components/office/ArchiveFileCard.vue'
 import EpubFileCard from './components/office/EpubFileCard.vue'
 import './styles/index.css'
 import './styles/theme-transition.css'
+import 'katex/dist/katex.min.css'
 
 const app = createApp(App)
 app.use(pinia)

@@ -42,6 +42,7 @@
     }
   },
   "dependencies": {
+    "@mdit/plugin-katex": "^0.24.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/jszip": "^3.4.0",
     "@unhead/vue": "^2.0.19",
@@ -54,6 +55,7 @@
     "echarts-wordcloud": "^2.1.0",
     "flexsearch": "^0.8.212",
     "jszip": "^3.10.1",
+    "katex": "^0.16.27",
     "mermaid": "^11.12.2",
     "pinia": "^3.0.4",
     "qrcode": "^1.5.4",
