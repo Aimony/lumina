@@ -2,13 +2,13 @@
 import TerminalEmulator from '@/components/terminal/TerminalEmulator.vue'
 
 defineOptions({
-  layout: 'default'
+  layout: 'blank'
 })
 </script>
 
 <route lang="yaml">
 meta:
-  layout: default
+  layout: blank
 </route>
 
 <template>

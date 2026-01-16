@@ -5,6 +5,7 @@ import RandomWalk from '@/components/common/RandomWalk.vue'
 import MusicPlayerButton from '@/components/common/MusicPlayerButton.vue'
 import YearProgress from '@/components/home/YearProgress.vue'
 import AnnouncementBar from '@/components/layout/AnnouncementBar.vue'
+import TerminalIcon from '@/assets/MaterialSymbolsTerminal.svg'
 import { navItems } from '@/config/nav'
 import { useDocsTree, type DocTreeNode } from '@/composables/article/useDocsTree'
 import { useSearch } from '@/composables/core/useSearch'
@@ -198,6 +199,9 @@ const hideDropdown = () => {
             </span>
           </div>
           <div class="navbar-actions">
+            <router-link to="/terminal" class="action-btn terminal-btn" title="Terminal">
+              <img :src="TerminalIcon" alt="Terminal" class="icon" />
+            </router-link>
             <MusicPlayerButton />
             <RandomWalk />
             <ThemeToggle />
@@ -383,6 +387,32 @@ const hideDropdown = () => {
   align-items: center;
   padding-left: 16px;
   border-left: 1px solid var(--vp-c-divider);
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-right: 6px;
+  border-radius: 50%;
+  color: var(--vp-c-text-1);
+  transition: background-color 0.25s;
+}
+
+.action-btn:hover {
+  background-color: var(--vp-c-bg-soft);
+}
+
+.action-btn .icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.8;
+}
+
+.action-btn:hover .icon {
+  opacity: 1;
 }
 
 .search-trigger {

@@ -3,6 +3,7 @@ import { RouterView, useRoute } from 'vue-router'
 import { computed } from 'vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import DocLayout from '@/layouts/DocLayout.vue'
+import BlankLayout from '@/layouts/BlankLayout.vue'
 import { useThemeStore } from '@/stores/theme'
 import { useCodeCopy } from '@/composables/ui/useCodeCopy'
 import { useCodeFold } from '@/composables/ui/useCodeFold'
@@ -23,8 +24,9 @@ useGlobalContextMenu()
 // 根据路由 meta 选择布局
 const layout = computed(() => {
   if (route.meta.layout === 'doc') return DocLayout
-  if (route.meta.layout === 'default') return DefaultLayout
-  return null
+  if (route.meta.layout === 'blank') return BlankLayout
+  // 默认为 DefaultLayout，除非明确指定其他
+  return DefaultLayout
 })
 </script>
 

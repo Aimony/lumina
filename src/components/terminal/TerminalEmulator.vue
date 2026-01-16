@@ -14,7 +14,7 @@ const {
 } = useTerminal()
 
 const inputRef = ref<HTMLInputElement | null>(null)
-const terminalRef = ref<HTMLElement | null>(null)
+const scrollContainerRef = ref<HTMLElement | null>(null)
 const currentInput = ref('')
 const completionIndex = ref(-1)
 const completions = ref<string[]>([])
@@ -104,8 +104,8 @@ const handleTabCompletion = () => {
 
 // 滚动到底部
 const scrollToBottom = () => {
-  if (terminalRef.value) {
-    terminalRef.value.scrollTop = terminalRef.value.scrollHeight
+  if (scrollContainerRef.value) {
+    scrollContainerRef.value.scrollTop = scrollContainerRef.value.scrollHeight
   }
 }
 
@@ -141,8 +141,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="terminal-emulator" @click="focusInput" ref="terminalRef">
-    <!-- 终端头部 -->
+  <div class="terminal-emulator" @click="focusInput">
+    <!-- 终端头部 (Fixed at top) -->
     <div class="terminal-header">
       <div class="terminal-buttons">
         <span class="btn-close"></span>
@@ -152,39 +152,41 @@ onMounted(() => {
       <div class="terminal-title">lumina@blog: {{ currentPath }}</div>
     </div>
 
-    <!-- 输出区域 -->
-    <div class="terminal-body">
-      <div class="terminal-output">
-        <div
-          v-for="(line, index) in output"
-          :key="index"
-          :class="['output-line', getOutputClass(line)]"
-        >
-          <pre v-if="line.type === 'ascii'" class="ascii-art">{{ line.content }}</pre>
-          <span v-else>{{ line.content }}</span>
+    <!-- 滚动区域 -->
+    <div class="terminal-scroll-area" ref="scrollContainerRef">
+      <div class="terminal-body">
+        <div class="terminal-output">
+          <div
+            v-for="(line, index) in output"
+            :key="index"
+            :class="['output-line', getOutputClass(line)]"
+          >
+            <pre v-if="line.type === 'ascii'" class="ascii-art">{{ line.content }}</pre>
+            <span v-else>{{ line.content }}</span>
+          </div>
         </div>
-      </div>
 
-      <!-- 输入行 -->
-      <div class="terminal-input-line">
-        <span class="prompt">{{ prompt }}</span>
-        <input
-          ref="inputRef"
-          type="text"
-          class="terminal-input"
-          v-model="currentInput"
-          @input="handleInput"
-          @keydown="handleKeyDown"
-          @keydown.enter="handleSubmit"
-          autocomplete="off"
-          autocapitalize="off"
-          spellcheck="false"
-        />
-        <span class="cursor"></span>
+        <!-- 输入行 -->
+        <div class="terminal-input-line">
+          <span class="prompt">{{ prompt }}</span>
+          <input
+            ref="inputRef"
+            type="text"
+            class="terminal-input"
+            v-model="currentInput"
+            @input="handleInput"
+            @keydown="handleKeyDown"
+            @keydown.enter="handleSubmit"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          />
+          <span class="cursor"></span>
+        </div>
       </div>
     </div>
 
-    <!-- 扫描线效果 -->
+    <!-- 扫描线效果 (Overlay) -->
     <div class="scanlines"></div>
   </div>
 </template>
@@ -207,9 +209,11 @@ $terminal-glow: 0 0 10px rgba(0, 255, 0, 0.3);
   font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
   font-size: 14px;
   line-height: 1.5;
-  overflow-y: auto;
   position: relative;
   cursor: text;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; // Prevent wrapper from scrolling
 
   // CRT 效果
   &::before {
@@ -219,6 +223,31 @@ $terminal-glow: 0 0 10px rgba(0, 255, 0, 0.3);
     background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
     pointer-events: none;
     z-index: 10;
+  }
+}
+
+.terminal-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1; // Below overlays
+
+  // 滚动条样式
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #111;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+
+    &:hover {
+      background: #444;
+    }
   }
 }
 
@@ -256,9 +285,10 @@ $terminal-glow: 0 0 10px rgba(0, 255, 0, 0.3);
   padding: 8px 12px;
   background: $terminal-header-bg;
   border-bottom: 1px solid #333;
-  position: sticky;
-  top: 0;
+  // position: sticky; // Not needed as it's outside scroll view
+  // top: 0;
   z-index: 5;
+  flex-shrink: 0;
 }
 
 .terminal-buttons {
@@ -294,7 +324,7 @@ $terminal-glow: 0 0 10px rgba(0, 255, 0, 0.3);
 // 终端主体
 .terminal-body {
   padding: 16px;
-  min-height: calc(100% - 40px);
+  // min-height removed as flex container handles it naturally
 }
 
 // 输出区域
@@ -397,24 +427,6 @@ $terminal-glow: 0 0 10px rgba(0, 255, 0, 0.3);
 
   .terminal-body {
     padding: 12px;
-  }
-}
-
-// 滚动条样式
-.terminal-emulator::-webkit-scrollbar {
-  width: 8px;
-}
-
-.terminal-emulator::-webkit-scrollbar-track {
-  background: #111;
-}
-
-.terminal-emulator::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-
-  &:hover {
-    background: #444;
   }
 }
 </style>
