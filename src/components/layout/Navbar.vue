@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import ThemeToggle from '@/components/common/ThemeToggle.vue'
 import RandomWalk from '@/components/common/RandomWalk.vue'
+import MusicPlayerButton from '@/components/common/MusicPlayerButton.vue'
 import YearProgress from '@/components/home/YearProgress.vue'
 import AnnouncementBar from '@/components/layout/AnnouncementBar.vue'
 import { navItems } from '@/config/nav'
@@ -197,6 +198,7 @@ const hideDropdown = () => {
             </span>
           </div>
           <div class="navbar-actions">
+            <MusicPlayerButton />
             <RandomWalk />
             <ThemeToggle />
           </div>

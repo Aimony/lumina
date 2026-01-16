@@ -6,6 +6,7 @@ import LinkCard from './components/common/LinkCard.vue'
 import OfficeFileCard from './components/office/OfficeFileCard.vue'
 import ArchiveFileCard from './components/office/ArchiveFileCard.vue'
 import EpubFileCard from './components/office/EpubFileCard.vue'
+import MusicPlayerModal from './components/home/MusicPlayerModal.vue'
 import './styles/index.css'
 import './styles/theme-transition.css'
 import 'katex/dist/katex.min.css'
@@ -21,5 +22,6 @@ app.component('LinkCard', LinkCard)
 app.component('OfficeFileCard', OfficeFileCard)
 app.component('ArchiveFileCard', ArchiveFileCard)
 app.component('EpubFileCard', EpubFileCard)
+app.component('MusicPlayerModal', MusicPlayerModal)
 
 app.mount('#app')
