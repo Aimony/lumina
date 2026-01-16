@@ -27,6 +27,7 @@ import { archivePreviewPlugin } from './src/plugins/markdown-it-archive-preview'
 import { createHash } from 'crypto'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { katex } from '@mdit/plugin-katex'
+import { docsFileSystemPlugin } from './src/plugins/vite-plugin-docs-filesystem'
 
 // 密码哈希函数（构建时使用）
 function hashPassword(password: string): string {
@@ -37,6 +38,9 @@ function hashPassword(password: string): string {
 export default defineConfig(() => ({
   base: process.env.VITE_BASE_URL || '/',
   plugins: [
+    // 自动生成 docs 目录的虚拟文件系统（终端模式使用）
+    docsFileSystemPlugin(),
+
     vue({
       include: [/\.vue$/, /\.md$/], // 允许 .md 文件作为 Vue 组件
       // Vue DevTools 相关配置

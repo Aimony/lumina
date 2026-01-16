@@ -28,3 +28,16 @@ declare module '*?worker' {
   const workerConstructor: new () => Worker
   export default workerConstructor
 }
+
+// 终端模式虚拟文件系统模块
+declare module 'virtual:docs-filesystem' {
+  interface FileNode {
+    name: string
+    type: 'file' | 'directory'
+    path: string
+    children?: FileNode[]
+    title?: string
+  }
+  const fileSystem: FileNode
+  export default fileSystem
+}
