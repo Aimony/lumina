@@ -10,6 +10,9 @@ import MusicPlayerModal from './components/home/MusicPlayerModal.vue'
 import './styles/index.css'
 import './styles/theme-transition.css'
 import 'katex/dist/katex.min.css'
+import { printConsoleBanner } from './utils/consoleBanner'
+
+printConsoleBanner()
 
 const app = createApp(App)
 app.use(pinia)
