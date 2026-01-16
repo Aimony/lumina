@@ -21,9 +21,9 @@ export const navItems: NavItemConfig[] = [
   { text: '后端', basePath: '/backend' },
   { text: 'AIGC', basePath: '/AIGC' },
   { text: '示例', basePath: '/example' },
-  { text: 'TEST', basePath: '/test' },
-  { text: '标签', to: '/tags' },
+  { text: 'TEST', basePath: '/test' }
+  // { text: '标签', to: '/tags' },
   // { text: 'Cosmos', to: '/cosmos' },
-  { text: '归档', to: '/archives' },
-  { text: '时间线', to: '/timeline' }
+  // { text: '归档', to: '/archives' },
+  // { text: '时间线', to: '/timeline' }
 ]

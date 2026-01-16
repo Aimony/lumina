@@ -13,25 +13,32 @@ export interface AppItem {
 
 export const apps: AppItem[] = [
   {
+    id: 'tags',
+    name: '标签',
+    path: '/tags',
+    icon: VueIcon,
+    description: '标签'
+  },
+  {
+    id: 'archives',
+    name: '归档',
+    path: '/archives',
+    icon: VueIcon,
+    description: '归档'
+  },
+  {
+    id: 'timeline',
+    name: '时间线',
+    path: '/timeline',
+    icon: VueIcon,
+    description: '时间线'
+  },
+  {
     id: 'terminal',
     name: 'Terminal',
     path: '/terminal',
     icon: TerminalIcon,
     description: 'Command line interface'
-  },
-  {
-    id: 'snake',
-    name: 'Deep Snake',
-    path: '/games/snake',
-    icon: VueIcon, // Placeholder
-    description: 'Classic Snake Game'
-  },
-  {
-    id: 'music',
-    name: 'Music',
-    path: '/music', // Assuming a route or just a placeholder
-    icon: RecordIcon,
-    description: 'Music Player'
   },
   {
     id: 'cosmos',
