@@ -2,4 +2,5 @@
 @import './vars.css';
 @import './base.css';
 @import './markdown.css';
+@import './message.css';
 @import './layouts/_doc-layout.scss';

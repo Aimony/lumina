@@ -1,39 +1,11 @@
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
+import { message } from './useMessage'
 
 /**
  * LaTeX 公式点击复制功能
  * 点击公式即可复制原始 Markdown 公式，并显示轻量提示
  */
 export function useLatexCopy() {
-  const tooltipEl = ref<HTMLElement | null>(null)
-  let hideTimeout: ReturnType<typeof setTimeout> | null = null
-
-  // 创建提示元素
-  const createTooltip = () => {
-    const el = document.createElement('div')
-    el.className = 'latex-copy-tooltip'
-    el.textContent = '已复制公式'
-    document.body.appendChild(el)
-    return el
-  }
-
-  // 显示提示 (屏幕中上方固定位置)
-  const showTooltip = () => {
-    if (!tooltipEl.value) return
-
-    // 清除之前的隐藏定时器
-    if (hideTimeout) {
-      clearTimeout(hideTimeout)
-    }
-
-    tooltipEl.value.classList.add('visible')
-
-    // 1.5 秒后隐藏
-    hideTimeout = setTimeout(() => {
-      tooltipEl.value?.classList.remove('visible')
-    }, 1500)
-  }
-
   const handleClick = async (e: MouseEvent) => {
     const target = e.target as HTMLElement
 
@@ -71,8 +43,8 @@ export function useLatexCopy() {
     try {
       await navigator.clipboard.writeText(formulaText)
 
-      // 显示提示
-      showTooltip()
+      // 显示成功提示
+      message.success('已复制公式')
 
       // 添加复制成功的视觉反馈
       // 必须转为 HTMLElement 才能访问 classList
@@ -85,21 +57,15 @@ export function useLatexCopy() {
       }, 600)
     } catch (err) {
       console.error('Failed to copy LaTeX formula: ', err)
+      message.error('复制失败')
     }
   }
 
   onMounted(() => {
-    tooltipEl.value = createTooltip()
     window.addEventListener('click', handleClick)
   })
 
   onUnmounted(() => {
     window.removeEventListener('click', handleClick)
-    if (tooltipEl.value) {
-      tooltipEl.value.remove()
-    }
-    if (hideTimeout) {
-      clearTimeout(hideTimeout)
-    }
   })
 }

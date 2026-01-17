@@ -1,0 +1,166 @@
+/* ============================================
+   全局消息提示组件样式
+   ============================================ */
+
+/* 消息容器 - 固定在屏幕顶部中央 */
+.message-container {
+  position: fixed;
+  top: 80px; /* 避开导航栏 */
+  left: 50%;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* 单条消息 */
+.message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg);
+  border-radius: 8px;
+  box-shadow:
+    0 6px 16px 0 rgba(0, 0, 0, 0.08),
+    0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  pointer-events: auto;
+  white-space: nowrap;
+
+  /* 初始状态 - 隐藏 */
+  opacity: 0;
+  transform: translateX(-50%) translateY(-20px);
+  transition:
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 暗色模式 */
+html.dark .message {
+  background-color: var(--vp-c-bg-elv);
+  box-shadow:
+    0 6px 16px 0 rgba(0, 0, 0, 0.3),
+    0 3px 6px -4px rgba(0, 0, 0, 0.4),
+    0 9px 28px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 入场动画 */
+.message.message-enter {
+  opacity: 1;
+}
+
+/* 离场动画 */
+.message.message-leave {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-20px) !important;
+}
+
+/* 图标 */
+.message-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.message-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* 内容 */
+.message-content {
+  flex: 1;
+}
+
+/* 关闭按钮 */
+.message-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
+  font-size: 16px;
+  color: var(--vp-c-text-3);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.message-close:hover {
+  color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg-alt);
+}
+
+/* ============================================
+   消息类型主题色
+   ============================================ */
+
+/* 成功 - 绿色 */
+.message-success {
+  background: linear-gradient(135deg, #e8f8f0 0%, #f0faf5 100%);
+  border: 1px solid rgba(66, 184, 131, 0.4);
+}
+
+.message-success .message-icon {
+  color: #42b883;
+}
+
+html.dark .message-success {
+  background: linear-gradient(135deg, #1a3d2e 0%, #152e24 100%);
+  border-color: rgba(66, 184, 131, 0.5);
+}
+
+/* 信息 - 蓝色 */
+.message-info {
+  background: linear-gradient(135deg, #e6f0ff 0%, #f0f6ff 100%);
+  border: 1px solid rgba(56, 139, 253, 0.4);
+}
+
+.message-info .message-icon {
+  color: #388bfd;
+}
+
+html.dark .message-info {
+  background: linear-gradient(135deg, #1a2d45 0%, #152438 100%);
+  border-color: rgba(56, 139, 253, 0.5);
+}
+
+/* 警告 - 橙色 */
+.message-warning {
+  background: linear-gradient(135deg, #fff8e6 0%, #fffbf0 100%);
+  border: 1px solid rgba(250, 173, 20, 0.4);
+}
+
+.message-warning .message-icon {
+  color: #faad14;
+}
+
+html.dark .message-warning {
+  background: linear-gradient(135deg, #3d3018 0%, #2e2512 100%);
+  border-color: rgba(250, 173, 20, 0.5);
+}
+
+/* 错误 - 红色 */
+.message-error {
+  background: linear-gradient(135deg, #fff0f0 0%, #fff5f5 100%);
+  border: 1px solid rgba(255, 77, 79, 0.4);
+}
+
+.message-error .message-icon {
+  color: #ff4d4f;
+}
+
+html.dark .message-error {
+  background: linear-gradient(135deg, #3d1a1a 0%, #2e1515 100%);
+  border-color: rgba(255, 77, 79, 0.5);
+}
