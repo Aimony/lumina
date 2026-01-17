@@ -8,6 +8,7 @@ import { useThemeStore } from '@/stores/theme'
 import { useCodeCopy } from '@/composables/ui/useCodeCopy'
 import { useCodeFold } from '@/composables/ui/useCodeFold'
 import { useCodeResize } from '@/composables/ui/useCodeResize'
+import { useLatexCopy } from '@/composables/ui/useLatexCopy'
 import { useGlobalContextMenu } from '@/composables/ui/useContextMenu'
 import SearchModal from '@/components/common/SearchModal.vue'
 import ContextMenu from '@/components/common/ContextMenu.vue'
@@ -20,6 +21,7 @@ themeStore.init()
 useCodeCopy()
 useCodeFold()
 useCodeResize()
+useLatexCopy()
 useGlobalContextMenu()
 
 // 根据路由 meta 选择布局

@@ -633,3 +633,110 @@ html.dark .markdown-body .markdown-alert-caution {
   border-radius: 0;
   border: none;
 }
+
+/* ============================================
+   LaTeX 公式点击复制样式
+   ============================================ */
+/* 公式可点击样式 */
+.markdown-body .katex,
+.markdown-body .katex-display {
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s ease;
+}
+
+/* 悬停效果 */
+/* 悬停效果 - 仅保留缩放，移除之前的黑框提示 */
+.markdown-body .katex:hover,
+.markdown-body .katex-display:hover {
+  transform: scale(1.02);
+}
+
+/* 移除原有的 ::after 提示框相关代码 */
+
+/* 复制成功反馈 - 闪光动画 */
+@keyframes katex-flash {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+.markdown-body .katex.latex-copied,
+.markdown-body .katex-display.latex-copied {
+  transform: scale(1.02);
+  position: relative;
+  clip-path: inset(
+    0
+  ); /* 使用 clip-path 替代 overflow: hidden，避免 inline-block 基线改变导致的抖动 */
+}
+
+.markdown-body .katex.latex-copied::before,
+.markdown-body .katex-display.latex-copied::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--vp-c-brand-1), /* 主题色 */ transparent);
+  transform: skewX(-20deg);
+  animation: katex-flash 0.6s ease-out;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* 浮动提示框样式 */
+/* 浮动提示框样式 - 屏幕中上方 */
+.latex-copy-tooltip {
+  position: fixed;
+  top: 80px; /* 避开顶部导航栏 */
+  left: 50%;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background: linear-gradient(135deg, var(--vp-c-brand-1) 0%, var(--vp-c-brand-2) 100%);
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-20px);
+  transition:
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.3s;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.latex-copy-tooltip.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 块级公式居中对齐时的提示位置调整 */
+/* 块级公式居中对齐时的提示位置调整 */
+.markdown-body .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 0;
+  scrollbar-width: none; /* Firefox: 隐藏滚动条 */
+}
+
+.markdown-body .katex-display::-webkit-scrollbar {
+  display: none; /* Chrome/Safari: 隐藏滚动条 */
+}
+
+.markdown-body .katex-display > .katex {
+  display: inline-block; /* 确保 transforms 生效 */
+  position: relative;
+}
