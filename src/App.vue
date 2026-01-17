@@ -12,6 +12,7 @@ import { useGlobalContextMenu } from '@/composables/ui/useContextMenu'
 import SearchModal from '@/components/common/SearchModal.vue'
 import ContextMenu from '@/components/common/ContextMenu.vue'
 import CursorEffect from '@/components/common/CursorEffect.vue'
+import EasterEgg from '@/components/common/EasterEgg.vue'
 
 const route = useRoute()
 const themeStore = useThemeStore()
@@ -47,6 +48,7 @@ const layout = computed(() => {
   <SearchModal />
   <ContextMenu />
   <CursorEffect />
+  <EasterEgg />
 </template>
 
 <style>
