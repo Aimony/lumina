@@ -28,6 +28,7 @@ import { createHash } from 'crypto'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { katex } from '@mdit/plugin-katex'
 import { docsFileSystemPlugin } from './src/plugins/vite-plugin-docs-filesystem'
+import { demoPlugin } from './src/plugins/markdown-it-demo'
 
 // 密码哈希函数（构建时使用）
 function hashPassword(password: string): string {
@@ -105,6 +106,9 @@ export default defineConfig(() => ({
           allowInlineWithSpace: true,
           mathFence: true
         })
+
+        // Vue Demo 插件
+        md.use(demoPlugin)
       }
     }),
     Pages({
