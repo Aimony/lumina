@@ -10,6 +10,7 @@ import { useCodeFold } from '@/composables/ui/useCodeFold'
 import { useCodeResize } from '@/composables/ui/useCodeResize'
 import { useLatexCopy } from '@/composables/ui/useLatexCopy'
 import { useGlobalContextMenu } from '@/composables/ui/useContextMenu'
+import { usePageVisibility } from '@/composables/ui/usePageVisibility'
 import SearchModal from '@/components/common/SearchModal.vue'
 import ContextMenu from '@/components/common/ContextMenu.vue'
 import CursorEffect from '@/components/common/CursorEffect.vue'
@@ -23,6 +24,7 @@ useCodeFold()
 useCodeResize()
 useLatexCopy()
 useGlobalContextMenu()
+usePageVisibility()
 
 // 根据路由 meta 选择布局
 const layout = computed(() => {
