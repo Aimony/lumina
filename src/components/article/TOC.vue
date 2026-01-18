@@ -249,6 +249,11 @@ const scrollTo = (id: string) => {
 .toc-container {
   padding-left: 16px;
   border-left: 1px solid var(--vp-c-divider);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
 }
 
 .toc-header {
@@ -415,6 +420,16 @@ const scrollTo = (id: string) => {
   list-style: none;
   padding: 0;
   margin: 0;
+  flex: 1;
+  overflow-y: auto;
+
+  /* 隐藏滚动条 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .toc-item-nested {

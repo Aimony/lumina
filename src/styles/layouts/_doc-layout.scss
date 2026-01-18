@@ -159,7 +159,7 @@ $z-immersive-navbar: 1000;
   max-height: calc(100vh - var(--vp-nav-height) - 64px);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: hidden; // 禁止整体滚动
 
   // 隐藏滚动条
   scrollbar-width: none;
@@ -184,7 +184,7 @@ $z-immersive-navbar: 1000;
 
 :deep(.toc-container) {
   flex: 1;
-  overflow-y: auto;
+  // overflow-y: auto; // 由组件内部控制
   scrollbar-width: none;
   -ms-overflow-style: none;
 

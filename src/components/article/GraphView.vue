@@ -445,6 +445,7 @@ onUnmounted(() => {
   background-color: var(--vp-c-bg-alt);
   overflow: hidden;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .graph-header {
