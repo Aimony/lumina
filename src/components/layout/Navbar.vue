@@ -63,11 +63,23 @@ const processedNavItems = computed(() => {
 
 const closeTimeout = ref<any>(null)
 
-const showDropdown = (text: string) => {
+const dropdownPosition = ref({ top: 0, left: 0 })
+
+const showDropdown = (text: string, event: Event) => {
   if (closeTimeout.value) {
     clearTimeout(closeTimeout.value)
     closeTimeout.value = null
   }
+
+  // Calculate position
+  const target = event.currentTarget as HTMLElement
+  // Find the closest relative parent or just use the current target rect
+  const rect = target.getBoundingClientRect()
+  dropdownPosition.value = {
+    top: rect.bottom,
+    left: rect.left + rect.width / 2
+  }
+
   activeDropdown.value = text
 }
 
@@ -132,7 +144,7 @@ const hideDropdown = () => {
               <div
                 v-if="item.children && item.children.length > 0"
                 class="menu-item-with-dropdown"
-                @mouseenter="showDropdown(item.text)"
+                @mouseenter="(e) => showDropdown(item.text, e)"
                 @mouseleave="hideDropdown"
               >
                 <router-link
@@ -155,7 +167,14 @@ const hideDropdown = () => {
 
                 <!-- 下拉菜单 -->
                 <Transition name="dropdown">
-                  <div v-show="activeDropdown === item.text" class="dropdown-menu">
+                  <div
+                    v-show="activeDropdown === item.text"
+                    class="dropdown-menu"
+                    :style="{
+                      top: `${dropdownPosition.top}px`,
+                      left: `${dropdownPosition.left}px`
+                    }"
+                  >
                     <router-link
                       v-for="child in item.children"
                       :key="child.path"
@@ -273,6 +292,7 @@ const hideDropdown = () => {
   display: flex;
   align-items: center;
   gap: 16px;
+  margin-right: 10px;
 }
 
 .title-link {
@@ -291,11 +311,33 @@ const hideDropdown = () => {
 .navbar-content {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+  justify-content: flex-end;
 }
 
 .navbar-menu {
   gap: 24px;
+  overflow-x: auto;
+  flex-shrink: 1;
+  min-width: 0;
+  padding-bottom: 2px;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.navbar-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.menu-item-with-dropdown,
+.menu-link {
+  flex-shrink: 0;
 }
 
 .menu-link {
@@ -330,9 +372,7 @@ const hideDropdown = () => {
 }
 
 .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 50%;
+  position: fixed;
   transform: translateX(-50%);
   margin-top: 12px;
   min-width: 160px;
@@ -384,7 +424,19 @@ const hideDropdown = () => {
   display: flex;
   align-items: center;
   padding-left: 16px;
-  border-left: 1px solid var(--vp-c-divider);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.navbar-actions::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 24px;
+  width: 1px;
+  background-color: var(--vp-c-divider);
 }
 
 .action-btn {
@@ -417,9 +469,22 @@ const hideDropdown = () => {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 0 12px;
+  padding: 0 8px 0 16px;
   color: var(--vp-c-text-2);
   transition: color 0.25s;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.search-trigger::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 24px;
+  width: 1px;
+  background-color: var(--vp-c-divider);
 }
 
 .search-trigger:hover {
