@@ -438,7 +438,7 @@ onUnmounted(() => {
   </Teleport>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .graph-view {
   border: 1px solid var(--vp-c-divider);
   border-radius: 8px;
@@ -446,62 +446,62 @@ onUnmounted(() => {
   overflow: hidden;
   margin-bottom: 20px;
   flex-shrink: 0;
-}
 
-.graph-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--vp-c-divider);
-}
+  .graph-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--vp-c-divider);
 
-.graph-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--vp-c-text-2);
-}
+    .graph-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--vp-c-text-2);
+    }
 
-.header-actions {
-  display: flex;
-  gap: 4px;
-}
+    .header-actions {
+      display: flex;
+      gap: 4px;
 
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  color: var(--vp-c-text-3);
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.2s;
-}
+      .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        color: var(--vp-c-text-3);
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.2s;
 
-.action-btn:hover {
-  background-color: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-1);
-}
+        &:hover {
+          background-color: var(--vp-c-bg-soft);
+          color: var(--vp-c-text-1);
+        }
+      }
+    }
+  }
 
-.graph-container {
-  width: 100%;
-  height: 200px;
-}
+  .graph-container {
+    width: 100%;
+    height: 200px;
+  }
 
-.graph-loading,
-.graph-error {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  font-size: 12px;
-  color: var(--vp-c-text-3);
-}
+  .graph-loading,
+  .graph-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    font-size: 12px;
+    color: var(--vp-c-text-3);
+  }
 
-.graph-error {
-  color: var(--vp-c-danger-1);
+  .graph-error {
+    color: var(--vp-c-danger-1);
+  }
 }
 
 /* 模态框样式 */
@@ -517,77 +517,75 @@ onUnmounted(() => {
   justify-content: center;
   z-index: 9999;
   backdrop-filter: blur(4px);
-}
 
-.graph-modal {
-  width: 90vw;
-  height: 80vh;
-  max-width: 1200px;
-  background-color: var(--vp-c-bg);
-  border-radius: 12px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
+  .graph-modal {
+    width: 90vw;
+    height: 80vh;
+    max-width: 1200px;
+    background-color: var(--vp-c-bg);
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--vp-c-divider);
-}
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--vp-c-divider);
 
-.modal-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--vp-c-text-1);
-}
+      .modal-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--vp-c-text-1);
+      }
 
-.modal-close {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  color: var(--vp-c-text-2);
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.2s;
-}
+      .modal-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        color: var(--vp-c-text-2);
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.2s;
 
-.modal-close:hover {
-  background-color: var(--vp-c-bg-soft);
-  color: var(--vp-c-text-1);
-}
+        &:hover {
+          background-color: var(--vp-c-bg-soft);
+          color: var(--vp-c-text-1);
+        }
+      }
+    }
 
-.modal-graph-container {
-  flex: 1;
-  width: 100%;
-  background-color: var(--vp-c-bg-alt);
+    .modal-graph-container {
+      flex: 1;
+      width: 100%;
+      background-color: var(--vp-c-bg-alt);
+    }
+  }
 }
 
 /* 模态框动画 */
 .modal-enter-active,
 .modal-leave-active {
   transition: all 0.3s ease;
-}
 
-.modal-enter-active .graph-modal,
-.modal-leave-active .graph-modal {
-  transition: transform 0.3s ease;
+  .graph-modal {
+    transition: transform 0.3s ease;
+  }
 }
 
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
-}
 
-.modal-enter-from .graph-modal,
-.modal-leave-to .graph-modal {
-  transform: scale(0.9);
+  .graph-modal {
+    transform: scale(0.9);
+  }
 }
 
 /* D3 样式 */
@@ -596,42 +594,64 @@ onUnmounted(() => {
   stroke-opacity: 0.6;
   stroke-width: 1px;
   transition: all 0.25s ease;
+
+  &.highlighted {
+    stroke: var(--vp-c-brand-1);
+    stroke-opacity: 1;
+    stroke-width: 2px;
+  }
+
+  &.dimmed {
+    stroke-opacity: 0.15;
+  }
 }
 
-:deep(.graph-link.highlighted) {
-  stroke: var(--vp-c-brand-1);
-  stroke-opacity: 1;
-  stroke-width: 2px;
-}
+:deep(.graph-node) {
+  circle {
+    fill: var(--vp-c-text-3);
+    stroke: var(--vp-c-bg);
+    stroke-width: 1.5px;
+    transition: all 0.25s ease;
+  }
 
-:deep(.graph-link.dimmed) {
-  stroke-opacity: 0.15;
-}
+  &:hover,
+  &.highlighted {
+    circle {
+      fill: var(--vp-c-brand-1);
+      transform: scale(1.2);
+    }
 
-:deep(.graph-node circle) {
-  fill: var(--vp-c-text-3);
-  stroke: var(--vp-c-bg);
-  stroke-width: 1.5px;
-  transition: all 0.25s ease;
-}
+    .node-label {
+      opacity: 1;
+    }
+  }
 
-:deep(.graph-node:hover circle),
-:deep(.graph-node.highlighted circle) {
-  fill: var(--vp-c-brand-1);
-  transform: scale(1.2);
-}
+  &.dimmed {
+    circle {
+      opacity: 0.3;
+    }
 
-:deep(.graph-node.dimmed circle) {
-  opacity: 0.3;
-}
+    .node-label {
+      opacity: 0;
+    }
+  }
 
-:deep(.graph-node.current circle) {
-  fill: var(--vp-c-brand-1);
-  stroke-width: 2px;
-}
+  &.current {
+    circle {
+      fill: var(--vp-c-brand-1);
+      stroke-width: 2px;
+    }
 
-:deep(.graph-node.neighbor circle) {
-  fill: var(--vp-c-brand-2);
+    .node-label {
+      opacity: 1;
+    }
+  }
+
+  &.neighbor {
+    circle {
+      fill: var(--vp-c-brand-2);
+    }
+  }
 }
 
 :deep(.node-label) {
@@ -640,20 +660,10 @@ onUnmounted(() => {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.25s ease;
-}
 
-:deep(.node-label.modal-label) {
-  font-size: 11px;
-  opacity: 0.8;
-}
-
-:deep(.graph-node:hover .node-label),
-:deep(.graph-node.current .node-label),
-:deep(.graph-node.highlighted .node-label) {
-  opacity: 1;
-}
-
-:deep(.graph-node.dimmed .node-label) {
-  opacity: 0;
+  &.modal-label {
+    font-size: 11px;
+    opacity: 0.8;
+  }
 }
 </style>
