@@ -102,6 +102,7 @@
     "vite": "^7.2.4",
     "vite-plugin-pages": "^0.33.2",
     "vite-plugin-sitemap": "^0.8.2",
+    "vite-plugin-vue-devtools": "^8.0.5",
     "vue-tsc": "^3.1.4"
   },
   "lint-staged": {

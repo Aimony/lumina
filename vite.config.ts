@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import VueDevTools from 'vite-plugin-vue-devtools'
 import Markdown from 'unplugin-vue-markdown/vite'
 import Pages from 'vite-plugin-pages'
 import { resolve } from 'path'
@@ -41,6 +42,10 @@ export default defineConfig(() => ({
   plugins: [
     // 自动生成 docs 目录的虚拟文件系统（终端模式使用）
     docsFileSystemPlugin(),
+    VueDevTools({
+      // @see https://devtools.vuejs.org/guide/vite-plugin#options
+      launchEditor: 'antigravity' // 需命令行支持
+    }),
 
     vue({
       include: [/\.vue$/, /\.md$/], // 允许 .md 文件作为 Vue 组件
