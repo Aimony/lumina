@@ -27,7 +27,6 @@ import PrevNextNav from '@/components/article/PrevNextNav.vue'
 import BacklinkSection from '@/components/article/BacklinkSection.vue'
 import ShareLinks from '@/components/article/ShareLinks.vue'
 import GraphView from '@/components/article/GraphView.vue'
-import ReadingProgress from '@/components/article/ReadingProgress.vue'
 import PasswordProtect from '@/components/article/PasswordProtect.vue'
 import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
 
@@ -296,7 +295,6 @@ const actualContentBgColor = computed(() => {
 
     <!-- 浮动组件 -->
     <ImageViewer :image="currentImage" @close="hideImage" />
-    <ReadingProgress v-if="!immersiveMode" />
     <SmartHoverCard />
     <BackToTopCat v-if="!immersiveMode" />
 

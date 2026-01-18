@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
+import { useReadingProgress } from '@/composables/article/useReadingProgress'
 import { useImmersiveMode } from '@/composables/layout/useImmersiveMode'
 
 interface Heading {
@@ -11,6 +12,10 @@ interface Heading {
 const props = defineProps<{
   headings: Heading[]
 }>()
+
+// 阅读进度
+const { progress } = useReadingProgress()
+const percentage = computed(() => Math.round(progress.value))
 
 // 沉浸式阅读模式 - 使用 Pinia store
 const {
@@ -132,6 +137,9 @@ const scrollTo = (id: string) => {
     <div class="toc-header">
       <div class="toc-title">本页目录</div>
       <div class="toc-controls">
+        <!-- 阅读进度 -->
+        <span v-if="progress > 0" class="reading-progress">{{ percentage }}%</span>
+
         <!-- 调色盘按钮 -->
         <div
           class="palette-container"
@@ -452,5 +460,14 @@ const scrollTo = (id: string) => {
 
 .toc-link.active {
   color: var(--vp-c-brand-1);
+}
+
+.reading-progress {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+  margin-right: 8px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
 }
 </style>
