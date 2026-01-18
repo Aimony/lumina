@@ -43,9 +43,11 @@ router.beforeEach((to, _from, next) => {
   next()
 })
 
-// 页面浏览追踪
+// 页面浏览追踪（使用不带 base 前缀的路径，保持数据一致性）
+// 只在 router.afterEach 统一手动追踪
+// 所有路径统一为 /tags 格式，不再有 /lumina/tags
 router.afterEach((to) => {
-  trackPageview(to.fullPath)
+  trackPageview(to.path)
 })
 
 export default router

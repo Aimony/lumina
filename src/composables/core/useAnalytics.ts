@@ -83,8 +83,9 @@ export function initAnalytics(): void {
   script.src = config.scriptUrl
   script.setAttribute('data-website-id', config.websiteId)
 
-  // 可选：禁用自动追踪，完全由我们手动控制
-  // script.setAttribute('data-auto-track', 'false')
+  // Umami 默认会自动追踪首次页面加载，而 router.afterEach 也会触发一次追踪，导致重复记录
+  // 禁用自动追踪，完全由 router.afterEach 手动控制，避免重复记录
+  script.setAttribute('data-auto-track', 'false')
 
   document.head.appendChild(script)
   initialized = true
