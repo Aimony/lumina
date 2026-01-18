@@ -19,6 +19,12 @@ interface ImportMetaEnv {
   readonly VITE_ENABLE_DEVTOOLS: string
   /** 是否启用 Mock 数据 */
   readonly VITE_ENABLE_MOCK: string
+  /** Umami 网站 ID */
+  readonly VITE_UMAMI_WEBSITE_ID: string
+  /** Umami 脚本地址 */
+  readonly VITE_UMAMI_SCRIPT_URL: string
+  /** 是否启用 Umami 分析 */
+  readonly VITE_UMAMI_ENABLED: string
 }
 
 interface ImportMeta {

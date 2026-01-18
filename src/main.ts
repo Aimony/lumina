@@ -13,8 +13,12 @@ import './styles/theme-transition.css'
 import './assets/fonts/fonts.css'
 import 'katex/dist/katex.min.css'
 import { printConsoleBanner } from './utils/consoleBanner'
+import { initAnalytics } from './composables/core/useAnalytics'
 
 printConsoleBanner()
+
+// 初始化埋点分析
+initAnalytics()
 
 const app = createApp(App)
 app.use(pinia)

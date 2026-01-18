@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '~pages'
+import { trackPageview } from '@/composables/core/useAnalytics'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -39,6 +40,11 @@ router.beforeEach((to, _from, next) => {
     }
   }
   next()
+})
+
+// 页面浏览追踪
+router.afterEach((to) => {
+  trackPageview(to.fullPath)
 })
 
 export default router
