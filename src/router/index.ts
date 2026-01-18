@@ -3,7 +3,8 @@ import routes from '~pages'
 import { trackPageview } from '@/composables/core/useAnalytics'
 
 const router = createRouter({
-  history: createWebHistory(),
+  // 使用 Vite 的 BASE_URL 环境变量，支持 GitHub Pages 子路径部署
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to, _from, _savedPosition) {
     // 主页不应用滚动逻辑
