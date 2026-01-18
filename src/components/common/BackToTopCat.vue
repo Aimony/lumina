@@ -36,22 +36,45 @@ const scrollToTop = () => {
 
 let timer: ReturnType<typeof setTimeout> | null = null
 
-// 滚动时更新小猫位置
 const updatePosition = () => {
   if (!timer) {
     timer = setTimeout(() => {
       if (typeof document !== 'undefined') {
-        offsetHeight.value = document.documentElement.offsetHeight
-        const scrollTop = document.documentElement.scrollTop
-        if (scrollTop < 800) {
+        const doc = document.documentElement
+        const scrollTop = doc.scrollTop
+        const scrollHeight = doc.scrollHeight
+        const clientHeight = doc.clientHeight // Visual viewport height
+
+        // Only show after scrolling down a bit
+        if (scrollTop < 100) {
           top.value = -900
         } else {
-          // 根据滚动位置计算小猫的 top 值
-          top.value = (900 - (scrollTop / offsetHeight.value) * 900) * -1
+          // Calculate max scrollable distance
+          const maxScroll = scrollHeight - clientHeight
+          // Calculate scroll percentage (0 to 1)
+          const scrollPercent = Math.min(scrollTop / maxScroll, 1)
+
+          // Target range for top:
+          // Start: -900 (hidden above)
+          // End: clientHeight - 900 (bottom aligned with viewport bottom)
+          const targetTop = clientHeight - 900
+
+          // Interpolate
+          // actually we want it to slide down as we scroll.
+          // If we want it to be fully visible ONLY at the very bottom, use full interpolation.
+          // The previous logic brought it down gradually.
+
+          // Let's ensure it never exceeds targetTop.
+          // Previous logic: -900 + (scrollTop / H) * 900.
+          // Let's modify to: -900 + scrollPercent * (clientHeight)
+          // But clamped to not exceed targetTop.
+
+          // Simplified approach: Map scrollPercent 0..1 to -900..targetTop
+          top.value = -900 + scrollPercent * (targetTop - -900)
         }
       }
       timer = null
-    }, 100)
+    }, 50) // Reduced throttle time slightly for smoother animation
   }
 }
 
