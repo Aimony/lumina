@@ -130,7 +130,7 @@ useTabs()
 
 // 智能悬浮卡
 const { attachToContent } = useSmartHover()
-const articleRef = ref<HTMLElement | null>(null)
+const contentRef = ref<HTMLElement | null>(null)
 const route = useRoute()
 
 // ============================================
@@ -169,9 +169,11 @@ watch(
   () => {
     nextTick(() => {
       setTimeout(() => {
-        if (articleRef.value) {
-          attachToContent(articleRef.value)
-        }
+        setTimeout(() => {
+          if (contentRef.value) {
+            attachToContent(contentRef.value)
+          }
+        }, 500)
       }, 500)
     })
   },
@@ -271,7 +273,9 @@ const actualContentBgColor = computed(() => {
                   <Breadcrumb v-if="!immersiveMode" />
                   <ArticleTags v-if="!immersiveMode" />
                   <ArticleMeta v-if="!immersiveMode" />
-                  <slot />
+                  <div ref="contentRef" class="article-content">
+                    <slot />
+                  </div>
                   <BacklinkSection v-if="!immersiveMode" />
                   <ShareLinks v-if="!immersiveMode" />
                   <PrevNextNav v-if="!immersiveMode" />
