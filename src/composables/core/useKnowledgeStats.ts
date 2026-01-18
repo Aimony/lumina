@@ -67,7 +67,8 @@ export function useKnowledgeStats() {
 
       // 尝试从 graph-data.json 获取链接数量
       try {
-        const response = await fetch('/graph-data.json')
+        const baseUrl = import.meta.env.BASE_URL || '/'
+        const response = await fetch(`${baseUrl}graph-data.json`)
         if (response.ok) {
           const graphData = await response.json()
           stats.value.totalLinks = graphData.links?.length || 0

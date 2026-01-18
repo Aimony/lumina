@@ -54,7 +54,9 @@ export function useGraphData() {
     loading.value = true
     error.value = null
 
-    loadingPromise = fetch('/graph-data.json')
+    // 使用 BASE_URL 确保在 GitHub Pages 等子路径部署时也能正确加载
+    const baseUrl = import.meta.env.BASE_URL || '/'
+    loadingPromise = fetch(`${baseUrl}graph-data.json`)
       .then((res) => {
         if (!res.ok) {
           throw new Error('Failed to load graph data')

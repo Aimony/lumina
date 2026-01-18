@@ -23,6 +23,9 @@ const pendingSearchCallbacks: Map<string, (results: SearchResult[]) => void> = n
 // 全局缓存文档数据（用于 getAllArticles 等同步访问）
 let docsCache: Record<string, SearchResult> = {}
 
+// 获取 BASE_URL（用于 GitHub Pages 等子路径部署）
+const getBaseUrl = () => import.meta.env.BASE_URL || '/'
+
 /**
  * 获取或创建 Worker 实例
  */
@@ -98,7 +101,8 @@ export const useSearchStore = defineStore('search', () => {
 
     try {
       // 1. 获取索引清单
-      const manifestRes = await fetch('/search-index-manifest.json')
+      const baseUrl = getBaseUrl()
+      const manifestRes = await fetch(`${baseUrl}search-index-manifest.json`)
 
       // 如果清单不存在，回退到旧的单文件模式
       if (!manifestRes.ok) {
@@ -126,7 +130,7 @@ export const useSearchStore = defineStore('search', () => {
       const allData: SearchResult[] = []
 
       for (let i = 0; i < manifest.chunks; i++) {
-        const chunkRes = await fetch(`/search-index-${i}.json`)
+        const chunkRes = await fetch(`${baseUrl}search-index-${i}.json`)
         const chunkData: SearchResult[] = await chunkRes.json()
 
         allData.push(...chunkData)
@@ -167,7 +171,8 @@ export const useSearchStore = defineStore('search', () => {
    */
   const loadLegacyIndex = async () => {
     try {
-      const res = await fetch('/search-index.json')
+      const baseUrl = getBaseUrl()
+      const res = await fetch(`${baseUrl}search-index.json`)
       const data: SearchResult[] = await res.json()
 
       docsCache = Object.fromEntries(data.map((item) => [item.id, item]))
