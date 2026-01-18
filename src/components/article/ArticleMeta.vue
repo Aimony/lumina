@@ -51,7 +51,7 @@ const hasMeta = computed(
 </script>
 
 <template>
-  <div v-if="hasMeta" class="mb-6 pb-4 border-b border-[var(--vp-c-divider)]">
+  <div v-if="hasMeta" class="article-meta">
     <div class="flex flex-wrap items-center gap-4">
       <!-- 日期 -->
       <span

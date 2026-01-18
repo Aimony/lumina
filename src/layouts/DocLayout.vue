@@ -270,9 +270,11 @@ const actualContentBgColor = computed(() => {
               <article ref="articleRef" class="markdown-body">
                 <PasswordProtect v-if="isProtected && !isUnlocked" />
                 <template v-else>
-                  <Breadcrumb v-if="!immersiveMode" />
-                  <ArticleTags v-if="!immersiveMode" />
-                  <ArticleMeta v-if="!immersiveMode" />
+                  <div v-if="!immersiveMode" class="article-header">
+                    <Breadcrumb />
+                    <ArticleTags />
+                    <ArticleMeta />
+                  </div>
                   <div ref="contentRef" class="article-content">
                     <slot />
                   </div>
@@ -311,3 +313,27 @@ const actualContentBgColor = computed(() => {
     <Footer v-if="!immersiveMode" />
   </div>
 </template>
+
+<style scoped>
+.article-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+/* Adjust child component spacing if needed */
+.article-header :deep(.breadcrumb) {
+  padding-bottom: 0;
+}
+
+/* On mobile, we might want to keep it simple */
+@media (max-width: 768px) {
+  .article-header {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+}
+</style>

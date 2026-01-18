@@ -153,8 +153,7 @@ watch(
 
 <style scoped>
 .article-tags {
-  margin-top: 32px;
-  margin-bottom: 32px;
+  /* Margins handled by parent layout */
 }
 
 .tags-container {
