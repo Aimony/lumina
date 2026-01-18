@@ -575,6 +575,11 @@ onUnmounted(() => {
   transition: all 0.3s ease;
 }
 
+.modal-enter-active .graph-modal,
+.modal-leave-active .graph-modal {
+  transition: transform 0.3s ease;
+}
+
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
