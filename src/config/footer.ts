@@ -37,6 +37,15 @@ export interface FooterConfig {
   }
   /** 底部链接 */
   links: FooterLink[]
+  /** 统计信息配置 */
+  stats?: {
+    /** 是否显示统计信息 */
+    enabled: boolean
+    /** 显示的统计项 */
+    items: ('pageviews' | 'visitors' | 'currentPage')[]
+    /** 数据刷新间隔(毫秒) */
+    refreshInterval?: number
+  }
 }
 
 export const footerConfig: FooterConfig = {
@@ -57,5 +66,10 @@ export const footerConfig: FooterConfig = {
     { text: '隐私政策', url: '/privacy', external: false },
     { text: '使用条款', url: '/terms', external: false },
     { text: '关于我', url: '/about', external: false }
-  ]
+  ],
+  stats: {
+    enabled: true,
+    items: ['pageviews', 'visitors', 'currentPage'],
+    refreshInterval: 1 * 60 * 1000 // 1分钟
+  }
 }

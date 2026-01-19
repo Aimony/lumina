@@ -23,6 +23,10 @@ interface ImportMetaEnv {
   readonly VITE_UMAMI_WEBSITE_ID: string
   /** Umami 脚本地址 */
   readonly VITE_UMAMI_SCRIPT_URL: string
+  /** Umami 用户名 (用于API认证) */
+  readonly VITE_UMAMI_USERNAME: string
+  /** Umami 密码 (用于API认证) */
+  readonly VITE_UMAMI_PASSWORD: string
   /** 是否启用 Umami 分析 */
   readonly VITE_UMAMI_ENABLED: string
 }

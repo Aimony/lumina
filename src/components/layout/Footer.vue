@@ -26,8 +26,20 @@
     </div>
 
     <div class="footer-container">
-      <!-- 版权 + 链接 + 备案 单行布局 -->
+      <!-- 版权 + 统计 + 链接 + 备案 单行布局 -->
       <div class="footer-row">
+        <!-- 统计信息 -->
+        <template v-if="config.stats?.enabled && statsItems.length > 0">
+          <div class="stats-container" :class="{ loading }">
+            <span v-for="(stat, index) in statsItems" :key="index" class="stat-item">
+              <span class="stat-icon">{{ stat.icon }}</span>
+              <span class="stat-label">{{ stat.label }}</span>
+              <span class="stat-value">{{ stat.value }}</span>
+            </span>
+          </div>
+          <span class="divider">|</span>
+        </template>
+
         <!-- 版权信息 -->
         <span class="copyright">
           © {{ copyrightYear }}
@@ -88,6 +100,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { footerConfig } from '@/config/footer'
+import { useFooterStats } from '@/composables/core/useFooterStats'
 
 defineProps<{
   transparent?: boolean
@@ -95,10 +108,58 @@ defineProps<{
 
 const config = footerConfig
 
+console.log('📊 [Footer] 组件加载, stats配置:', config.stats)
+
 const copyrightYear = computed(() => {
   const currentYear = new Date().getFullYear()
   const startYear = config.copyright.startYear
   return startYear === currentYear ? currentYear.toString() : `${startYear}-${currentYear}`
+})
+
+// 统计数据
+console.log('📊 [Footer] 是否调用useFooterStats:', config.stats?.enabled)
+const { stats, loading } = config.stats?.enabled
+  ? useFooterStats(config.stats.refreshInterval)
+  : {
+      stats: { value: { totalPageviews: 0, totalVisitors: 0, currentPageViews: 0 } },
+      loading: { value: false }
+    }
+
+// 格式化数字（添加千位分隔符）
+function formatNumber(num: number): string {
+  return num.toLocaleString('zh-CN')
+}
+
+// 统计项显示配置
+const statsItems = computed(() => {
+  if (!config.stats?.enabled) return []
+
+  return config.stats.items
+    .map((item) => {
+      switch (item) {
+        case 'pageviews':
+          return {
+            label: '访问量',
+            value: formatNumber(stats.value.totalPageviews),
+            icon: '👁️'
+          }
+        case 'visitors':
+          return {
+            label: '访客',
+            value: formatNumber(stats.value.totalVisitors),
+            icon: '👤'
+          }
+        case 'currentPage':
+          return {
+            label: '本页',
+            value: formatNumber(stats.value.currentPageViews),
+            icon: '📄'
+          }
+        default:
+          return null
+      }
+    })
+    .filter((item): item is { label: string; value: string; icon: string } => item !== null)
 })
 </script>
 
@@ -231,6 +292,38 @@ const copyrightYear = computed(() => {
   }
 }
 
+// 统计信息样式
+.stats-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  &.loading {
+    opacity: 0.6;
+  }
+}
+
+.stat-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--vp-c-text-2);
+  font-size: 13px;
+
+  .stat-icon {
+    font-size: 14px;
+  }
+
+  .stat-label {
+    color: var(--vp-c-text-3);
+  }
+
+  .stat-value {
+    color: var(--vp-c-brand-1);
+    font-weight: 500;
+  }
+}
+
 @media (max-width: 640px) {
   .global-footer {
     padding: 12px 16px;
@@ -239,6 +332,18 @@ const copyrightYear = computed(() => {
   .footer-row {
     font-size: 12px;
     gap: 6px;
+  }
+
+  .stats-container {
+    gap: 8px;
+  }
+
+  .stat-item {
+    font-size: 11px;
+
+    .stat-icon {
+      font-size: 12px;
+    }
   }
 
   .waves {
