@@ -103,6 +103,25 @@
           >{{ config.police.number }}</a
         >
       </div>
+
+      <!-- 第二行：访客 IP 信息 -->
+      <div v-if="config.visitorIP?.enabled" class="footer-row ip-row">
+        <span class="ip-item">
+          <span class="ip-icon">🚩</span>
+          <span class="ip-label">您来自:</span>
+          <span class="ip-value">{{ getFormattedLocation() }}</span>
+        </span>
+        <span class="ip-item">
+          <span class="ip-icon">🌐</span>
+          <span class="ip-label">IP:</span>
+          <span class="ip-value">{{ getFormattedIP() }}</span>
+        </span>
+        <span class="ip-item">
+          <span class="ip-icon">📡</span>
+          <span class="ip-label">运营商:</span>
+          <span class="ip-value">{{ getFormattedISP() }}</span>
+        </span>
+      </div>
     </div>
   </footer>
 </template>
@@ -111,6 +130,7 @@
 import { computed } from 'vue'
 import { footerConfig } from '@/config/footer'
 import { useFooterStats } from '@/composables/core/useFooterStats'
+import { useVisitorIP } from '@/composables/core/useVisitorIP'
 
 defineProps<{
   transparent?: boolean
@@ -133,6 +153,15 @@ const { stats, loading } = config.stats?.enabled
   : {
       stats: { value: { totalPageviews: 0, totalVisitors: 0, currentPageViews: 0 } },
       loading: { value: false }
+    }
+
+// 访客 IP 信息
+const { getFormattedLocation, getFormattedIP, getFormattedISP } = config.visitorIP?.enabled
+  ? useVisitorIP(config.visitorIP.refreshInterval)
+  : {
+      getFormattedLocation: () => '',
+      getFormattedIP: () => '',
+      getFormattedISP: () => ''
     }
 
 // 格式化数字（添加千位分隔符）
@@ -334,6 +363,32 @@ const statsItems = computed(() => {
   }
 }
 
+// IP 信息样式
+.ip-row {
+  margin-top: 4px;
+  padding-top: 4px;
+}
+
+.ip-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+
+  .ip-icon {
+    font-size: 13px;
+  }
+
+  .ip-label {
+    color: var(--vp-c-text-3);
+  }
+
+  .ip-value {
+    color: var(--vp-c-text-2);
+  }
+}
+
 @media (max-width: 640px) {
   .global-footer {
     padding: 12px 16px;
@@ -353,6 +408,14 @@ const statsItems = computed(() => {
 
     .stat-icon {
       font-size: 12px;
+    }
+  }
+
+  .ip-item {
+    font-size: 10px;
+
+    .ip-icon {
+      font-size: 11px;
     }
   }
 

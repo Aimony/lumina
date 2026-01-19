@@ -53,6 +53,13 @@ export interface FooterConfig {
     /** 数据刷新间隔(毫秒) */
     refreshInterval?: number
   }
+  /** 访客 IP 信息配置 */
+  visitorIP?: {
+    /** 是否显示访客 IP 信息 */
+    enabled: boolean
+    /** 数据刷新间隔(毫秒)，默认 5 分钟 */
+    refreshInterval?: number
+  }
 }
 
 export const footerConfig: FooterConfig = {
@@ -82,5 +89,9 @@ export const footerConfig: FooterConfig = {
     enabled: true,
     items: ['pageviews', 'visitors', 'currentPage'],
     refreshInterval: 1 * 60 * 1000 // 1分钟
+  },
+  visitorIP: {
+    enabled: true,
+    refreshInterval: 5 * 60 * 1000 // 5分钟
   }
 }
