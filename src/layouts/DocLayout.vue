@@ -32,6 +32,7 @@ import SmartHoverCard from '@/components/article/SmartHoverCard.vue'
 
 // 通用组件
 import BackToTopCat from '@/components/common/BackToTopCat.vue'
+import Live2dWidget from '@/components/common/Live2dWidget.vue'
 
 // 预览组件 - 异步加载以优化首屏性能
 const ImageViewer = defineAsyncComponent(() => import('@/components/common/ImageViewer.vue'))
@@ -303,6 +304,7 @@ const actualContentBgColor = computed(() => {
     <ImageViewer :image="currentImage" @close="hideImage" />
     <SmartHoverCard />
     <BackToTopCat v-if="!immersiveMode" />
+    <Live2dWidget v-if="!immersiveMode" />
 
     <!-- 预览模态框 -->
     <OfficePreviewModal :file="officePreviewFile" @close="closeOfficePreview" />
