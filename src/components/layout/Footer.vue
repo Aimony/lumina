@@ -54,6 +54,16 @@
           <span v-else>{{ config.copyright.author }}</span>
         </span>
 
+        <span v-if="config.license" class="copyright">
+          <a
+            :href="config.license.url"
+            class="author-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            >{{ config.license.text }}</a
+          >
+        </span>
+
         <span class="divider">|</span>
 
         <!-- 底部链接 -->

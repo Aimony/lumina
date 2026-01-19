@@ -35,6 +35,13 @@ export interface FooterConfig {
     /** 备案链接 */
     url?: string
   }
+  /** 许可协议信息 */
+  license?: {
+    /** 协议名称 */
+    text: string
+    /** 协议链接 */
+    url: string
+  }
   /** 底部链接 */
   links: FooterLink[]
   /** 统计信息配置 */
@@ -53,6 +60,10 @@ export const footerConfig: FooterConfig = {
     startYear: 2024,
     author: 'Lumina',
     authorUrl: 'https://github.com/lumina'
+  },
+  license: {
+    text: 'CC BY-NC-SA 4.0 国际许可协议',
+    url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/'
   },
   icp: {
     number: '京ICP备XXXXXXXX号',
