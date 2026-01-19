@@ -410,16 +410,21 @@ html.dark .code-block-header {
   background-color: var(--vp-c-bg-soft);
 }
 
-/* Anchor Links (标题锚点) */
+/* Anchor Links (标题锚点) - VitePress 风格悬浮动效 */
 .markdown-body .header-anchor {
   float: left;
-  margin-left: -1.25em;
-  padding-right: 0.5em;
-  font-size: 0.85em;
+  margin-left: -1em;
+  padding-right: 0.25em;
+  font-size: 1em;
+  font-weight: 700;
   opacity: 0;
   text-decoration: none;
   color: var(--vp-c-brand-1);
-  transition: opacity 0.2s;
+  transition:
+    opacity 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+  transform: translateX(-4px);
 }
 
 .markdown-body h1:hover .header-anchor,
@@ -429,6 +434,12 @@ html.dark .code-block-header {
 .markdown-body h5:hover .header-anchor,
 .markdown-body h6:hover .header-anchor {
   opacity: 1;
+  transform: translateX(0);
+}
+
+.markdown-body .header-anchor:hover {
+  color: var(--vp-c-brand-2);
+  transform: scale(1.1);
 }
 
 /* GitHub Alerts (告警块) */

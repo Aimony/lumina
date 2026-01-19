@@ -28,9 +28,16 @@ export function useTOC() {
       if (!el.id) {
         el.id = id
       }
+      // 获取标题文本，排除锚点链接的 # 符号
+      const clone = el.cloneNode(true) as HTMLElement
+      const anchor = clone.querySelector('.header-anchor')
+      if (anchor) {
+        anchor.remove()
+      }
+      const text = clone.textContent?.trim() || ''
       return {
         id,
-        text: el.textContent || '',
+        text,
         level: el.tagName === 'H2' ? 2 : 3
       }
     })
@@ -67,6 +74,19 @@ export function useTOC() {
 
   onMounted(() => {
     setupObserver()
+
+    // 处理 URL hash，页面加载时自动滚动到对应标题
+    const hash = window.location.hash
+    if (hash) {
+      const targetId = hash.slice(1) // 去掉 # 号
+      // 延迟执行以确保 DOM 已完全渲染
+      setTimeout(() => {
+        const el = document.getElementById(targetId)
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }, 100)
+    }
   })
 
   onUnmounted(() => {

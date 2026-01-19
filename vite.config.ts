@@ -74,7 +74,16 @@ export default defineConfig(() => ({
       // Shiki 代码高亮在 markdown 处理中配置
       async markdownItSetup(md) {
         // GFM 扩展插件
-        md.use(anchor, { permalink: false }) // 标题锚点
+        // 标题锚点 - VitePress 风格
+        md.use(anchor, {
+          permalink: anchor.permalink.linkInsideHeader({
+            symbol: '#',
+            placement: 'before',
+            class: 'header-anchor',
+            ariaHidden: true
+          }),
+          slugify: (s: string) => encodeURIComponent(s.trim().toLowerCase().replace(/\s+/g, '-'))
+        })
         md.use(footnote) // 脚注支持
         md.use(taskLists, { enabled: true, label: true }) // 任务列表
         md.use(githubAlerts) // GitHub 告警块

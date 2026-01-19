@@ -127,6 +127,8 @@ const scrollTo = (id: string) => {
   const el = document.getElementById(id)
   if (el) {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    // 更新 URL hash，类似 VitePress 的锚点链接
+    history.replaceState(null, '', `#${id}`)
   }
 }
 </script>
@@ -451,11 +453,18 @@ const scrollTo = (id: string) => {
   color: var(--vp-c-text-2);
   padding: 4px 0;
   line-height: 1.5;
-  transition: color 0.25s;
+  transition:
+    color 0.25s,
+    transform 0.25s;
+  transform-origin: left;
+  display: inline-block;
+  /* 必须是块级或行内块级元素才能 transform */
+  width: 100%;
 }
 
 .toc-link:hover {
   color: var(--vp-c-text-1);
+  transform: scale(1.05);
 }
 
 .toc-link.active {
